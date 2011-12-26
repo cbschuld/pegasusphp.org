@@ -1,0 +1,138 @@
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "BlackBerry9700/5.0.0.351 Profile/MIDP-2.1 Configuration/CLDC-1.1 VendorID/123",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "BlackBerry9630/4.7.1.40 Profile/MIDP-2.0 Configuration/CLDC-1.1 VendorID/105",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "BlackBerry9000/4.6.0.167 Profile/MIDP-2.0 Configuration/CLDC-1.1 VendorID/102",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "BlackBerry8330/4.3.0 Profile/MIDP-2.0 Configuration/CLDC-1.1 VendorID/105",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "BlackBerry8830/4.2.2 Profile/MIDP-2.0 Configuration/CLOC-1.1 VendorID/105",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "BlackBerry8820/4.2.2 Profile/MIDP-2.0 Configuration/CLDC-1.1 VendorID/102",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "BlackBerry8703e/4.1.0 Profile/MIDP-2.0 Configuration/CLDC-1.1 VendorID/105",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "BlackBerry8320/4.3.1 Profile/MIDP-2.0 Configuration/CLDC-1.1",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "BlackBerry8130/4.5.0.89 Profile/MIDP-2.0 Configuration/CLDC-1.1 VendorID/106",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "BlackBerry7100i/4.1.0 Profile/MIDP-2.0 Configuration/CLDC-1.1 VendorID/103",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "BlackBerry7130e/4.1.0 Profile/MIDP-2.0 Configuration/CLDC-1.1 VendorID/104",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "BlackBerry7250/4.0.0 Profile/MIDP-2.0 Configuration/CLDC-1.1",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "BlackBerry/3.6.0",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "BlackBerry7230/3.7.0",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "BlackBerry7230/3.7.1",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "BlackBerry7730/3.7.0",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "BlackBerry7730/3.7.1 UP.Link/5.1.2.",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "Opera/9.50 (J2ME/MIDP; Opera Mini/4.0.10031/298; U; en)",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+
+	$_USER_AGENTS[] = new UserAgentInfo(
+	                           "",
+	                           Browser::PLATFORM_UNKNOWN,
+	                           Browser::BROWSER_UNKNOWN,
+	                           "");
+

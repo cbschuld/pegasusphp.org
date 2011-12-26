@@ -1,0 +1,143 @@
+<html>
+	<head>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js"></script>
+		<script type="text/javascript" src="jqalert.js"></script>
+		<link rel="stylesheet" href="jqalert.css" media="screen" type="text/css" />
+		
+		<style type="text/css">
+			body div pre { font-size: 10px; }
+		</style>
+		
+		<script type="text/javascript">
+			/*<![CDATA[*/
+			$( function() {
+				$("#alert").jqalert( { message: "This is just a normal alert message with nothing fancy in it other than just a message (like an alert() call)" } );
+				$("#alertt").jqalert( { title: "Just some Information", message: "This is just a normal alert message with nothing fancy in it other than just a message (like an alert() call)" } );
+				$("#alertw").jqalert( { width: 450, message: "This is just a normal alert message with nothing fancy in it other than just a message (like an alert() call) but has a fixed with set" } );
+				$("#error").jqalert( { error: true, message: "This is just a normal error message without any additional settings" } );
+				$("#errort").jqalert( { error: true, title: "Title Goes Here", message: "This is just a normal error message without any additional settings" } );
+				$("#warning").jqalert( { warning: true, message: "This is just a normal warning message without any additional settings" } );
+				$("#info").jqalert( { info: true, message: "This is just a normal info message without any additional settings" } );
+				$("#help").jqalert( { help: true, message: "This is just a normal help message without any additional settings" } );
+				$("#yesno").jqalert( {
+										info: true,
+										message: "Would you like to delete XYZ?<br/><em>(keep in mind there is no way to undo this operation</em>",
+										success: function() { alert("you hit yes"); },
+										failure: function() { alert("you hit no"); }
+									} );
+				$("#yesnoa").jqalert( {
+										info: true,
+										title: "Would you like to delete XYZ?",
+										message: "Click on the Yes button to delete XYZ!<br/><em>(keep in mind there is no way to undo this operation)</em>",
+										success: function() { alert("you hit yes"); },
+										failure: function() { alert("you hit no"); }
+									} );
+			} );
+			/*]]>*/
+		</script>
+	</head>
+	<body>
+		<h1>jqalert Examples</h1>
+		<a id="alert" href="javascript:;">View a regular alert example</a>
+		<div style="border:1px solid #aaa; background:#eee;width:90%;margin:10px auto 10px auto;">
+			<pre>
+	$( function() {
+		$("#alert").jqalert( { message: "This is just a normal alert message with nothing fancy in it other than just a message (like an alert() call)" } );
+	} );
+			</pre>
+		</div>
+		
+		<a id="alertt" href="javascript:;">View a regular alert example with a title</a>
+		<div style="border:1px solid #aaa; background:#eee;width:90%;margin:10px auto 10px auto;">
+			<pre>
+	$( function() {
+		$("#alertt").jqalert( { title: "Just some Information", message: "This is just a normal alert message with nothing fancy in it other than just a message (like an alert() call)" } );
+	} );
+			</pre>
+		</div>
+		
+		<a id="alertw" href="javascript:;">View a regular alert example with a fixed width</a>
+		<div style="border:1px solid #aaa; background:#eee;width:90%;margin:10px auto 10px auto;">
+			<pre>
+	$( function() {
+		$("#alertw").jqalert( { width: 450, message: "This is just a normal alert message with nothing fancy in it other than just a message (like an alert() call) but has a fixed with set" } );
+	} );
+			</pre>
+		</div>
+		
+		<a id="error" href="javascript:;">View Error Example</a>
+		<div style="border:1px solid #aaa; background:#eee;width:90%;margin:10px auto 10px auto;">
+			<pre>
+	$( function() {
+		$("#error").jqalert( { error: true, message: "This is just a normal error message without any additional settings" } );
+	} );
+			</pre>
+		</div>
+		
+		<a id="errort" href="javascript:;">View Error Example with Title</a>
+		<div style="border:1px solid #aaa; background:#eee;width:90%;margin:10px auto 10px auto;">
+			<pre>
+	$( function() {
+		$("#errort").jqalert( { error: true, title: "Title Goes Here", message: "This is just a normal error message without any additional settings" } );
+	} );
+			</pre>
+		</div>
+		
+		<a id="warning" href="javascript:;">View Warning Example</a>
+		<div style="border:1px solid #aaa; background:#eee;width:90%;margin:10px auto 10px auto;">
+			<pre>
+	$( function() {
+		$("#warning").jqalert( { warning: true, message: "This is just a normal warning message" } );
+	} );
+			</pre>
+		</div>
+		
+		<a id="info" href="javascript:;">View Information Example</a>
+		<div style="border:1px solid #aaa; background:#eee;width:90%;margin:10px auto 10px auto;">
+			<pre>
+	$( function() {
+		$("#info").jqalert( { info: true, message: "This is just a normal info message without any additional settings" } );
+	} );
+			</pre>
+		</div>
+		
+		<a id="help" href="javascript:;">View Help Example</a>
+		<div style="border:1px solid #aaa; background:#eee;width:90%;margin:10px auto 10px auto;">
+			<pre>
+	$( function() {
+		$("#help").jqalert( { help: true, message: "This is just a normal help message without any additional settings" } );
+	} );
+			</pre>
+		</div>
+		
+		<a id="yesno" href="javascript:;">View a simple Question Example</a>
+		<div style="border:1px solid #aaa; background:#eee;width:90%;margin:10px auto 10px auto;">
+			<pre>
+	$( function() {
+		$("#yesno").jqalert( {
+								info: true,
+								message: "Would you like to delete XYZ?&lt;br/&gt;&lt;em&gt;(keep in mind there is no way to undo this operation&lt;em&gt;",
+								success: function() { alert("you hit yes"); },
+								failure: function() { alert("you hit no"); }
+							} );
+	} );
+			</pre>
+		</div>
+		
+		<a id="yesnoa" href="javascript:;">View a Full Question Example</a>
+		<div style="border:1px solid #aaa; background:#eee;width:90%;margin:10px auto 10px auto;">
+			<pre>
+	$( function() {
+		$("#yesno").jqalert( {
+								info: true,
+								title: "Would you like to delete XYZ?",
+								message: "Click on the Yes button to delete XYZ!&lt;br/&gt;&lt;em&gt;(keep in mind there is no way to undo this operation)&lt;em&gt;",
+								success: function() { alert("you hit yes"); },
+								failure: function() { alert("you hit no"); }
+							} );
+	} );
+			</pre>
+		</div>
+		
+	</body>
+</html>

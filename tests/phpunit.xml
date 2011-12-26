@@ -1,0 +1,17 @@
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         stopOnFailure="true"
+         syntaxCheck="false"
+         bootstrap="bootstrap.php">
+         
+	<testsuites>
+		<testsuite name="PEGASUS-TEST">
+			<directory>.</directory>
+		</testsuite>
+	</testsuites>
+         
+</phpunit>

@@ -1,0 +1,233 @@
+@CHARSET "ISO-8859-1";
+
+table.gridGrey { border-collapse: collapse; }
+
+td.gridData {
+	font-size: 90%;
+}
+
+td.gridHeader {
+	font-size: 100%;
+}
+
+img.gridGrey {
+	border: 0px;
+}
+
+em.gridGrey {
+	font-size: 90%;
+}
+
+/* Even and Odd Rows */
+tr.gridGreyRowEven { background: #eeeeee; }
+tr.gridGreyRowOdd { background: #ffffff; }
+
+tr.gridGreyRowEven:hover { background: #f5f5e0; }
+tr.gridGreyRowOdd:hover { background: #fffff0; }
+
+
+/* Row Sorted Colors */
+tr.gridGreyRowSort0 { background: #dfdfdf; }
+tr.gridGreyRowSort1 { background: #efefef; }
+tr.gridGreyRowSort2 { background: #ffffff; }
+tr.gridGreyRowSort3 { background: #dfdfdf; }
+tr.gridGreyRowSort4 { background: #efefef; }
+tr.gridGreyRowSort5 { background: #ffffff; }
+tr.gridGreyRowSort6 { background: #dfdfdf; }
+tr.gridGreyRowSort7 { background: #efefef; }
+tr.gridGreyRowSort8 { background: #ffffff; }
+tr.gridGreyRowSortChange { border-top: 1px dashed #aaaaaa; }
+
+tr.gridGreyRowSort0:hover,
+tr.gridGreyRowSort1:hover,
+tr.gridGreyRowSort2:hover,
+tr.gridGreyRowSort3:hover,
+tr.gridGreyRowSort4:hover,
+tr.gridGreyRowSort5:hover,
+tr.gridGreyRowSort6:hover,
+tr.gridGreyRowSort7:hover,
+tr.gridGreyRowSort8:hover { background: #f3ffe5; }
+
+
+
+/* Data Cell Border Top */
+td.gridGreyDBT {
+	border-top: 1px solid #999999;
+}
+/* Data Cell Border Bottom */
+td.gridGreyDBB {
+	border-bottom: 1px solid #999999;
+}
+/* Data Cell Border Right */
+td.gridGreyDBR {
+	border-right: 1px solid #999999;
+}
+/* Data Cell Border Left */
+td.gridGreyDBL {
+	border-left: 1px solid #999999;
+}
+
+/* Header Border Top */
+td.gridGreyHBT {
+	border-top: 1px solid #999999;
+}
+/* Header Border Bottom */
+td.gridGreyHBB {
+	border-bottom: 1px solid #999999;
+}
+/* Header Border Right */
+td.gridGreyHBR {
+	border-right: 1px solid #999999;
+}
+/* Header Border Left */
+td.gridGreyHBL {
+	border-left: 1px solid #999999;
+}
+
+div.gridGreyFinePrint {
+	color: #555555;
+	font-size: 80%;
+	padding: 5px;
+}
+
+td.gridGreyHeader {
+	background: #cccccc;
+	font-weight: bold;
+	border: 1px solid #999999;
+	padding:2px;
+}
+
+td.gridGreyUtilities {
+	background: #eeeeee;
+	font-size: 100%;
+	padding: 5px;
+	border: 1px solid #999999;
+}
+
+td.gridGreyTrailer {
+	color: #555555;
+	font-size: 100%;
+	padding: 5px;
+}
+
+table.gridGrey a {
+	text-decoration: none;
+	color: #333333;
+	outline: none; /* hide dotted outline in Firefox */
+}
+
+table.gridGrey a:hover {
+	text-decoration: underline;
+	color: #333333;
+}
+
+.gridGrey input{
+	border: 1px solid #999999;
+	background: #fefefe;
+	padding: 2px;
+}
+input.gridGreyButton {
+	background: #fefefe;
+	padding: 1px;
+}
+
+#gridGreyPages, #gridGreyResultsPerPage, #gridGreyResultsPerPageList, #gridGreyResultsPerPageLink {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+#gridGreyPages a, #gridGreyResultsPerPage a {
+	padding-top:2px;
+	padding-bottom:2px;
+	padding-left:4px;
+	padding-right:4px;
+	margin: 1px;
+	border: 1px solid #aaaaaa;
+	color: #888888;
+	background: #eeeeee;
+	text-decoration: none;
+	width: auto;
+	outline: none; /* hide dotted outline in Firefox */
+}
+#gridGreyPages a:hover, #gridGreyResultsPerPage a:hover {
+	border: 1px solid #555555;
+	color: #333333;
+}
+
+#gridGreyResultsPerPage a {
+	font-size: 100%;
+	outline: none; /* hide dotted outline in Firefox */
+}
+ 
+a#gridGreyCurrentPage, a#gridGreyCurrentRowPerPage {
+	border: 1px solid #555555;
+	color: #333333;
+	background: #ffffff;
+}
+a:hover#gridGreyCurrentPage, a:hover#gridGreyCurrentRowPerPage {
+	border: 1px solid #333333;
+	color: #000000;
+	background: #eeeeee;
+}
+
+#gridGreyFilteredMessage a {
+	color: #003DF5;
+	font-weight: bold;
+	font-size: 100%;
+	text-decoration:underline;
+	outline: none; /* hide dotted outline in Firefox */
+}
+#gridGreyFilteredMessage a:hover {
+	color: #002EB8;
+}
+
+
+
+
+
+
+#gridGreyFilterNav {
+	margin:0px;
+	padding:0px;
+	list-style:none;
+}
+
+#gridGreyFilterNav li {
+	float:left;
+	margin:0;
+	padding:0;
+}
+
+#gridGreyFilterNav a {
+	display:block;
+	color:#444;
+	text-decoration:none;
+	font-size: 90%;
+	background:#ddd;
+	margin:0;
+	padding:0.25em 1em;
+	border-left:1px solid #fff;
+	border-top:1px solid #fff;
+	border-right:1px solid #aaa;
+}
+
+#gridGreyFilterNav a:hover, #gridGreyFilterNav a:active, #gridGreyFilterNav a.here:link, #gridGreyFilterNav a.here:visited {
+	background:#bbb;
+}
+
+#gridGreyFilterNav a.hot:link, #gridGreyFilterNav a.hot:visited {
+	background:#f5dddd;
+}
+
+#gridGreyFilterNav a.hot:hover, #gridGreyFilterNav a.hothere:link, #gridGreyFilterNav a.hothere:visited {
+	background:#ff8888;
+}
+#gridGreyFilterNav a.hothere:hover {
+	background:#ff5555;
+}
+
+#gridGreyFilterNav A.here:link,
+#gridGreyFilterNav A.here:visited {
+	position:relative;
+	z-index:102;
+}
