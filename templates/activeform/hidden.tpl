@@ -1,0 +1,1 @@
+<input type="hidden" name="{$activeform->name}_{$field->name}" id="{$activeform->name}_{$field->name}" value="{$field->value}" />

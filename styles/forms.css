@@ -1,0 +1,63 @@
+div.afRequired {
+	color: #db3333;
+	font-size: .8em;
+}
+div.afError {
+	color: #db3333;
+	font-size: .8em;
+	font-style: italic;
+}
+div.afExample {
+	font-size: .8em;
+	font-style: italic;
+	color: #aaaaaa;
+}
+div.afReadOnly {
+	border: 1px solid #cccccc;
+	padding: 2px;
+	margin: 1px;
+	background: #fcfcff;
+}
+
+div.afFootnote {
+	padding: 1px;
+	margin: 1px;
+	color: #cccccc;
+	font-size: 0.7em;
+}
+
+input, textarea, select, button {
+	font-family: arial, helvetica, verdana, tahoma, sans-serif;
+	font-size: 1em;
+	background : rgb(250, 250, 250); 
+	border-top: 1px solid rgb(85, 85, 85);
+	border-left: 1px solid rgb(85, 85, 85);
+	border-bottom: 1px solid rgb(204, 204, 204);
+	border-right: 1px solid rgb(204, 204, 204);
+	padding: 0.1em;
+	margin: 0.1em;
+	color: #333333;
+}
+
+input.required, textarea.required, select.required {
+	background : rgb(255, 240, 240); 
+	border-top: 1px solid rgb(185, 85, 85);
+	border-left: 1px solid rgb(185, 85, 85);
+	border-bottom: 1px solid rgb(255, 185, 185);
+	border-right: 1px solid rgb(255, 185, 185);
+}
+
+input:focus, textarea:focus {
+	background: #efefef;
+	color: #005500;
+}
+
+input.required:focus, textarea.required:focus {
+	background: #ffefef;
+	color: #005500;
+}
+
+label {
+	color: #888888;
+	padding: 0.2em;
+}

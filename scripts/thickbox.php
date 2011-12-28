@@ -1,0 +1,1 @@
+<?php include( dirname(__FILE__) . '/thickbox-3/thickbox.js' ); ?>

@@ -1,0 +1,12 @@
+/* DIV-based simple button - 2007/10/30 - Chris Schuld - cbschuld@gmail.com */
+div.simpleButtonGrey { float: left; }
+a.simpleButtonGrey { color:#454545; width: auto; display: block; text-decoration: none; background-color:#f0f0f0; border-bottom:1px solid #bcbcbc; border-right:1px solid #bcbcbc; border-top:1px solid #dddddd; border-left:1px solid #dddddd;}
+a.simpleButtonGrey:hover { color:#333366; text-decoration: none; background-color:#ddddee; border:1px solid #99aacc; }
+img.simpleButtonGreyLeft { padding:3px 0px 0px 2px;float:left; }
+img.simpleButtonGreyRight { padding:3px 2px 0px 0px;float:left; }
+
+div.simpleButtonLargeGrey { float: left; }
+a.simpleButtonLargeGrey { color:#454545; width: auto; display: block; text-decoration: none; background-color:#f0f0f0; border-bottom:1px solid #bcbcbc; border-right:1px solid #bcbcbc; border-top:1px solid #dddddd; border-left:1px solid #dddddd;}
+a.simpleButtonLargeGrey:hover { color:#333366; text-decoration: none; background-color:#ddddee; border:1px solid #99aacc; }
+img.simpleButtonLargeGreyLeft { padding:3px 0px 0px 2px;float:left; }
+img.simpleButtonLargeGreyRight { padding:3px 2px 0px 0px;float:left; }

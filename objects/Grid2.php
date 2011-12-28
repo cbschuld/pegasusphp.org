@@ -1,0 +1,1 @@
+<?php /* legacy include */ include(dirname(__FILE__)."/../includes/grid2/grid2.php"); ?>

@@ -1,0 +1,4 @@
+table.simple { margin: 2px; border: 1px solid #c0c0c0;}
+table.simple th { font-size: 110%; background: #cccccc; padding: 2px; border-bottom: 1px solid #aaaaaa; border-right: 1px solid #c0c0c0;}
+table.simple tr { font-size: 90%; background: #f0f0f0; }
+table.simple td { padding: 2px; border-right: 1px solid #e0e0e0; }
