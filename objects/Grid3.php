@@ -308,9 +308,6 @@
 			$xhtml .= "\t\t		\"bJQueryUI\": true,\n";
 			$xhtml .= "\t\t		\"bStateSave\": true,\n";
 			$xhtml .= "\t\t		\"sPaginationType\": \"full_numbers\",\n";
-			if( $this->getFilterParameters() != '' ) {
-				$xhtml .= "\t\t		\"fnServerParams\": function ( aoData ) {  aoData.push( {$this->getFilterParameters()} ); },\n";
-			}
 			if( $this->getDrawCallback() != '' ) {
 				$xhtml .= "\t\t		\"fnDrawCallback\": function() { {$this->getDrawCallback()} },\n";
 			}
@@ -319,6 +316,9 @@
 			$xhtml .= "\t\t		],\n"; 
 			$xhtml .= "\t\t		\"fnServerData\": function ( sSource, aoData, fnCallback ) {\n";
 			$xhtml .= "\t\t			aoData.push( { \"name\": \"action\", \"value\": \"refresh-grid\" } );\n";
+			if( $this->getFilterParameters() != '' ) {
+				$xhtml .= "\t\t			aoData.push( {$this->getFilterParameters()} );\n";
+			}
 			$xhtml .= "\t\t		$.ajax( {\n";
 			$xhtml .= "\t\t				\"dataType\": 'json', \n";
 			$xhtml .= "\t\t				\"type\": \"POST\", \n";
