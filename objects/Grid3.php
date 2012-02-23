@@ -33,6 +33,8 @@
 		
 		private $_filterParameters = '';
 		private $_drawCallback = '';
+		
+		private $_bTwitterBootstrap = false;
 
 		public function Grid3() {
 		}
@@ -69,6 +71,12 @@
 		public function getPageNumber() { return $this->__iDisplayLength == 0 ? 1 : $this->__iDisplayStart / $this->__iDisplayLength +1; }
 		
 		public function getSearchString() { return $this->__sSearch; }
+
+		public function setTwitterBootstrap(){ $this->_bTwitterBootstrap = true; }
+		public function getTwitterBootstrap(){ return $this->_bTwitterBootstrap; }
+		/* If you are using twitter bootstrap style, make sure to include
+		 * /style/datatables/bootstrap.css for the styles
+		 * and /scripts/DT_bootstrap.js in your header for the style overrides */
 		
 		public function loadFromRequest() {
 			
@@ -257,17 +265,21 @@
 				$xhtmlFooter .= $this->getColumn($c)->getTitle();
 				$xhtmlFooter .= "</div></th>";
 				
-				$xhtmlColumns .= "/* {$this->getColumn($c)->getTitle()} */ {bSearchable: ";
+				$xhtmlColumns .= "/* {$this->getColumn($c)->getTitle()} */ {\"bSearchable\": ";
 				$xhtmlColumns .= ( $this->getColumn($c)->isSearchable() ? "true" : "false" );
 				$xhtmlColumns .= ",";
-				$xhtmlColumns .= "bSortable: ";
+				$xhtmlColumns .= "\"bSortable\": ";
 				$xhtmlColumns .= ( $this->getColumn($c)->isSortable() ? "true" : "false" );
 				$xhtmlColumns .= ",";
-				$xhtmlColumns .= "bVisible: ";
+				$xhtmlColumns .= "\"bVisible\": ";
 				$xhtmlColumns .= ( $this->getColumn($c)->getShow() ? "true" : "false" );
 				if( $this->getColumn($c)->getType() != "" ) {
 					$xhtmlColumns .= ",";
-					$xhtmlColumns .= "sType: \"{$this->getColumn($c)->getType()}\"";
+					$xhtmlColumns .= "\"sType\": \"{$this->getColumn($c)->getType()}\"";
+				}
+				if( $this->getColumn($c)->getWidth() ) {
+					$xhtmlColumns .= ",";
+					$xhtmlColumns .= "\"sWidth\": \"{$this->getColumn($c)->getWidth()}\"";
 				}
 				if( ! $this->getColumn($c)->isWrap() ) {
 					$xhtmlColumns .= ",";
@@ -279,7 +291,19 @@
 			}
 			$xhtmlColumns = trim($xhtmlColumns,",\n");
 						
-			$xhtml = "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" class=\"display\" id=\"{$this->getId()}\">";
+			if($this->_bTwitterBootstrap) {
+				$xhtml = "<div class=\"container\">\n";
+			} else {
+				$xhtml = "";
+			}
+			
+			$xhtml .= "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" ";
+			if($this->_bTwitterBootstrap) {
+				$xhtml .= "class=\"table table-striped table-bordered\"";
+			} else {
+				$xhtml .= "class=\"display\"";
+			}
+			$xhtml .= " id=\"{$this->getId()}\">";
 			$xhtml .= "<thead>";
 			$xhtml .= "<tr>";
 			$xhtml .= $xhtmlHeader;
@@ -297,17 +321,27 @@
 			$xhtml .= "</tfoot>";
 			$xhtml .= "</table>";
 			
+			if($this->_bTwitterBootstrap) {
+				$xhtml .= "</div>\n";
+			}
+			
 			$xhtml .= "\n<script type=\"text/javascript\">\n";
 			$xhtml .= "\t/*<![CDATA[ */\n";
 			$xhtml .= "\t\t$(document).ready(function() {\n";
 			$xhtml .= "\t\t	$('#{$this->getId()}').dataTable( {\n";
+			if($this->_bTwitterBootstrap) {
+				$xhtml .= "\t\t		\"sDom\": \"<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>\",\n";
+				$xhtml .= "\t\t		\"sPaginationType\": \"bootstrap\",\n";
+				$xhtml .= "\t\t		\"oLanguage\": {\"sLengthMenu\": \"_MENU_ records per page\"},\n";
+			} else {
+				$xhtml .= "\t\t		\"sPaginationType\": \"full_numbers\",\n";
+			}
 			$xhtml .= "\t\t		\"aaSorting\": [[{$this->__defaultSortColumn}, \"{$this->__defaultSortColumnOrder}\"]],\n";
 			$xhtml .= "\t\t		\"bProcessing\": true,\n";
 			$xhtml .= "\t\t		\"bServerSide\": true,\n";
 			$xhtml .= "\t\t		\"sAjaxSource\": \"{$this->getProcessingUrl()}\",\n";
 			$xhtml .= "\t\t		\"bJQueryUI\": true,\n";
 			$xhtml .= "\t\t		\"bStateSave\": true,\n";
-			$xhtml .= "\t\t		\"sPaginationType\": \"full_numbers\",\n";
 			if( $this->getDrawCallback() != '' ) {
 				$xhtml .= "\t\t		\"fnDrawCallback\": function() { {$this->getDrawCallback()} },\n";
 			}
@@ -327,7 +361,7 @@
 			$xhtml .= "\t\t				\"success\": function(json) { fnCallback(json); }\n";
 			$xhtml .= "\t\t			} );\n";
 			$xhtml .= "\t\t		}\n";
-			$xhtml .= "\t\t	} ).fnSetFilteringDelay();\n";
+			$xhtml .= "\t\t	} );\n";
 			$xhtml .= "\t\t} );\n";
 			$xhtml .= "\t/*]]>*/\n";
 			$xhtml .= "\t</script>\n";
@@ -345,6 +379,7 @@
 		private $_bStretch = false;
 		private $_strTitle = 'n/a';
 		private $_strColumnName = '';
+		private $_sWidth = null;
 		private $_bWrap = true;
 		private $_iPadding = 1;
 		private $_bSortable = false;
@@ -369,6 +404,7 @@
 		public function getPadding()    { return $this->_iPadding; }
 		public function getIndex()      { return $this->_index; }
 		public function getStretch()    { return $this->_bStretch; }
+		public function getWidth()      { return $this->_sWidth; }
 		public function getWrap()       { return $this->_bWrap; }
 		public function getSortable()   { return $this->_bSortable; }
 		public function getSorted()     { return $this->_bSorted; }
@@ -390,6 +426,7 @@
 		public function &setPadding($i)         { $this->_iPadding = $i; return $this; }
 		public function &setIndex($i)           { $this->_index = $i; return $this; }
 		public function &setStretch($b=true)    { $this->_bStretch = $b; return $this; }
+		public function &setWidth($s=null)      { $this->_sWidth = $s; return $this; }
 		public function &setWrap($b=true)       { $this->_bWrap = $b; return $this; }
 		public function &setSortable($b=true)   { $this->_bSortable = $b; return $this; }
 		public function &setSorted($b=true)     { $this->_bSorted = $b; return $this; }
