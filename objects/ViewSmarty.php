@@ -135,6 +135,14 @@ class View {
 		return self::$_smarty->template_dir;
 	}  
 	
+	public static function prependPluginDir($path) { 
+		if( is_array( self::$_smarty->plugins_dir ) ) {
+			self::$_smarty->plugins_dir = array_merge( array($path), self::$_smarty->plugins_dir );
+		}
+		else {
+			self::$_smarty->plugins_dir = array( $path, self::$_smarty->plugins_dir );
+		}
+	}	
 	
 	public static function setCompileInMemory($bValue=true) {
 		self::$_bCompileInMemory = $bValue;

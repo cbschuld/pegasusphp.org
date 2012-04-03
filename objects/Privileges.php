@@ -62,10 +62,15 @@
 		public function getPrivileges() { return $this->_aPrivilege; }
 
 		private function deletePrivileges($iUserID) {
+			foreach( UserPrivilegePropelQuery::create()->filterByUserId($iUserID)->find() as $pr ) {
+				$pr->delete();
+			}
+			/*
 			$c = new Criteria();
 			$c->add(UserPrivilegePropelPeer::USERID, $iUserID, Criteria::EQUAL);
 			$c->addAscendingOrderByColumn(UserPrivilegePropelPeer::PRIVILEGEID);
 			UserPrivilegePropelPeer::doDelete($c);
+			*/
 		}
 		
 		public function save($iUserID) {

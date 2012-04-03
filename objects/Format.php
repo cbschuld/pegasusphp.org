@@ -93,12 +93,21 @@
 		 * @return string A comma-separated list with the inclusion of the word "and"
 		 */
 		public static function commaList($array) {
-    		if( !$array || !count($array) ) return ""; 
 
-    		$last = array_pop ($array); 
-			if( !count($array) ) return $last;    
+			//clean the array
+			$clean = array();
+			for( $i = 0; $i < count($array); $i++ ) {
+				if( $value = trim($array[$i]) ) {
+					$clean[] = $value;
+				}
+			}
 			
-			return implode(", ", $array)." and {$last}";
+    		if( !$clean || !count($clean) ) return ""; 
+
+    		$last = array_pop($clean); 
+			if( !count($clean) ) return $last;    
+			
+			return implode(", ", $clean)." and {$last}";
 		} 
 		
 		/**
