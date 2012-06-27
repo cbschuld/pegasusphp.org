@@ -6,7 +6,10 @@
 	 * @package PegasusPHP
 	 */	
 	class HtmlEmail {
-		private $_phpmailer = null;
+		protected $_phpmailer = null;
+        protected $_toEmailList = array();
+        protected $_ccEmailList = array();
+        protected $_bccEmailList = array();
 		public function __construct() {
 			$this->_phpmailer = new PHPMailer();
 			
@@ -44,12 +47,12 @@
 		 * @param $name the name of the recipient
 		 */
 		public function to($email,$name='') {
-			$emailAddress = $email;
 			$emailAddressList = EmailUtil::explodeAddresses($email);
 			
 			if($name=='') { $name = $email; }
 			
 			foreach( $emailAddressList as $emailAddress ) {
+                $this->_toEmailList[] = $emailAddress;
 				$this->_phpmailer->AddAddress($emailAddress,$name);
 			}
 		}
@@ -66,6 +69,7 @@
 		 */
 		public function cc($email) {
 			foreach( EmailUtil::explodeAddresses($email) as $emailAddress ) {
+                $this->_ccEmailList[] = $emailAddress;
 				$this->_phpmailer->AddCustomHeader('Cc: ' . $emailAddress);
 			}
 		}
@@ -82,6 +86,7 @@
 		 */
 		public function bcc($email) {
 			foreach( EmailUtil::explodeAddresses($email) as $emailAddress ) {
+                $this->_bccEmailList[] = $emailAddress;
 				$this->_phpmailer->AddCustomHeader('Bcc: ' . $emailAddress);
 			}
 		}
