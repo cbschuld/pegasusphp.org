@@ -12,7 +12,7 @@
 		
 		private $_id = "Grid4";
 
-		public function Grid4() {
+		public function Grid4Static() {
 		}
 		
 		public function getId() { return $this->_id; }
@@ -134,7 +134,6 @@
 				$xhtml .= "\t\t		\"aoColumns\": [\n";
 				$xhtml .= $xhtmlColumns;
 				$xhtml .= "\t\t		],\n"; 
-				$xhtml .= "\t\t		\"sPaginationType\": \"full_numbers\"\n";
 				$xhtml .= "\t\t	});\n";
 				$xhtml .= "\t\t});\n";
 				$xhtml .= "\t/*]]>*/\n";
