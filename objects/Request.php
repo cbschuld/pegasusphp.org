@@ -199,8 +199,19 @@ class Request {
 	public static function explode($k) {
 		return explode(',',self::get($k));
 	}
-	public static function isPost() { return ( $_SERVER['REQUEST_METHOD'] == 'POST'); }
-
+	public static function isGet() {
+		return ( $_SERVER['REQUEST_METHOD'] == 'GET');
+	}
+	public static function isPost() {
+		return ( $_SERVER['REQUEST_METHOD'] == 'POST');
+	}
+	public static function isPut() {
+		return ( $_SERVER['REQUEST_METHOD'] == 'PUT');
+	}
+	public static function isDelete() {
+		return ( $_SERVER['REQUEST_METHOD'] == 'DELETE');
+	}
+	
 	public static function getObject() { return self::$_pRequest; }
 	
 	public static function module($v=null) {
