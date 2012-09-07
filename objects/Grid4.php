@@ -348,11 +348,11 @@
 
 			$xhtml .= "\n<script type=\"text/javascript\">\n";
 			$xhtml .= "\t/*<![CDATA[ */\n";
-			
+
 			if ( $this->getFilterParameters() != '' ) {
 				$xhtml .= "\tvar {$this->getFilterParameters()};";
 			}
-			
+
 			$xhtml .= "\t\t$(function() {\n";
 			if ( $this->_var_name != '' ) {
 				$xhtml .= "\t\t	{$this->_var_name} = $('#{$this->getId()}').dataTable( {\n";
