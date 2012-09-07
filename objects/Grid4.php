@@ -371,8 +371,8 @@
 					}
 				} );
 			 */
-			
-			$xhtml .= "\t\t		\"sDom\": \"<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>\",\n";
+
+            $xhtml .= "\t\t      \"sDom\": \"<'row-fluid'<'span6'T><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>\",\n";
 			$xhtml .= "\t\t		\"sPaginationType\": \"bootstrap\",\n";
 			$xhtml .= "\t\t		\"oLanguage\": {\n";
 			$xhtml .= "\t\t\t   	\"sLengthMenu\": \"_MENU_ records per page\"\n";
