@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	/**
 	 * @package PegasusPHP
@@ -13,15 +13,16 @@
 	 */
 
 	class Grid3 implements iGrid3 {
-		
+
 		private $_column = array();
 		private $_id = "Grid3";
+		private $_var_name = '';
 		private $_processing_url = "";
-		
+
 		private $__sEcho = 0;
 		private $__iTotalRecords = 0;
 		private $__iTotalDisplayRecords = 0;
-		
+
 		private $__iDisplayStart = 0;
 		private $__iDisplayLength = 0;
 		private $__iColumns = 0;
@@ -30,15 +31,13 @@
 
 		private $__defaultSortColumn = 0;
 		private $__defaultSortColumnOrder = '';
-		
+
 		private $_filterParameters = '';
 		private $_drawCallback = '';
-		
-		private $_bTwitterBootstrap = false;
 
 		public function Grid3() {
 		}
-		
+
 		public function setDefaultSortColumn($iCol,$sOrder='desc') {
 			if($this->getColumn($iCol)) {
 				$this->__defaultSortColumn = $iCol;
@@ -49,37 +48,34 @@
 				}
 			}
 		}
-		
+
 		public function getId() { return $this->_id; }
+
+		public function setVarName($val='') { $this->_var_name = $val; }
+		public function getVarName() { return $this->_var_name; }
 		
 		public function setRowStart($value){ $this->_row_start = $value; }
-		
+
 		public function setFilterParameters($value) { $this->_filterParameters = $value; }
 		public function getFilterParameters() { return $this->_filterParameters; }
-		
+
 		public function setDrawCallback($value) {
 			$this->_drawCallback = $value;
 		}
 		public function getDrawCallback() {
 			return $this->_drawCallback;
 		}
-		
+
 		public function setTotalRows($value){ $this->__iTotalRecords = $value; }
 		public function setTotalDisplayRecords($value){ $this->__iTotalDisplayRecords = $value; }
-		
+
 		public function getRowsPerPage() { return $this->__iDisplayLength; }
 		public function getPageNumber() { return $this->__iDisplayLength == 0 ? 1 : $this->__iDisplayStart / $this->__iDisplayLength +1; }
-		
+
 		public function getSearchString() { return $this->__sSearch; }
 
-		public function setTwitterBootstrap(){ $this->_bTwitterBootstrap = true; }
-		public function getTwitterBootstrap(){ return $this->_bTwitterBootstrap; }
-		/* If you are using twitter bootstrap style, make sure to include
-		 * /style/datatables/bootstrap.css for the styles
-		 * and /scripts/DT_bootstrap.js in your header for the style overrides */
-		
 		public function loadFromRequest() {
-			
+
 			/*
 			 * Type			Name				Info
 			 * ---------------------------------------------------------------------------------------------------------------------
@@ -97,19 +93,19 @@
 			 * string		sSortDir_(int)		Direction to be sorted - "desc" or "asc". Note that the prefix for this variable is wrong in 1.5.x where iSortDir_(int) was used)
 			 * string		sEcho				Information for DataTables to use for rendering
 			 */
-			
-			
+
+
 			$this->__sEcho = (int)Request::get("sEcho");
 			$this->__iDisplayStart = (int)Request::get("iDisplayStart");
 			$this->__iDisplayLength = (int)Request::get("iDisplayLength");
 			$this->__iColumns = (int)Request::get("iColumns");
 			$this->__sSearch = Request::get("sSearch");
 			$this->__iSortingCols = (int)Request::get("iSortingCols");
-			
+
 		}
-		
+
 		public function process() {
-			
+
 			/*
 			 * Type			Name					Info
 			 * ---------------------------------------------------------------------------------------------------------------------
@@ -118,27 +114,24 @@
 			 * string		sEcho					An unaltered copy of sEcho sent from the client side. This parameter will change with each draw (it is basically a draw count) - so it is important that this is implemented. Note that it strongly recommended for security reasons that you 'cast' this parameter to an integer in order to prevent Cross Site Scripting (XSS) attacks.
 			 * string		sColumns				Optional - this is a string of column names, comma separated (used in combination with sName) which will allow DataTables to reorder data on the client-side if required for display
 			 * array		aaData					The data in a 2D array
-			 */			
-			
+			 */
+
 			$this->loadFromRequest();
-			
-			$resultData = array_map('self::utf8_encode_array', $this->getData());
+
+			$resultData = $this->getData();
 
 			return json_encode(
-				array(
-					"iTotalRecords" => (int)$this->__iTotalRecords,
-					"iTotalDisplayRecords" => (int)$this->__iTotalDisplayRecords,
-					"sEcho" => (int)$this->__sEcho,
-					"aaData" => $resultData
-				)
-			);
-			
+						array(
+									"iTotalRecords" => (int)$this->__iTotalRecords,
+									"iTotalDisplayRecords" => (int)$this->__iTotalDisplayRecords,
+									"sEcho" => (int)$this->__sEcho,
+									"aaData" => $resultData
+							)
+				);
+
 		}
-		
-		public function utf8_encode_array($array) {
-			return array_map('utf8_encode', $array);
-		}
-		
+
+
 		public function addColumn($column) {
 			$column->setIndex( count($this->_column) );
 			$this->_column[] = $column;
@@ -157,9 +150,9 @@
 		public function getColumnCount() {
 			return count($this->_column);
 		}
-		
-		
-		
+
+
+
 		public function applyPropelCriteria(&$criteria) {
 			$this->addPropelFiltering($criteria);
 			$this->addPropelSearchCriteria($criteria);
@@ -168,7 +161,7 @@
 		public function addPropelFiltering(&$criteria) {
 //			$filter = $this->getSelectedFilter();
 //			if( $filter ) {
-//				
+//
 //				if( $filter->getCriterionCount() == 1 ) {
 //					$criterion = $filter->getCriterion(0);
 //					$criteria->addAnd( $criteria->getNewCriterion( $criterion->column, $criterion->value, $criterion->comparison ) );
@@ -177,11 +170,11 @@
 //
 //					$criterion = $filter->getCriterion(0);
 //					$c = $criteria->getNewCriterion( $criterion->column, $criterion->value, $criterion->comparison );
-//					
+//
 //					for( $i = 1; $i < $filter->getCriterionCount(); $i++ ) {
-//						
+//
 //						$criterion = $filter->getCriterion($i);
-//						
+//
 //						if( $criterion->or ) {
 //							$c->addOr( $criteria->getNewCriterion( $criterion->column, $criterion->value, $criterion->comparison ) );
 //						}
@@ -192,7 +185,7 @@
 //					$criteria->add($c);
 //				}
 //			}
-			
+
 		}
 
 		public function addPropelSearchCriteria(&$criteria) {
@@ -231,31 +224,31 @@
 				}
 			}
 		}
-		
-		
-		
-		
-		
 
-		
+
+
+
+
+
+
 		public function getColumnList() {
 			return array();
 		}
-		
+
 		public function getData() {
 			return array();
 		}
-		
+
 		public function setId($str) {
 			$this->_id = preg_replace('[^a-zA-Z0-9]', '', $str);
 		}
 		public function getProcessingUrl()         { return $this->_processing_url; }
 		public function setProcessingUrl($str)         { $this->_processing_url = $str; }
-		
-		
-		
-		
-		
+
+
+
+
+
 		public function getInitialMarkup() {
 			$xhtmlHeader = "";
 			$xhtmlFooter = "";
@@ -267,22 +260,18 @@
 				$xhtmlFooter .= "<th><div style=\"float: left;\">";
 				$xhtmlFooter .= $this->getColumn($c)->getTitle();
 				$xhtmlFooter .= "</div></th>";
-				
-				$xhtmlColumns .= "/* {$this->getColumn($c)->getTitle()} */ {\"bSearchable\": ";
+
+				$xhtmlColumns .= "/* {$this->getColumn($c)->getTitle()} */ {bSearchable: ";
 				$xhtmlColumns .= ( $this->getColumn($c)->isSearchable() ? "true" : "false" );
 				$xhtmlColumns .= ",";
-				$xhtmlColumns .= "\"bSortable\": ";
+				$xhtmlColumns .= "bSortable: ";
 				$xhtmlColumns .= ( $this->getColumn($c)->isSortable() ? "true" : "false" );
 				$xhtmlColumns .= ",";
-				$xhtmlColumns .= "\"bVisible\": ";
+				$xhtmlColumns .= "bVisible: ";
 				$xhtmlColumns .= ( $this->getColumn($c)->getShow() ? "true" : "false" );
 				if( $this->getColumn($c)->getType() != "" ) {
 					$xhtmlColumns .= ",";
-					$xhtmlColumns .= "\"sType\": \"{$this->getColumn($c)->getType()}\"";
-				}
-				if( $this->getColumn($c)->getWidth() ) {
-					$xhtmlColumns .= ",";
-					$xhtmlColumns .= "\"sWidth\": \"{$this->getColumn($c)->getWidth()}\"";
+					$xhtmlColumns .= "sType: \"{$this->getColumn($c)->getType()}\"";
 				}
 				if( ! $this->getColumn($c)->isWrap() ) {
 					$xhtmlColumns .= ",";
@@ -293,20 +282,8 @@
 				$xhtmlColumns .= "},\n";
 			}
 			$xhtmlColumns = trim($xhtmlColumns,",\n");
-						
-			if($this->_bTwitterBootstrap) {
-				$xhtml = "<div class=\"container\">\n";
-			} else {
-				$xhtml = "";
-			}
-			
-			$xhtml .= "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" ";
-			if($this->_bTwitterBootstrap) {
-				$xhtml .= "class=\"table table-striped table-bordered\"";
-			} else {
-				$xhtml .= "class=\"display\"";
-			}
-			$xhtml .= " id=\"{$this->getId()}\">";
+
+			$xhtml = "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" class=\"display\" id=\"{$this->getId()}\">";
 			$xhtml .= "<thead>";
 			$xhtml .= "<tr>";
 			$xhtml .= $xhtmlHeader;
@@ -323,21 +300,15 @@
 			$xhtml .= "</tr>";
 			$xhtml .= "</tfoot>";
 			$xhtml .= "</table>";
-			
-			if($this->_bTwitterBootstrap) {
-				$xhtml .= "</div>\n";
-			}
-			
+
 			$xhtml .= "\n<script type=\"text/javascript\">\n";
 			$xhtml .= "\t/*<![CDATA[ */\n";
 			$xhtml .= "\t\t$(document).ready(function() {\n";
-			$xhtml .= "\t\t	$('#{$this->getId()}').dataTable( {\n";
-			if($this->_bTwitterBootstrap) {
-				$xhtml .= "\t\t		\"sDom\": \"<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>\",\n";
-				$xhtml .= "\t\t		\"sPaginationType\": \"bootstrap\",\n";
-				$xhtml .= "\t\t		\"oLanguage\": {\"sLengthMenu\": \"_MENU_ records per page\"},\n";
-			} else {
-				$xhtml .= "\t\t		\"sPaginationType\": \"full_numbers\",\n";
+			if ( $this->_var_name != '' ) {
+				$xhtml .= "\t\t	{$this->_var_name} = $('#{$this->getId()}').dataTable( {\n";
+			}
+			else {
+				$xhtml .= "\t\t	$('#{$this->getId()}').dataTable( {\n";
 			}
 			$xhtml .= "\t\t		\"aaSorting\": [[{$this->__defaultSortColumn}, \"{$this->__defaultSortColumnOrder}\"]],\n";
 			$xhtml .= "\t\t		\"bProcessing\": true,\n";
@@ -345,17 +316,20 @@
 			$xhtml .= "\t\t		\"sAjaxSource\": \"{$this->getProcessingUrl()}\",\n";
 			$xhtml .= "\t\t		\"bJQueryUI\": true,\n";
 			$xhtml .= "\t\t		\"bStateSave\": true,\n";
+			$xhtml .= "\t\t		\"fnStateSave\": function (oSettings, oData) { localStorage.setItem( 'DataTables-{$this->getId()}', JSON.stringify(oData) ); },\n";
+			$xhtml .= "\t\t		\"fnStateLoad\": function (oSettings) { return JSON.parse( localStorage.getItem('DataTables-{$this->getId()}') ); },";
+			$xhtml .= "\t\t		\"sPaginationType\": \"full_numbers\",\n";
+			if( $this->getFilterParameters() != '' ) {
+				$xhtml .= "\t\t		\"fnServerParams\": function ( aoData ) {  aoData.push( {$this->getFilterParameters()} ); },\n";
+			}
 			if( $this->getDrawCallback() != '' ) {
 				$xhtml .= "\t\t		\"fnDrawCallback\": function() { {$this->getDrawCallback()} },\n";
 			}
 			$xhtml .= "\t\t		\"aoColumns\": [\n";
 			$xhtml .= $xhtmlColumns;
-			$xhtml .= "\t\t		],\n"; 
+			$xhtml .= "\t\t		],\n";
 			$xhtml .= "\t\t		\"fnServerData\": function ( sSource, aoData, fnCallback ) {\n";
 			$xhtml .= "\t\t			aoData.push( { \"name\": \"action\", \"value\": \"refresh-grid\" } );\n";
-			if( $this->getFilterParameters() != '' ) {
-				$xhtml .= "\t\t			aoData.push( {$this->getFilterParameters()} );\n";
-			}
 			$xhtml .= "\t\t		$.ajax( {\n";
 			$xhtml .= "\t\t				\"dataType\": 'json', \n";
 			$xhtml .= "\t\t				\"type\": \"POST\", \n";
@@ -364,17 +338,17 @@
 			$xhtml .= "\t\t				\"success\": function(json) { fnCallback(json); }\n";
 			$xhtml .= "\t\t			} );\n";
 			$xhtml .= "\t\t		}\n";
-			$xhtml .= "\t\t	} );\n";
+			$xhtml .= "\t\t	} ).fnSetFilteringDelay();\n";
 			$xhtml .= "\t\t} );\n";
 			$xhtml .= "\t/*]]>*/\n";
 			$xhtml .= "\t</script>\n";
-			
+
 			return $xhtml;
 		}
 	}
-	
-	
-	
+
+
+
 	/**
 	 * @package PegasusPHP
 	 */
@@ -382,7 +356,6 @@
 		private $_bStretch = false;
 		private $_strTitle = 'n/a';
 		private $_strColumnName = '';
-		private $_sWidth = null;
 		private $_bWrap = true;
 		private $_iPadding = 1;
 		private $_bSortable = false;
@@ -407,7 +380,6 @@
 		public function getPadding()    { return $this->_iPadding; }
 		public function getIndex()      { return $this->_index; }
 		public function getStretch()    { return $this->_bStretch; }
-		public function getWidth()      { return $this->_sWidth; }
 		public function getWrap()       { return $this->_bWrap; }
 		public function getSortable()   { return $this->_bSortable; }
 		public function getSorted()     { return $this->_bSorted; }
@@ -416,7 +388,7 @@
 		public function getShow()       { return $this->_bShow; }
 		public function getType()       { return $this->_strType; }
 		public function getTextAlign()  { return $this->_strTextAlign; }
-		
+
 		public function isStretch()    { return $this->_bStretch; }
 		public function isWrap()       { return $this->_bWrap; }
 		public function isSortable()   { return $this->_bSortable; }
@@ -429,7 +401,6 @@
 		public function &setPadding($i)         { $this->_iPadding = $i; return $this; }
 		public function &setIndex($i)           { $this->_index = $i; return $this; }
 		public function &setStretch($b=true)    { $this->_bStretch = $b; return $this; }
-		public function &setWidth($s=null)      { $this->_sWidth = $s; return $this; }
 		public function &setWrap($b=true)       { $this->_bWrap = $b; return $this; }
 		public function &setSortable($b=true)   { $this->_bSortable = $b; return $this; }
 		public function &setSorted($b=true)     { $this->_bSorted = $b; return $this; }
@@ -441,10 +412,10 @@
 		public function &setShow($b=true)       { $this->_bShow = $b; return $this; }
 		public function &setType($strType)      { $this->_strType = $strType; return $this; }
 		public function &setTextAlign($s)       { $this->_strTextAlign = $s; return $this; }
-		
+
 	}
-	
-	
-	
-	
+
+
+
+
 ?>
