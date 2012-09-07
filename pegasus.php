@@ -70,14 +70,13 @@
 	
 			// -------------------------------------------------------------------------
 			// NOTE: Internally propel assumes all of their runtime objects will be including using relative paths based on the include_path.
-			set_include_path(	get_include_path() .
-								constant('PATH_SEPARATOR') .
-								constant('PROPEL_BUILD_PATH') . '/classes/'
-							);
-				
-			// Setup Propel and Creole (this include may cause problems if you DO NOT have Creole installed!)
-			require_once( 'propel/Propel.php' );
-			Propel::init(	constant('PROPEL_BUILD_PATH') . '/conf/' . constant('PROPEL_CONF_NAME') );
+			set_include_path( get_include_path() . constant('PATH_SEPARATOR') . constant('PROPEL_BUILD_PATH') . '/classes/' );
+			
+			if( !defined('PROPEL_RUNTIME_PATH') || constant('PROPEL_RUNTIME_PATH') == '' ) {
+				define( 'PROPEL_RUNTIME_PATH', 'propel' );
+			}
+                        require_once( constant('PROPEL_RUNTIME_PATH').'/Propel.php' );
+			Propel::init( constant('PROPEL_BUILD_PATH').'/conf/'.constant('PROPEL_CONF_NAME') );
 		}
 	}
 
