@@ -42,7 +42,7 @@
 		public static function getSettings() { return self::$_settings; }
 		public static function loadSettings($filename) {
 			self::$_settings = simplexml_load_file($filename);
-			View::assign_by_ref('settings',self::$_settings);
+			View::assign('settings',self::$_settings);
 		}
 	
 		public static function getError() {

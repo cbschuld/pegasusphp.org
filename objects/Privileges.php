@@ -176,7 +176,7 @@
 					View::assign('privilege_children_list', $value->getName() . constant('CHILDRENLIST_SPECIFIER'));
 					View::assign('privilege_parent_list', $value->getName() . constant('PARENTLIST_SPECIFIER'));
 
-					$xhtml = View::fetch('pegasus:privileges/display.tpl') . $xhtml;
+					$xhtml = View::fetch('privileges/display.tpl') . $xhtml;
 
 					$strChildrenList = '';
 					foreach( $aReturnedChildren as $item ) {
@@ -207,7 +207,7 @@
 			
 			if( $bGroup ) {
 				View::assign('privileges',$xhtml);
-				$strRetVal = View::fetch('pegasus:privileges/group.tpl');
+				$strRetVal = View::fetch('privileges/group.tpl');
 			}
 			return( $strRetVal );
 		}
