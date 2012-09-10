@@ -348,11 +348,11 @@
 
 			$xhtml .= "\n<script type=\"text/javascript\">\n";
 			$xhtml .= "\t/*<![CDATA[ */\n";
-			
+
 			if ( $this->getFilterParameters() != '' ) {
 				$xhtml .= "\tvar {$this->getFilterParameters()};";
 			}
-			
+
 			$xhtml .= "\t\t$(function() {\n";
 			if ( $this->_var_name != '' ) {
 				$xhtml .= "\t\t	{$this->_var_name} = $('#{$this->getId()}').dataTable( {\n";
@@ -362,17 +362,20 @@
 			}
 			
 			/*
+			 *
+			 * working example: http://datatables.net/media/blog/bootstrap_2/DT_bootstrap.js
+			 *
 			 * Bootstrap DataTables init:
 			 * 	$('#example').dataTable( {
-					"sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+					"sDom": "<'row-fluid'<'span6'T><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
 					"sPaginationType": "bootstrap",
 					"oLanguage": {
 						"sLengthMenu": "_MENU_ records per page"
 					}
 				} );
 			 */
-			
-			$xhtml .= "\t\t		\"sDom\": \"<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>\",\n";
+
+            $xhtml .= "\t\t      \"sDom\": \"<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span4'i><'span8'p>>\",\n";
 			$xhtml .= "\t\t		\"sPaginationType\": \"bootstrap\",\n";
 			$xhtml .= "\t\t		\"oLanguage\": {\n";
 			$xhtml .= "\t\t\t   	\"sLengthMenu\": \"_MENU_ records per page\"\n";
@@ -403,7 +406,7 @@
 			$xhtml .= "\t\t				\"success\": function(json) { fnCallback(json); }\n";
 			$xhtml .= "\t\t			} );\n";
 			$xhtml .= "\t\t		}\n";
-			$xhtml .= "\t\t	} ).fnSetFilteringDelay();\n";
+			$xhtml .= "\t\t	} );\n";
 			$xhtml .= "\t\t} );\n";
 			
 			if ( count($filters) > 0 ) {			
