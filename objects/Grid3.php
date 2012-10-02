@@ -279,6 +279,9 @@
 					$xhtmlColumns .= "td-nowrap";
 					$xhtmlColumns .= "\"";
 				}
+                if($this->getColumn($c)->getWidth() != "") {
+                    $xhtmlColumns .= ",\"sWidth\":\" ".$this->getColumn($c)->getWidth()."\"";
+                }
 				$xhtmlColumns .= "},\n";
 			}
 			$xhtmlColumns = trim($xhtmlColumns,",\n");
@@ -365,7 +368,8 @@
 		private $_bShow = true;
 		private $_index = -1;
 		private $_strTextAlign = 'left';
-		private $_strType = "";
+        private $_strType = "";
+        private $_strWidth = "";
 
 		public function __construct( $strTitle, $strColumnName='', $bSortable=false, $bWrap=true, $bStretch=false, $iPadding=2 ) {
 			$this->_strTitle = $strTitle;
@@ -386,7 +390,8 @@
 		public function getSortedUp()   { return $this->_bSortedUp; }
 		public function getSearchable() { return $this->_bSearchable; }
 		public function getShow()       { return $this->_bShow; }
-		public function getType()       { return $this->_strType; }
+        public function getType()       { return $this->_strType; }
+        public function getWidth()      { return $this->_strWidth; }
 		public function getTextAlign()  { return $this->_strTextAlign; }
 
 		public function isStretch()    { return $this->_bStretch; }
@@ -410,7 +415,8 @@
 		public function &setSortDown($b=true)   { $this->_bSortedUp = ! $b; return $this; }
 		public function &setSearchable($b=true) { $this->_bSearchable = $b; return $this; }
 		public function &setShow($b=true)       { $this->_bShow = $b; return $this; }
-		public function &setType($strType)      { $this->_strType = $strType; return $this; }
+        public function &setType($strType)      { $this->_strType = $strType; return $this; }
+        public function &setWidth($strWidth="") { $this->_strWidth = $strWidth; return $this; }
 		public function &setTextAlign($s)       { $this->_strTextAlign = $s; return $this; }
 
 	}
