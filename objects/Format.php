@@ -96,7 +96,7 @@
 
 			//clean the array
 			$clean = array();
-			for( $i = 0; $i < count($array); $i++ ) {
+			for( $i = 0; is_array($array) && $i < count($array); $i++ ) {
 				if( $value = trim($array[$i]) ) {
 					$clean[] = $value;
 				}
