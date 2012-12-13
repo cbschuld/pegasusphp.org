@@ -118,7 +118,7 @@
 			return file_put_contents( $cachePath . $filename, $v );
 		}
 		
-		public static function isSecure() { return ( ( ! isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != 'on' ) ? false : true ); }
+		public static function isSecure() { return ( ( ! isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != 'on' || ! isset($_SERVER['HTTP_X_FORWARDED_PROTO']) || strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) != 'https' ) ? false : true ); }
 	
 	
 	
