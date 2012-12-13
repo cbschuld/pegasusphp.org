@@ -84,7 +84,7 @@
 			}
 		}
 		
-		public static function isSSL() { return $_SERVER['SERVER_PORT'] == 443; }
+		public static function isSSL() { return ( isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443 ) || self::isSecure(); }
 		public static function forceSSL($bForce=true) {
 			if( $bForce && ! self::isSSL() ) {
 				self::bounce('https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
