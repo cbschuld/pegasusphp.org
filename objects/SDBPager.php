@@ -1,94 +1,93 @@
 <?php 
 /*
- * $Id: SDBPager.php,v 1.1 2012/07/18 12:56:10 smassey Exp $
+ * $Id: SDBPager.php,v 1.1 2012/07/02 12:56:10 smassey Exp $
  */
 
 class SDBPager {
-	private $_sdb = null;
-	private $_rows_per_page;
+	private $_sdb;
+	private $_recordCount;
+	private $_pages;
 	private $_page;
-	private $_query = '';
-	private $_select_params = array();
-	private $_next_token = '';
-	private $_total_records = 0;
+	private $_start = 0;
+	private $_max = 0;
 	
-	public function __construct($sdb=null, $query='', $selectparams=array(), $page=0, $perpage=10) {
+	public function __construct($sdb = null, $page = 1, $perpage = 25) {
 		$this->setSDB($sdb);
-		$this->setQuery($query);
-		$this->addSelectParams($selectparams);
 		$this->setPage($page);
 		$this->setRowsPerPage($perpage);
 	}
-
-	public function process() {
-		$sdb = $this->getSDB();
-		
-		// Calculate the total records
-		$query = $this->getQuery();
-		$query = str_replace('%1', 'count(*)', $query);
-		$query = str_replace('%2', '', $query);
-        $total = $sdb->select($query);
-        $total = $this->convertSelectToArray($total);
-        $total = $total[0]['Count'];
-        $this->setTotalRecords((int)$total);
-
-        // Retrieve the count needed to get the nextToken
-        $jumpLimit = $this->getRowsPerPage() * ($this->getPage() - 1);
-		$query = $this->getQuery();
-		$query = str_replace('%1', 'count(*)', $query);        
-        $query = str_replace('%2', ' LIMIT ' . $jumpLimit, $query);   
-    
-        $tmp = $sdb->select($query);
-        $nextToken = ( isset($tmp->body->SelectResult->NextToken) && $tmp->body->SelectResult->NextToken != '' ) ? $tmp->body->SelectResult->NextToken : null;
-        
-	    // Perform the select to retrieve the data
-	    $query = $this->getQuery();
-	    $query = str_replace('%1', implode(',', $this->getSelectParams()), $query);
-	    $query = str_replace('%2', ' LIMIT ' . $this->getRowsPerPage(), $query);
-        if( $nextToken ) {          	      
-            $data = $sdb->select($query, array('NextToken'=>$nextToken));
-        }
-        else {
-            $data = $sdb->select($query);
-        }
-
-        return $this->convertSelectToArray($data);        
-	}
 	
-	public function setSDB($v) { $this->_sdb = $v; }
-	public function getSDB() { return $this->_sdb; }
-	public function setRowsPerPage($v) { $this->_rows_per_page = $v; }
-	public function getRowsPerPage() { return $this->_rows_per_page; }
-	public function setPage($v) { $this->_page = $v; }
-	public function getPage() { return $this->_page; }
-	public function setNextToken($v) { $this->_next_token = $v; }
-	public function getNextToken() { return $this->_next_token; }
-	public function setQuery($v) { $this->_query = $v; }
-	public function getQuery() { return $this->_query; }
-	public function addSelectParams($v) { $this->_select_params = array_merge($this->_select_params, $v); }
-	public function getSelectParam($k) { 
-		if ( $key = array_search($k, $this->_select_params) ) {
-			return $this->_select_params[$key];
+	public function setSDB($v) {
+		$this->_sdb = $v;
+	}
+	public function getSDB() {
+		return $this->_sdb;
+	}
+	public function setRecordCount($v) {
+		$this->_recordCount = $v;
+	}
+	public function getRecordCount() {
+		return $this->_recordCount;
+	}
+	public function setPages($v) {
+		$this->_pages = $v;
+	}
+	public function getPages() {
+		return $this->_pages;
+	}
+	public function setPage($v) {
+		$this->_page = $v;
+	}
+	public function getPage() {
+		return $this->_page;
+	}
+	public function setStart($v) {
+		$this->_start = $v;
+	}
+	public function getStart() {
+		return $this->_start;
+	}
+	public function setMax($v) {
+		$this->_max = $v;
+	}	
+	public function getMax() {
+		return $this->_max;
+	}
+	public function setRowsPerPage($v) {
+		$this->setMax($v);
+		$this->figureStart();
+	}
+	public function figureStart() {
+		$this->_start = ( ($this->_page - 1) * $this->_max );
+	}
+	public function getTotalRecordCount() {
+		// WRITE ME
+	}
+	public function getTotalPages() {
+		
+	}
+	public function getLastPage() {
+		$pages = $this->getTotalPages();
+		if ( $pages == 0 ) {
+			return 1;
 		}
 		else {
-			return '';
+			return $pages;
 		}
 	}
-	public function getSelectParams() { return $this->_select_params; }	
-	public function setTotalRecords($v=0) { $this->_total_records = $v; }
-	public function getTotalRecords() { return $this->_total_records; }
-    public function convertSelectToArray($select) {
-        $results = array();
-        $x = 0;
-        foreach($select->body->SelectResult->Item as $result) {
-            foreach ($result as $field) {
-                $results[$x][ (string) $field->Name ] = (string)
-                $field->Value;
-            }
-            $x++;
-        }
-        return $results;
-    }	
+	public function atLastPage() {
+		return $this->getPage() == $this->getLastPage();
+	}
+	public function getFirstPage() {
+		return 1;
+	}
+	public function atFirstPage() {
+		return $this->getPage() == $this->getFirstPage();
+	}
+	
+	public function go() {
+		
+	}
 }
 
 

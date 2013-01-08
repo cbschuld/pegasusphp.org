@@ -1,5 +1,5 @@
 <?php
-	require_once( constant('PROPEL_RUNTIME_PATH').'/util/PropelPager.php' );
+	require_once( 'propel/util/PropelPager.php' );
 
 	/**
 	 * @package PegasusPHP

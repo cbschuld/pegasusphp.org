@@ -42,7 +42,7 @@
 		public static function getSettings() { return self::$_settings; }
 		public static function loadSettings($filename) {
 			self::$_settings = simplexml_load_file($filename);
-			View::assign('settings',self::$_settings);
+			View::assign_by_ref('settings',self::$_settings);
 		}
 	
 		public static function getError() {
@@ -84,7 +84,7 @@
 			}
 		}
 		
-		public static function isSSL() { return ( isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443 ) || self::isSecure(); }
+		public static function isSSL() { return $_SERVER['SERVER_PORT'] == 443; }
 		public static function forceSSL($bForce=true) {
 			if( $bForce && ! self::isSSL() ) {
 				self::bounce('https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
@@ -118,11 +118,9 @@
 			return file_put_contents( $cachePath . $filename, $v );
 		}
 		
-        public static function isSecure() {
-                return ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '' )
-                          ||
-                       ( isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https' );
-        }
+		public static function isSecure() { return ( ( ! isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != 'on' ) ? false : true ); }
+	
+	
 	
 		private static function pushJavaScript($javaScriptObj) {
 			$found = false;

@@ -2,7 +2,7 @@
 /**
  * Project:     Smarty: the PHP compiling template engine
  * File:        Smarty.class.php
- * SVN:         $Id: Smarty.class.php 4614 2012-05-24 15:13:19Z rodneyrehm $
+ * SVN:         $Id: Smarty.class.php,v 1.1 2012/10/05 21:33:35 cbschuld Exp $
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

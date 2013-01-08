@@ -9,7 +9,7 @@
 	 *
 	 * @copyright  TBA
 	 * @license    TBA
-	 * @version    CVS: $Id: pegasus.php,v 1.36 2011/12/23 22:14:25 cbschuld Exp $
+	 * @version    CVS: $Id: pegasus.php,v 1.37 2012/10/05 21:34:15 cbschuld Exp $
 	 * @link       
 	 * @since      
 	 */
@@ -70,13 +70,16 @@
 	
 			// -------------------------------------------------------------------------
 			// NOTE: Internally propel assumes all of their runtime objects will be including using relative paths based on the include_path.
-			set_include_path( get_include_path() . constant('PATH_SEPARATOR') . constant('PROPEL_BUILD_PATH') . '/classes/' );
-			
-			if( !defined('PROPEL_RUNTIME_PATH') || constant('PROPEL_RUNTIME_PATH') == '' ) {
-				define( 'PROPEL_RUNTIME_PATH', 'propel' );
+			set_include_path(	get_include_path() .
+								constant('PATH_SEPARATOR') .
+								constant('PROPEL_BUILD_PATH') . '/classes/'
+							);
+				
+			if( !defined('PROPEL_RUNTIME_PATH') || constant( 'PROPEL_RUNTIME_PATH' ) == '' ) {
+				define( 'PROPEL_RUNTIME_PATH','propel' );
 			}
-                        require_once( constant('PROPEL_RUNTIME_PATH').'/Propel.php' );
-			Propel::init( constant('PROPEL_BUILD_PATH').'/conf/'.constant('PROPEL_CONF_NAME') );
+			require_once( constant('PROPEL_RUNTIME_PATH').'/Propel.php' );
+			Propel::init( constant('PROPEL_BUILD_PATH') . '/conf/' . constant('PROPEL_CONF_NAME') );
 		}
 	}
 
