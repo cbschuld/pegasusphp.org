@@ -96,7 +96,7 @@
 	
 		public static function thisUri() { return $_SERVER['REQUEST_URI']; }
 	
-		public static function getUserIp() { return isset($_SERVER['X-FORWARDED-FOR']) ? $_SERVER['X-FORWARDED-FOR'] : $_SERVER['REMOTE_ADDR']; }
+		public static function getUserIp() { return isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR']; }
 		public static function getUserHostname() { return gethostbyaddr(self::getUserIp()); }
 		public static function getServername() { return $_SERVER['SERVER_NAME']; }
 
