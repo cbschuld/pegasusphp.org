@@ -96,8 +96,8 @@
 	
 		public static function thisUri() { return $_SERVER['REQUEST_URI']; }
 	
-		public static function getUserIp() { return $_SERVER['REMOTE_ADDR']; }
-		public static function getUserHostname() { return gethostbyaddr($_SERVER['REMOTE_ADDR']); }
+		public static function getUserIp() { return isset($_SERVER['X-FORWARDED-FOR']) ? $_SERVER['X-FORWARDED-FOR'] : $_SERVER['REMOTE_ADDR']; }
+		public static function getUserHostname() { return gethostbyaddr(self::getUserIp()); }
 		public static function getServername() { return $_SERVER['SERVER_NAME']; }
 
 		public static function isCached() {
@@ -118,7 +118,11 @@
 			return file_put_contents( $cachePath . $filename, $v );
 		}
 		
-		public static function isSecure() { return ( ( ! isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != 'on' ) ? false : true ); }
+		public static function isSecure() {
+            return ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != '' )
+                   ||
+                   ( isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https' );
+        }
 	
 	
 	
