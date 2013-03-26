@@ -35,6 +35,8 @@ class Grid3 implements iGrid3 {
     private $_filterParameters = '';
     private $_drawCallback = '';
 
+    private $__bStateSave = 'true';
+
     public function Grid3() {
     }
 
@@ -73,6 +75,10 @@ class Grid3 implements iGrid3 {
     public function getPageNumber() { return $this->__iDisplayLength == 0 ? 1 : $this->__iDisplayStart / $this->__iDisplayLength +1; }
 
     public function getSearchString() { return $this->__sSearch; }
+
+    public function setStateSave($v='true') { $this->__bStateSave = $v; }
+    public function getStateSave() { return $this->__bStateSave; }
+    public function disableStateSave() { self::setStateSave('false'); }
 
     public function loadFromRequest() {
 
@@ -318,7 +324,7 @@ class Grid3 implements iGrid3 {
         $xhtml .= "\t\t		\"bServerSide\": true,\n";
         $xhtml .= "\t\t		\"sAjaxSource\": \"{$this->getProcessingUrl()}\",\n";
         $xhtml .= "\t\t		\"bJQueryUI\": true,\n";
-        $xhtml .= "\t\t		\"bStateSave\": true,\n";
+        $xhtml .= "\t\t		\"bStateSave\": {$this->getStateSave()},\n";
         $xhtml .= "\t\t		\"fnStateSave\": function (oSettings, oData) { localStorage.setItem( 'DataTables-{$this->getId()}', JSON.stringify(oData) ); },\n";
         $xhtml .= "\t\t		\"fnStateLoad\": function (oSettings) { return JSON.parse( localStorage.getItem('DataTables-{$this->getId()}') ); },";
         $xhtml .= "\t\t		\"sPaginationType\": \"full_numbers\",\n";
