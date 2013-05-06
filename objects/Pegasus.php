@@ -86,10 +86,10 @@
 		
 		public static function isSSL() { return $_SERVER['SERVER_PORT'] == 443; }
 		public static function forceSSL($bForce=true) {
-			if( $bForce && ! self::isSSL() ) {
+			if( $bForce && ! self::isSecure() ) {
 				self::bounce('https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 			}
-			else if( !$bForce && self::isSSL() ) {
+			else if( !$bForce && self::isSecure() ) {
 				self::bounce('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 			}
 		}
