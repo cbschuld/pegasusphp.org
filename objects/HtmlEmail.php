@@ -140,6 +140,7 @@ class HtmlEmail
     public function message($message)
     {
         $this->_phpmailer->MsgHTML($message);
+        error_log(serialize($message));
     }
 
     /**
