@@ -83,11 +83,15 @@ class HtmlEmail
      * Add an email address to CC the email to
      * @param $email the address to cc
      */
-    public function cc($email)
+    public function cc($email, $name = '')
     {
         foreach (EmailUtil::explodeAddresses($email) as $emailAddress) {
             $this->_ccEmailList[] = $emailAddress;
-            $this->_phpmailer->AddCustomHeader('Cc: ' . $emailAddress);
+            if($name != '') {
+                $this->_phpmailer->AddCustomHeader('Cc: ' . $name.' <' . $emailAddress . '>');
+            } else {
+                $this->_phpmailer->AddCustomHeader('Cc: ' . $emailAddress);
+            }
         }
     }
 
