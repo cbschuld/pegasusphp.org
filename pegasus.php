@@ -95,7 +95,7 @@
 		require_once(constant('FRAMEWORK_PATH') . 'objects/ViewSmarty3.php');
 	}
 	else {
-		require_once(dirname(__FILE__).'/includes/Smarty-2.6.26/libs/Smarty.class.php');
+		require_once(dirname(__FILE__).'/includes/Smarty-2.6.28/libs/Smarty.class.php');
 		require_once(constant('FRAMEWORK_PATH') . 'objects/ViewSmarty.php');
 	}
 	
