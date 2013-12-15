@@ -91,7 +91,7 @@
 		require_once( constant('FRAMEWORK_PATH') . 'objects/ViewDwoo.php' );
 	}
 	else if( defined('USE_SMARTY3') && constant('USE_SMARTY3') ) {
-		require_once(dirname(__FILE__).'/includes/Smarty-3.1.11/libs/Smarty.class.php');
+		require_once(dirname(__FILE__).'/includes/Smarty-3.1.15/libs/Smarty.class.php');
 		require_once(constant('FRAMEWORK_PATH') . 'objects/ViewSmarty3.php');
 	}
 	else {
