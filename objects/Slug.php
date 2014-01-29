@@ -36,42 +36,44 @@
 
 		private static $_maxlength = 64;
 		private static $_fixed_length = false;
-		//private static $_use_max_length = true;
 
 		public static function setMaxLength($size) { self::$_maxlength = $size; }
 		public static function getMaxLength() { return self::$_maxlength; }
 		public static function setFixedLength($bValue=true) { self::$_fixed_length = $bValue; }
 		public static function getFixedLength() { return self::$_fixed_length; }
-//		public static function setUseMaxLength($bValue=true) { self::$_use_max_length = $bValue; }
-//		public static function getUseMaxLength() { return self::$_use_max_length; }
 
 		public static function generate($txt) {
 			$slug = '';
 			$txt = self::sanitize($txt);
 			$lastStop = 0;
 			$bGenerated = false;
-			for($i = 0; !$bGenerated && $i < strlen($txt); $i++) {
-				if( substr($txt,$i,1) == '-' ) {
-					$lastStop = $i;
-				}
-				if( self::$_fixed_length && $i == self::$_maxlength ) {
-					$slug = substr($txt,0,$i);
-					$bGenerated = true;
-				}
-				else if( ! self::$_fixed_length && /*self::$_use_max_length &&*/ $i > self::$_maxlength ) {
-					$slug = substr($txt,0,$lastStop);
-					$bGenerated = true;
-				}
-				else {
-					$slug .= substr($txt,$i,1);
-				}
-			}
-			if( ! $bGenerated && $slug != '' ) {
-				$slug = self::sanitize($slug);
-			}
+            if (!self::$_fixed_length && strlen($txt) < self::$_maxlength) {
+                $slug = strtolower($txt);
+            }
+            else {
+                for($i = 0; !$bGenerated && $i < strlen($txt); $i++) {
+                    if( substr($txt,$i,1) == '-' ) {
+                        $lastStop = $i;
+                    }
+                    if( self::$_fixed_length && $i == self::$_maxlength ) {
+                        $slug = substr($txt,0,$i);
+                        $bGenerated = true;
+                    }
+                    else if( ! self::$_fixed_length && $i > self::$_maxlength ) {
+                        $slug = substr($txt,0,$lastStop);
+                        $bGenerated = true;
+                    }
+                    else {
+                        $slug .= substr($txt,$i,1);
+                    }
+                }
+                if( ! $bGenerated && $slug != '' ) {
+                    $slug = strtolower($slug);
+                }
+            }
 			if( $slug == '' ) {
 				$slug = md5($txt);
-				if( self::$_fixed_length /*|| self::$_use_max_length*/ ) {
+				if(self::$_fixed_length) {
 					$slug = substr($slug,0,self::$_maxlength);
 				}
 			}
@@ -90,10 +92,9 @@
 			// replace all non-alpha-numeric characters, remove multiple dashes and trailing dashes
 			$txt = preg_replace('/[^a-z0-9]/', '-', strtolower($txt));
 			$txt = preg_replace('/-+/', '-', $txt);
-			$txt = preg_replace('/^-/','',$txt);
-			$txt = preg_replace('/-$/','',$txt);
-			return $txt;
+			//$txt = preg_replace('/^-/','',$txt);
+			//$txt = preg_replace('/-$/','',$txt);
+			return trim($txt,'- ');
 		}
 
 	};
-?>
