@@ -51,7 +51,7 @@
                 $slug = strtolower($txt);
             }
             else {
-                for($i = 0; !$bGenerated && $i < strlen($txt); $i++) {
+                for($i = 0, $length = strlen($txt); !$bGenerated && $i < $length; $i++) {
                     if( substr($txt,$i,1) == '-' ) {
                         $lastStop = $i;
                     }
