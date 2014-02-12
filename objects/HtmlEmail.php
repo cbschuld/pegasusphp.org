@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../includes/phpmailer/class.phpmailer.php');
+require_once(dirname(__FILE__) . '/../includes/phpmailer-5.2.7/class.phpmailer.php');
 /**
  * HtmlEmail - a clean wrapper on the phpmailer product (http://phpmailer.sourceforge.net)
  *
@@ -87,11 +87,7 @@ class HtmlEmail
     {
         foreach (EmailUtil::explodeAddresses($email) as $emailAddress) {
             $this->_ccEmailList[] = $emailAddress;
-            if($name != '') {
-                $this->_phpmailer->AddCustomHeader('Cc: ' . $name.' <' . $emailAddress . '>');
-            } else {
-                $this->_phpmailer->AddCustomHeader('Cc: ' . $emailAddress);
-            }
+            $this->_phpmailer->addCC($email,$name);
         }
     }
 
@@ -108,11 +104,11 @@ class HtmlEmail
      * Add an email address to BCC the email to
      * @param $email the address to bcc
      */
-    public function bcc($email)
+    public function bcc($email,$name='')
     {
         foreach (EmailUtil::explodeAddresses($email) as $emailAddress) {
             $this->_bccEmailList[] = $emailAddress;
-            $this->_phpmailer->AddCustomHeader('Bcc: ' . $emailAddress);
+            $this->_phpmailer->addBCC($email,$name);
         }
     }
 
