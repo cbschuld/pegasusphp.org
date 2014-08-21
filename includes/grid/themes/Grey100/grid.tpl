@@ -38,7 +38,7 @@
 					<div id="gridSearchOff{$gridId}" style="display:block;">
 						<div style="float:left;"><em class="grid{$theme}">Viewing Page {$gridPageNumber} of {$gridTotalPages}</em></div>
 						<div style="float:right;">
-							<a class="grid{$theme}NavLink" href="#" onclick="$('#gridSearchOn{$gridId}').fadeIn('normal',function(){ldelim}$('#gridSearch{$gridId}').focus();{rdelim});$('#gridSearchOff{$gridId}').hide();return false;">Search this Information &gt;&gt;</a>
+							<a class="grid{$theme}NavLink" href="#" onclick="$('#gridSearchOn{$gridId}').fadeIn('fast',function(){ldelim}$('#gridSearch{$gridId}').select();{rdelim});$('#gridSearchOff{$gridId}').hide();return false;">Search this Information &gt;&gt;</a>
 						</div>
 						{if $grid->getSearchString() != ''}
 						<div id="grid{$theme}FilteredMessage" style="float:right;padding-left:10px;padding-right:10px;">
