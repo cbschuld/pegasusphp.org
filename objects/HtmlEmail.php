@@ -1,6 +1,7 @@
 <?php
 
 require_once(dirname(__FILE__) . '/../includes/phpmailer-5.2.9/class.phpmailer.php');
+require_once(dirname(__FILE__) . '/../includes/phpmailer-5.2.9/class.smtp.php');
 /**
  * HtmlEmail - a clean wrapper on the phpmailer product (http://phpmailer.sourceforge.net)
  *
