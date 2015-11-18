@@ -60,80 +60,80 @@
 		public static function getShowInlineTime() { return self::$_showInlineTime; }
 		public static function setShowInlineTime($v)  { self::$_showInlineTime = $v; }
 	}
-	
+
 	class DynamicCalendar {
-		
+
 		private $_smartyTemplatePath = '';
 		private $_smarty;
-		
+
 		private $_events;
-		
+
 		private $_matrix = array();
-		
-		
+
+
 		private $_leftHeader = '';
 		private $_rightHeader = '';
-		
+
 		private $_weekUrl = '';
 		private $_monthUrl = '';
 		private $_dayUrl = '';
-		
-		
+
+
 		public function getWeekUrl() { return $this->_weekUrl; }
 		public function setWeekUrl($url)  { $this->_weekUrl = $url; }
 		public function getMonthUrl() { return $this->_monthUrl; }
 		public function setMonthUrl($url)  { $this->_monthUrl = $url; }
 		public function getDayUrl() { return $this->_dayUrl; }
 		public function setDayUrl($url)  { $this->_dayUrl = $url; }
-		
-		
+
+
 		public function getEvents() { return $this->_events; }
 		public function setEvents($v)  { $this->_events = $v; }
 		public function addEvent($event) { $this->_events->addEvent( $event ); }
-		
+
 		public function setMondayStart() { DynamicCalendarSettings::setStartDay(1); DynamicCalendarSettings::setEndDay(7); }
 		public function setSundayStart() { DynamicCalendarSettings::setStartDay(7); DynamicCalendarSettings::setEndDay(6); }
-		
+
 		public function setLeftHeader($v) { $this->_leftHeader = $v; }
 		public function getLeftHeader() { return $this->_leftHeader; }
-		
+
 		public function setRightHeader($v) { $this->_rightHeader = $v; }
 		public function getRightHeader() { return $this->_rightHeader; }
-		
+
 		public function __construct() {
 			$this->_smartyTemplatePath = dirname(__FILE__) . '/../templates/DynamicCalendar/';
 			$this->_smarty = new Smarty();
 			$this->_events = new DynamicCalendarEvents();
 		}
-		
+
 		private function getTemplate($s) {
 			return $this->_smartyTemplatePath.'/'.$s;
 		}
-	
+
 		private function createMonthSortMatrix($year,$month) {
-			
+
 			$dte = new DateTime("$year-$month-1");
 			$dte->modify('+1 Month');
 			$dte->modify('-1 Day');
 			$startDay = 1;
 			$endDay = (int)$dte->format('j');
-			
+
 			$this->_matrix = new DynamicCalendarEventMatrix();
-			
+
 			$this->_events->sort();
-		
+
 			$firstDate = $this->getFirstViewableDay($year,$month);
 			$lastDate = $this->getLastViewableDay($year,$month);
-			
+
 			$events = $this->_events->getTimeSpanEvents($firstDate,$lastDate);
 			foreach( $events as $event ) {
 				///print 'adding: '.$event->getStartDateTime()->format('Y/m/d H:i')." - ".$event->getEndDateTime()->format('Y/m/d H:i');
 				$this->_matrix->addEvent($event);
 			}
 		}
-	
+
 		private function createWeekSortMatrix($year,$month,$day) {
-			
+
 			$startDate = $this->getFirstDayOfWeek($year,$month,$day);
 			$endDate = $this->getLastDayOfWeek($year,$month,$day);
 			$this->_matrix = new DynamicCalendarEventMatrix();
@@ -143,26 +143,26 @@
 				$this->_matrix->addEvent($event);
 			}
 		}
-		
+
 		private function createDaySortMatrix($year,$month,$day) {
-			
+
 			$startDte = new DateTime("$year-$month-$day");
 			$startDte->setTime(00,00);
-			
+
 			$endDate = clone($startDte);
 			$endDate->modify('+1 Day');
 			$endDate->modify('-1 Minute');
-			
+
 			$this->_matrix = new DynamicCalendarEventMatrix();
-			
+
 			$this->_events->sort();
-		
+
 			$events = $this->_events->getTimeSpanEvents($startDte,$endDate);
 			foreach( $events as $event ) {
 				$this->_matrix->addEvent($event);
 			}
 		}
-		
+
 		public function getFirstViewableDay($year,$month) {
 			$currentDate = new DateTime("$year-$month-1");
 			while( $currentDate->format('N') != DynamicCalendarSettings::getStartDay() ) {
@@ -170,7 +170,7 @@
 			}
 			return $currentDate;
 		}
-		
+
 		public function getLastViewableDay($year,$month) {
 			$currentDate = new DateTime("$year-$month-1");
 			$currentDate->modify('+1 Month');
@@ -183,43 +183,45 @@
 
 			return $currentDate;
 		}
-		
+
 		public function getFirstDayOfWeek($year,$month,$day) {
 			$currentDate = new DateTime("$year-$month-$day");
 			while( $currentDate->format('N') != DynamicCalendarSettings::getStartDay() ) {
 				$currentDate->modify('-1 Day');
 			}
+            $currentDate->setTime(0,0,0);
 			return $currentDate;
 		}
-		
+
 		public function getLastDayOfWeek($year,$month,$day) {
 			$currentDate = new DateTime("$year-$month-$day");
 			while( $currentDate->format('N') != DynamicCalendarSettings::getEndDay() ) {
 				$currentDate->modify('+1 Day');
 			}
+            $currentDate->setTime(23,23,59);
 			return $currentDate;
 		}
-	
-		
+
+
 		public function getDay($year,$month,$day) {
-	
+
 			$this->createDaySortMatrix($year,$month,$day);
-			
+
 			$currentDate = new DateTime(); $currentDate->setDate($year,$month,$day);
-	
+
 			$totalHours = DynamicCalendarSettings::getEndHour() - DynamicCalendarSettings::getStartHour() + 1;
 			$hourStackHeight = (int)(60 / DynamicCalendarSettings::getMinuteGranularity());
 			$stackHeight = $totalHours * $hourStackHeight;
-			
+
 			$xhtml  = '';
 			$xhtml .= "<div class=\"cal\">";
 			$xhtml .= "<table class=\"cal\" cellspacing=\"0\" cellpadding=\"0\">";
-	
+
 			$hour = DynamicCalendarSettings::getStartHour() - 1;
 			$minute = 0;
-			
+
 			$columnCount = $this->_matrix->getLayerCount($currentDate) + 1;
-			
+
 			$xhtml .= '<tr>';
 			$xhtml .= "<td class=\"_cal_header\" colspan=\"{$columnCount}\">";
 			$xhtml .= "<div style=\"float:left;\">{$this->_leftHeader}</div>";
@@ -228,51 +230,51 @@
 			$xhtml .= $currentDate->format('l, F jS, Y');
 			$xhtml .= '</div></td>';
 			$xhtml .= '</tr>';
-			
+
 			$xhtml .= "<tr>";
-			
+
 			$url = $this->getLink($this->getWeekUrl(),$currentDate->format('Y'),$currentDate->format('n'),$currentDate->format('d'));
 			$class = '_cal_wmarker';
 			$xhtml .= "<td class=\"{$class}\"><a class=\"_cal_wmarker\" href=\"{$url}\">Week {$currentDate->format('W')}</a></td>";
-			
+
 			//$xhtml .= "<td class=\"_cal_wmarker\">Week {$currentDate->format('W')}</td>";
-			
+
 			$layerCount = $this->_matrix->getLayerCount($currentDate);
 			$xhtml .= "<td class=\"_cal_date\" colspan=\"{$layerCount}\">{$currentDate->format('l, F jS, Y')}</td>";
-			
+
 			$xhtml .= "</tr>";
-			
+
 			for( $s = 0; $s < $stackHeight; $s++ ) {
 				$xhtml .= "<tr>";
-				
+
 				$hsh = $hourStackHeight * DynamicCalendarSettings::getDisplayHourMultiplier();
-	
+
 				if( $s % $hourStackHeight == 0 ) {
 					$hour++;
 					$minute = 0;
 				}
-				
+
 				if( $s % $hsh == 0 ) {
 					$tme = new DateTime(); $tme->setTime($hour,0,0);
 					$xhtml .= "<td class=\"_cal_time\" rowspan=\"{$hsh}\">";
 					$xhtml .= $tme->format('g:iA');
 					$xhtml .= "</td>";
 				}
-				
-	
+
+
 				$mDay = $this->_matrix->getEventDay($currentDate);
 				$layerCount = $this->_matrix->getLayerCount($currentDate);
 				//$mDay->addLayer($layerCount);
 				//$layerCount = $this->_matrix->getLayerCount($currentDate);
-				
+
 				$mDay->fillDayWithBlankInfoItems();
-				
+
 				for( $l = 0; $l < $layerCount; $l++ ) {
-					
+
 					$info = $mDay->getInfo($l,$hour,$minute);
-				
-					
-					
+
+
+
 					if($info->isBlank()) {
 						$class = '';
 						if( $minute == 0 ) {
@@ -303,42 +305,42 @@
 						}
 					}
 				}
-	
+
 				$xhtml .= "</tr>";
-	
+
 				$minute = $minute + DynamicCalendarSettings::getMinuteGranularity();
 			}
-			
+
 			$xhtml .= "</table>";
 			$xhtml .= "</div>";
-			
+
 			return $xhtml;
 		}
-		
-		
-		
+
+
+
 		public function getWeek($year,$month,$day,$bShowTimes=true) {
-	
+
 			$this->createWeekSortMatrix($year,$month,$day);
-	
+
 			$startDate = $this->getFirstDayOfWeek($year,$month,$day);
 			$endDate = $this->getLastDayOfWeek($year,$month,$day);
-			
+
 			$currentDate = clone $startDate;
-			
+
 			$totalHours = DynamicCalendarSettings::getEndHour() - DynamicCalendarSettings::getStartHour() + 1;
 			$hourStackHeight = (int)(60 / DynamicCalendarSettings::getMinuteGranularity());
 			$stackHeight = $totalHours * $hourStackHeight;
-			
+
 			$xhtml  = '';
 			$xhtml .= "<div class=\"cal\">";
 			$xhtml .= "<table class=\"cal\" cellspacing=\"0\" cellpadding=\"0\">";
-	
+
 			$hour = DynamicCalendarSettings::getStartHour() - 1;
 			$minute = 0;
-	
+
 			$columnCount = 1;
-			
+
 			$currentDate = clone $startDate;
 			$bFinalDateFound = false;
 			while( ! $bFinalDateFound ) {
@@ -346,7 +348,7 @@
 				$bFinalDateFound = ( $currentDate->format('N') == DynamicCalendarSettings::getEndDay() );
 				$currentDate->modify('+1 Day');
 			}
-			
+
 			$xhtml .= '<tr>';
 			$xhtml .= "<td class=\"_cal_header\" colspan=\"{$columnCount}\">";
 			$xhtml .= "<div style=\"float:left;\">{$this->_leftHeader}</div>";
@@ -355,66 +357,66 @@
 			$xhtml .= $startDate->format('l, F jS, Y').' - '.$endDate->format('l, F jS, Y');
 			$xhtml .= '</div></td>';
 			$xhtml .= '</tr>';
-			
+
 			if( $bShowTimes ) {
 				$xhtml .= "<tr>";
 				//$xhtml .= "<td class=\"_cal_wmarker\">Week {$startDate->format('W')}</td>";
-				
+
 				$url = $this->getLink($this->getWeekUrl(),$startDate->format('Y'),$startDate->format('n'),$startDate->format('d'));
 				$class = '_cal_wmarker';
-				
+
 				$xhtml .= "<td class=\"{$class}\"><a class=\"_cal_wmarker\" href=\"{$url}\">Week {$startDate->format('W')}</a></td>";
-			
+
 				$currentDate = clone $startDate;
 				$bFinalDateFound = false;
 				while( ! $bFinalDateFound ) {
-		
+
 					$layerCount = $this->_matrix->getLayerCount($currentDate);
-					
+
 					$url = $this->getLink($this->getDayUrl(),$currentDate->format('Y'),$currentDate->format('n'),$currentDate->format('d'));
 					$xhtml .= "<td class=\"_cal_date\" colspan=\"{$layerCount}\"><a class=\"_cal_date\" href=\"{$url}\">{$currentDate->format('D, M jS, Y')}</a></td>";
-					
+
 					$bFinalDateFound = ( $currentDate->format('N') == DynamicCalendarSettings::getEndDay() );
 					$currentDate->modify('+1 Day');
 				}
-				
-				$xhtml .= "</tr>";		
+
+				$xhtml .= "</tr>";
 			}
-			
+
 			for( $s = 0; $s < $stackHeight; $s++ ) {
 				$xhtml .= "<tr>";
-				
+
 				$hsh = $hourStackHeight * DynamicCalendarSettings::getDisplayHourMultiplier();
-	
+
 				if( $s % $hourStackHeight == 0 ) {
 					$hour++;
 					$minute = 0;
 				}
-				
+
 				if( $bShowTimes && $s % $hsh == 0 ) {
-					
+
 					$tme = new DateTime(); $tme->setTime($hour,0,0);
-					
+
 					$xhtml .= "<td class=\"_cal_time\" rowspan=\"{$hsh}\">";
 					$xhtml .= $tme->format('g:iA');
 					$xhtml .= "</td>";
 				}
-				
+
 				$pixels = DynamicCalendarSettings::getPixelsPerMinuteGranularity();
 				$currentDate = clone $startDate;
 				$bFinalDateFound = false;
 				while( ! $bFinalDateFound ) {
-					
-					
+
+
 					$layerCount = $this->_matrix->getLayerCount($currentDate);
-					
+
 					$mDay = $this->_matrix->getEventDay($currentDate);
 					$mDay->fillDayWithBlankInfoItems();
-					
+
 					for( $l = 0; $l < $layerCount; $l++ ) {
-						
+
 						$info = $mDay->getInfo($l,$hour,$minute);
-	
+
 						if($info->isBlank()) {
 							$class = '';
 							if( $minute == 0 ) {
@@ -442,56 +444,56 @@
 							}
 						}
 					}
-	
+
 					$bFinalDateFound = ( $currentDate->format('N') == DynamicCalendarSettings::getEndDay() );
 					$currentDate->modify('+1 Day');
 				}
 				$xhtml .= "</tr>";
-	
+
 				$minute = $minute + DynamicCalendarSettings::getMinuteGranularity();
 			}
-			
+
 			$xhtml .= "</table>";
 			$xhtml .= "</div>";
-			
+
 			return $xhtml;
 		}
-		
+
 		private function getLink($url,$year,$month,$day) {
 			$url = str_replace('YEAR',$year,$url);
 			$url = str_replace('MONTH',$month,$url);
 			$url = str_replace('DAY',$day,$url);
 			return $url;
 		}
-		
-	
+
+
 		public function getWeekEx($date) {
-	
+
 			$day = (int)$date->format('d');
 			$month = (int)$date->format('m');
 			$year = (int)$date->format('Y');
-			
+
 			$style = DynamicCalendarSettings::getStyle();
-	
+
 			$this->createWeekSortMatrix($year,$month,$day);
-	
+
 			$startDate = $this->getFirstDayOfWeek($year,$month,$day);
 			$endDate = $this->getLastDayOfWeek($year,$month,$day);
-			
+
 			$currentDate = clone $startDate;
-			
+
 			$totalHours = DynamicCalendarSettings::getEndHour() - DynamicCalendarSettings::getStartHour() + 1;
 			$hourStackHeight = (int)(60 / DynamicCalendarSettings::getMinuteGranularity());
 			$stackHeight = $totalHours * $hourStackHeight;
-			
+
 			$xhtml  = '';
 			$xhtml .= '<table class="'.$style.'">';
-	
+
 			$hour = DynamicCalendarSettings::getStartHour() - 1;
 			$minute = 0;
-	
+
 			$columnCount = 1;
-			
+
 			$currentDate = clone $startDate;
 			$bFinalDateFound = false;
 			while( ! $bFinalDateFound ) {
@@ -499,7 +501,7 @@
 				$bFinalDateFound = ( $currentDate->format('N') == DynamicCalendarSettings::getEndDay() );
 				$currentDate->modify('+1 Day');
 			}
-			
+
 			if( DynamicCalendarSettings::getShowTitle() ) {
 				$xhtml .= '<tr><td class="'.$style.'_title" colspan="'.$columnCount.'">';
 				$xhtml .= $startDate->format(DynamicCalendarSettings::getDayTitleFormat());
@@ -507,68 +509,68 @@
 				$xhtml .= $endDate->format(DynamicCalendarSettings::getDayTitleFormat());
 				$xhtml .= '</td></tr>';
 			}
-			
-	
+
+
 			if( DynamicCalendarSettings::getShowTimeColumn() || DynamicCalendarSettings::getShowDateColumn() ) {
 				$xhtml .= '<tr>';
 				if( DynamicCalendarSettings::getShowTimeColumn() ) {
 					$xhtml .= '<th class="'.$style.'_week">Week '.$startDate->format('W').'</th>';
 				}
-			
+
 				if( DynamicCalendarSettings::getShowDateColumn() ) {
 					$currentDate = clone $startDate;
 					$bFinalDateFound = false;
 					while( ! $bFinalDateFound ) {
-			
+
 						$layerCount = $this->_matrix->getLayerCount($currentDate);
-						
+
 						//$url = $this->getLink($this->getDayUrl(),$currentDate->format('Y'),$currentDate->format('n'),$currentDate->format('d'));
 						$xhtml .= '<th class="'.$style.'_day" colspan="'.$layerCount.'">';
 						$xhtml .= $currentDate->format(DynamicCalendarSettings::getDayFormat());
 						$xhtml .= '</th>';
-						
+
 						$bFinalDateFound = ( $currentDate->format('N') == DynamicCalendarSettings::getEndDay() );
 						$currentDate->modify('+1 Day');
 					}
 				}
-				
+
 				$xhtml .= '</tr>';
 			}
-			
+
 			for( $s = 0; $s < $stackHeight; $s++ ) {
 				$xhtml .= "\n".'<tr>';
-				
+
 				$hsh = $hourStackHeight * DynamicCalendarSettings::getDisplayHourMultiplier();
-	
+
 				if( $s % $hourStackHeight == 0 ) {
 					$hour++;
 					$minute = 0;
 				}
-				
+
 				if( DynamicCalendarSettings::getShowTimeColumn() && $s % $hsh == 0 ) {
-					
+
 					$tme = new DateTime(); $tme->setTime($hour,0,0);
-					
+
 					$xhtml .= '<td class="'.$style.'_time" rowspan="'.$hsh.'">';
 					$xhtml .= $tme->format(DynamicCalendarSettings::getTimeFormat());
 					$xhtml .= '</td>';
 				}
-				
+
 				$pixels = DynamicCalendarSettings::getPixelsPerMinuteGranularity();
 				$currentDate = clone $startDate;
 				$bFinalDateFound = false;
 				while( ! $bFinalDateFound ) {
-					
-					
+
+
 					$layerCount = $this->_matrix->getLayerCount($currentDate);
-					
+
 					$mDay = $this->_matrix->getEventDay($currentDate);
 					$mDay->fillDayWithBlankInfoItems();
-					
+
 					for( $l = 0; $l < $layerCount; $l++ ) {
-						
+
 						$info = $mDay->getInfo($l,$hour,$minute);
-	
+
 						if($info->isBlank()) {
 							$class = '';
 							if( $minute == 0 ) {
@@ -586,7 +588,7 @@
 								$xhtml .= '<td class="'.trim($class).'" style="height:'.$pixels.'px;min-height:'.$pixels.'px;overflow:hidden;line-height:'.$pixels.'px;"></td>';
 							}
 							else {
-								
+
 								$link = DynamicCalendarSettings::getBlankCellOnClick();
 								$link = str_replace("[H]",$hour,$link);
 								$link = str_replace("[M]",$minute,$link);
@@ -594,10 +596,10 @@
 								$link = str_replace("[YY]",$currentDate->format("y"),$link);
 								$link = str_replace("[MM]",$currentDate->format("m"),$link);
 								$link = str_replace("[DD]",$currentDate->format("d"),$link);
-								
+
 								$xhtml .= '<td class="'.trim($class).'" style="height:'.$pixels.'px;min-height:'.$pixels.'px;overflow:hidden;line-height:'.$pixels.'px;"><a href="javascript:;" onclick="' . $link . '" class="dynamic-calendar-link">&nbsp;</a></td>';
 							}
-							
+
 						}
 						else {
 							if( ! $info->isUsed() ) {
@@ -612,38 +614,38 @@
 							}
 						}
 					}
-	
+
 					$bFinalDateFound = ( $currentDate->format('N') == DynamicCalendarSettings::getEndDay() );
 					$currentDate->modify('+1 Day');
 				}
 				$xhtml .= '</tr>';
-	
+
 				$minute = $minute + DynamicCalendarSettings::getMinuteGranularity();
 			}
-			
+
 			$xhtml .= "</table>";
-			
+
 			return $xhtml;
 		}
-		
+
 		public function getMonth($year,$month) {
-	
+
 			$this->createMonthSortMatrix($year,$month);
-	
+
 			$firstDay = new DateTime(); $firstDay->setDate($year,$month,1);
 			$startDate = $this->getFirstViewableDay($year,$month);
 			$endDate = $this->getLastViewableDay($year,$month);
-			
+
 			$currentDate = clone $startDate;
-			
+
 			$totalHours = DynamicCalendarSettings::getEndHour() - DynamicCalendarSettings::getStartHour() + 1;
 			$hourStackHeight = (int)(60 / DynamicCalendarSettings::getMinuteGranularity());
 			$stackHeight = $totalHours * $hourStackHeight;
-			
+
 			$xhtml  = '';
 			$xhtml .= "<div class=\"cal\">";
 			$xhtml .= "<table class=\"cal\" cellspacing=\"0\" cellpadding=\"0\">";
-	
+
 			// $lcm = 1;
 
 			$lcma = array();
@@ -657,17 +659,17 @@
 			$lcma[7] = 1;
 
 			include_object('Math');
-	
+
 			$currentDate = clone $startDate;
 			$bFinalDateFound = false;
 			while( ! $bFinalDateFound ) {
-	
+
 				$layerCount = $this->_matrix->getLayerCountMonthMax($currentDate,$endDate);
-				
+
 				// $lcm = Math::lcm($lcm,$layerCount);
 
 $lcma[ $currentDate->format("N") ] = Math::lcm($lcma[ $currentDate->format("N") ],$layerCount);
-	
+
 				$bFinalDateFound = ( $currentDate->format('N') == DynamicCalendarSettings::getEndDay() );
 				$currentDate->modify('+1 Day');
 			}
@@ -682,10 +684,10 @@ echo "LCM4: ". $lcma[4]."\n";
 echo "LCM5: ". $lcma[5]."\n";
 echo "LCM6: ". $lcma[6]."\n";
 */
-			
+
 			//CBS $columnCount = $lcm * 7 + 1;
 			$columnCount = 1 + $lcma[1] + $lcma[2] + $lcma[3] + $lcma[4] + $lcma[5] + $lcma[6] + $lcma[7];
-			
+
 			$xhtml .= '<tr>';
 			$xhtml .= "<td class=\"_cal_header\" colspan=\"{$columnCount}\">";
 			$xhtml .= "<div style=\"float:left;\">{$this->_leftHeader}</div>";
@@ -694,66 +696,66 @@ echo "LCM6: ". $lcma[6]."\n";
 			$xhtml .= $firstDay->format('F Y');
 			$xhtml .= '</div></td>';
 			$xhtml .= '</tr>';
-	
+
 			$now = new DateTime("now");
-			
+
 			$weekStart = (int)$startDate->format('W');
 			$endWeek = clone $endDate; $endWeek->modify('+1 Week');
 			$weekEnd = (int)$endWeek->format('W');
-			
+
 			$w = $weekStart;
-			
+
 			while( $w != $weekEnd ) {
-				
+
 				$xhtml .= "<tr>";
 				$url = $this->getLink($this->getWeekUrl(),$startDate->format('Y'),$startDate->format('n'),$startDate->format('d'));
 				$class = '_cal_wmarker';
 				if( $w != $weekStart ) { $class .= ' _cal_wmarker_top'; }
 				$xhtml .= "<td class=\"{$class}\"><a class=\"_cal_wmarker\" href=\"{$url}\">Week {$startDate->format('W')}</a></td>";
-				
+
 				$currentDate = clone $startDate;
 				$bFinalDateFound = false;
 				while( ! $bFinalDateFound ) {
-	
+
 					$class = '_cal_date';
 					if( $w != $weekStart ) { $class .= ' _cal_date_top'; }
 					$layerCount = $this->_matrix->getLayerCountMonthMax($currentDate,$endDate);
 					$url = $this->getLink($this->getDayUrl(),$currentDate->format('Y'),$currentDate->format('n'),$currentDate->format('d'));
 					//CBS $xhtml .= "<td class=\"{$class}\" colspan=\"{$lcm}\"><a class=\"_cal_date\" href=\"{$url}\">{$currentDate->format('D, M jS, Y')}</a></td>";
-					
+
 					$isToday = ($now->format("Ymd") == $currentDate->format("Ymd"));
-					
+
 					$xhtml .= "<td class=\"{$class}\" colspan=\"".$lcma[$currentDate->format("N")]."\"><a ";
 					if( $isToday ) {
 						$xhtml .="id=\"today\" ";
-					} 
+					}
 					$xhtml .= "class=\"_cal_date\" href=\"{$url}\">{$currentDate->format('D, M jS, Y')}</a></td>";
-					
+
 					$bFinalDateFound = ( $currentDate->format('N') == DynamicCalendarSettings::getEndDay() );
 					$currentDate->modify('+1 Day');
 				}
-				
+
 				$xhtml .= "</tr>";
-	
+
 				$hour = DynamicCalendarSettings::getStartHour() - 1;
 				$minute = 0;
-							
+
 				for( $s = 0; $s < $stackHeight; $s++ ) {
 					$xhtml .= "<tr>";
-		
+
 					$hsh = $hourStackHeight * DynamicCalendarSettings::getDisplayHourMultiplier();
-		
+
 					if( $s % $hourStackHeight == 0 ) {
 						$hour++;
 						$minute = 0;
 					}
-					
+
 					if( $s % $hsh == 0 ) {
-					
-						
+
+
 						$tme = new DateTime();
 						$tme->setTime($hour,0,0);
-	
+
 						// if the user selects a time increment which spans
 						// the timeframe reset the row span incrementer to clean up past the selected hour
 						if( $s + $hsh > $stackHeight ) {
@@ -763,25 +765,25 @@ echo "LCM6: ". $lcma[6]."\n";
 						$xhtml .= $tme->format('g:iA');
 						$xhtml .= "</td>";
 					}
-					
+
 					$pixels = DynamicCalendarSettings::getPixelsPerMinuteGranularity();
 					$currentDate = clone $startDate;
 					$bFinalDateFound = false;
 					while( ! $bFinalDateFound ) {
-						
+
 						$layerCount = $this->_matrix->getLayerCount($currentDate);
 						$maxLayerCount = $this->_matrix->getLayerCountMonthMax($currentDate,$endDate);
-						
+
 						$mDay = $this->_matrix->getEventDay($currentDate);
 						$mDay->fillDayWithBlankInfoItems();
-						
+
 						//CBS $colspan = $lcm / $layerCount;
 						$colspan = $lcma[$currentDate->format("N")] / $layerCount;
-						
+
 						for( $l = 0; $l < $layerCount; $l++ ) {
-							
+
 							$info = $mDay->getInfo($l,$hour,$minute);
-		
+
 							if($info->isBlank()) {
 								$class = '';
 								if( $minute == 0 ) {
@@ -809,27 +811,27 @@ echo "LCM6: ". $lcma[6]."\n";
 								}
 							}
 						}
-		
+
 						$bFinalDateFound = ( $currentDate->format('N') == DynamicCalendarSettings::getEndDay() );
 						$currentDate->modify('+1 Day');
 					}
 					$xhtml .= "</tr>";
-		
+
 					$minute = $minute + DynamicCalendarSettings::getMinuteGranularity();
 				}
-				
+
 				$startDate->modify('+1 Week');
 				$w = (int)$startDate->format('W');
 			}
-			
+
 			$xhtml .= "</table>";
 			$xhtml .= "</div>";
-			
+
 			return $xhtml;
 		}
-			
+
 	}
-	
+
 	class DynamicCalendarEvents {
 		private $_events = array();
 		public function getEvents() { return $this->_events; }
@@ -839,7 +841,7 @@ echo "LCM6: ". $lcma[6]."\n";
 			$events = array();
 			foreach( $this->_events as $event ) {
 				if( $event->getStartDateTime()->format('Y') == $datetime->getStartDateTime()->format('Y') &&
-					$event->getStartDateTime()->format('m') == $datetime->getStartDateTime()->format('m') && 
+					$event->getStartDateTime()->format('m') == $datetime->getStartDateTime()->format('m') &&
 					$event->getStartDateTime()->format('d') == $datetime->getStartDateTime()->format('d') ) {
 					array_push($events,$event);
 				}
@@ -849,7 +851,7 @@ echo "LCM6: ". $lcma[6]."\n";
 		public function getTimeSpanEvents($startDate,$endDate) {
 			$events = array();
 			foreach( $this->_events as $event ) {
-				if( $event->getStartDateTime() >= $startDate && $event->getStartDateTime() <= $endDate ) { 
+				if( $event->getStartDateTime() >= $startDate && $event->getStartDateTime() <= $endDate ) {
 					array_push($events,$event);
 				}
 			}
@@ -870,13 +872,13 @@ echo "LCM6: ". $lcma[6]."\n";
 				return ($e1->getStartDateTime() < $e2->getStartDateTime()) ? -1 : 1;
 			}
 		}
-		
+
 	}
-	
+
 	class DynamicCalendarEventMatrix {
-	
+
 		private $_matrix = array();
-	
+
 		public function addEvent($event) {
 			$year  = (int)$event->getStartDateTime()->format('Y');
 			$month = (int)$event->getStartDateTime()->format('m');
@@ -886,7 +888,7 @@ echo "LCM6: ". $lcma[6]."\n";
 			}
 			$this->_matrix[$year][$month][$day]->addEvent($event);
 		}
-		
+
 		public function getLayerCount($date) {
 			$year  = (int)$date->format('Y');
 			$month = (int)$date->format('m');
@@ -896,10 +898,10 @@ echo "LCM6: ". $lcma[6]."\n";
 			}
 			return $this->_matrix[$year][$month][$day]->getLayerCount();
 		}
-		
+
 		public function getLayerCountMonthMax($date,$endDate) {
 			$maxLayerCount = 0;
-			
+
 			$currentDate = clone $date;
 			while( $currentDate < $endDate ) {
 				$year  = (int)$currentDate->format('Y');
@@ -911,22 +913,22 @@ echo "LCM6: ". $lcma[6]."\n";
 				//print 'MAX: '.$maxLayerCount.', '.$this->_matrix[$year][$month][$day]->getLayerCount();
 				//print '<br/>'.$year.$month.$day.'<br/>';
 				//$maxLayerCount = max( $maxLayerCount, $this->_matrix[$year][$month][$day]->getLayerCount() );
-				
+
 				$lc = $this->_matrix[$year][$month][$day]->getLayerCount();
 				if( $maxLayerCount == 0 ) {
 					$maxLayerCount = $lc;
 				} else if( $lc != 0 ) {
 					$maxLayerCount = Math::lcm($maxLayerCount,$lc);
 				}
-				
+
 				$currentDate->modify('+1 Week');
 			}
 			//print 'MAX: '.$maxLayerCount.', '.$this->_matrix[$year][$month][$day]->getLayerCount();
 			//print 'MAX: '.$maxLayerCount.' - '.$date->format('m/d/Y').'<br/>';
 			return $maxLayerCount;
 		}
-		
-		
+
+
 		public function getEventDay($date) {
 			$year  = (int)$date->format('Y');
 			$month = (int)$date->format('m');
@@ -936,21 +938,21 @@ echo "LCM6: ". $lcma[6]."\n";
 			}
 			return $this->_matrix[$year][$month][$day];
 		}
-		
+
 	//	public function getDayMarkup($date,$bIncludeTimeLine=true,$bTimeListCompress=false) {
-	//		
+	//
 	//		$year  = (int)$date->format('Y');
 	//		$month = (int)$date->format('m');
 	//		$day   = (int)$date->format('d'); // Returns a leading Zero (must be casted to an int)
 	//
 	//		$retval = '';
-	//		
+	//
 	//		if( ! isset($this->_matrix[$year][$month][$day]) ) {
 	//			$this->_matrix[$year][$month][$day] = new DynamicCalendarEventMatrixDay($year,$month,$day);
 	//		}
 	//		return $this->_matrix[$year][$month][$day]->getDayMarkup($bIncludeTimeLine,$bTimeListCompress);
 	//	}
-			
+
 		public function printSortMatrix() {
 			foreach( $this->_matrix as $year ) {
 				foreach( $year as $month ) {
@@ -960,20 +962,20 @@ echo "LCM6: ". $lcma[6]."\n";
 				}
 			}
 		}
-		
+
 	}
-	
+
 	class DynamicCalendarEventMatrixDay {
-		
+
 		// Two arrays exist to log information/events:
 		//   +  Two Dimensional Array: matrix
 		//   +  Single Dimensional Array: info
 		//
 		// A 'matrix' contains index pointers to items in 'info' based on the layer of existence in the calendar
-		// 
+		//
 		// A 'layer' is an column designed to stop events from stacking on top of each other.
 		// If an event cannot fit into the first attempted layer a new layer is created and the
-		// event is loaded into the new laer.  Thus, two layer exist for the following event insert. 
+		// event is loaded into the new laer.  Thus, two layer exist for the following event insert.
 		//
 		private $_matrix = array(); // [ LAYER ][ MINUTE_IN_DAY ]
 		private $_layerowner = array();
@@ -981,7 +983,7 @@ echo "LCM6: ". $lcma[6]."\n";
 		private $_year = 0;
 		private $_month = 0;
 		private $_day = 0;
-		
+
 		public function __construct($year,$month,$day) {
 			$this->_year = $year;
 			$this->_month = $month;
@@ -989,11 +991,11 @@ echo "LCM6: ". $lcma[6]."\n";
 			$_matrix[0] = array();
 			$this->addLayer(0);
 		}
-		
+
 		public function &getInfo($layer,$hour,$minute) {
 			return $this->_info[ $this->_matrix[$layer][( ( $hour * 60 ) + $minute )] ];
 		}
-		
+
 		public function getInfoLengthFromPos($layer,$hour,$minute) {
 			$len = 0;
 			$infoId = $this->_matrix[$layer][( ( $hour * 60 ) + $minute )];
@@ -1001,25 +1003,25 @@ echo "LCM6: ". $lcma[6]."\n";
 				$len++;
 				$minute = $minute + DynamicCalendarSettings::getMinuteGranularity();
 			}
-			return $len;		
+			return $len;
 		}
-		
+
 		public function fillDayWithBlankInfoItems() {
-			
+
 			$activeInfoIndex = count($this->_info);
-			
+
 			for($l = 0; $l < $this->getLayerCount(); $l++ ) {
 				for($h = DynamicCalendarSettings::getStartHour(); $h < DynamicCalendarSettings::getEndHour() + 1; $h++ ) {
 					for( $m = 0; $m < 60; $m = $m + DynamicCalendarSettings::getMinuteGranularity() ) {
-						
+
 						$minute = ( ( $h * 60 ) + $m );
 						$index = $this->_matrix[$l][$minute];
-						
+
 						// The location at index is empty (denoted -1)
 						// (a) extend the active "blank" Info Object
 						// OR
 						// (b) create a new "blank" Info Object
-						// 
+						//
 						if( $index == -1 ) {
 							if( isset( $this->_info[$activeInfoIndex] ) ) {
 								$this->_info[$activeInfoIndex]->incrementLength();
@@ -1031,7 +1033,7 @@ echo "LCM6: ". $lcma[6]."\n";
 							}
 							$this->_matrix[$l][$minute] = $activeInfoIndex;
 						}
-						// Event Information is stored here - index the blank object if possible 
+						// Event Information is stored here - index the blank object if possible
 						else {
 							if( isset( $this->_info[$activeInfoIndex] ) ) {
 								$activeInfoIndex++;
@@ -1045,7 +1047,7 @@ echo "LCM6: ". $lcma[6]."\n";
 				}
 			}
 		}
-		
+
 		public function printSortMatrix() {
 			print "Day: {$this->_year} / {$this->_month} / {$this->_day} :\n";
 			print '<table><tr>';
@@ -1066,12 +1068,12 @@ echo "LCM6: ". $lcma[6]."\n";
 				print '</pre></td>';
 			}
 			print '</tr></table>';
-		}	
-		
+		}
+
 		public function getLayerCount() {
 			return count($this->_matrix);
 		}
-		
+
 		private function clearLayer($layer,$index) {
 			for($h = DynamicCalendarSettings::getStartHour(); $h <= DynamicCalendarSettings::getEndHour(); $h++ ) {
 				for( $m = 0; $m < 60; $m = $m + DynamicCalendarSettings::getMinuteGranularity() ) {
@@ -1083,10 +1085,10 @@ echo "LCM6: ". $lcma[6]."\n";
 				}
 			}
 		}
-		
+
 		public function addLayer($layer) {
 			$l = $this->getLayerCount();
-			while( $l <= $layer ) { 
+			while( $l <= $layer ) {
 				$this->_matrix[$l] = array();
 				$this->_layerowner[$l] = 0;
 				for($h = DynamicCalendarSettings::getStartHour(); $h <= DynamicCalendarSettings::getEndHour(); $h++ ) {
@@ -1098,15 +1100,15 @@ echo "LCM6: ". $lcma[6]."\n";
 				$l++;
 			}
 		}
-		
+
 		public function addEvent($event) {
 			$year  = (int)$event->getStartDateTime()->format('Y');
 			$month = (int)$event->getStartDateTime()->format('m');
 			$day   = (int)$event->getStartDateTime()->format('d'); // Returns a leading Zero (must be casted to an int)
-	
+
 			$startHour = (int)substr(DynamicCalendarSettings::getStartHour(),0,2);
 			$endHour = (int)substr(DynamicCalendarSettings::getEndHour(),0,2);
-			
+
 			if( $startHour > $endHour ) {
 				$tmp = $endHour;
 				$endHour = $startHour;
@@ -1114,28 +1116,28 @@ echo "LCM6: ". $lcma[6]."\n";
 			}
 			if( $startHour < 0 ) { $startHour = 0; }
 			if( $endHour > 23 ) { $endHour = 23; }
-	
-			
+
+
 			$startDte = new DateTime("{$year}-{$month}-{$day} {$startHour}:00");
 			$endDte   = new DateTime("{$year}-{$month}-{$day} {$endHour}:00");
 			$refDte   = clone($startDte);
-			
+
 			$infoIndex = count($this->_info);
-			
+
 			$this->_info[$infoIndex] = new DynamicCalendarEventMatrixInfo();
 			$this->_info[$infoIndex]->setEvent($event);
 			$l = 0;
-			
+
 			$bIncrement = true;
-			
+
 			while( $refDte < $endDte ) {
 				if( $refDte >= $event->getStartDateTime() && $refDte < $event->getEndDateTime() ) {
 					// [day][layer][hour][minute] = index
 					///print '<br/>checking: '.$event->getStartDateTime()->format('Y/m/d H:i')." ({$day},{$l},{$refDte->format('G')}{$refDte->format('i')} - {$event->getIndex()})\n";
 					$minute = (int)(((int)$refDte->format('G')) * 60 ) + (int)$refDte->format('i');
-					
+
 					if( DynamicCalendarSettings::getSortBySortId() ) {
-						
+
 						if( $this->_matrix[$l][$minute] != -1 || ( $this->_layerowner[$l] != 0 && $this->_layerowner[$l] != $event->getSortId() ) ) {
 							$this->clearLayer($l,$infoIndex);
 							$l++;
@@ -1151,7 +1153,7 @@ echo "LCM6: ". $lcma[6]."\n";
 						}
 					}
 					else {
-					
+
 						if( $this->_matrix[$l][$minute] != -1 ) {
 							$this->clearLayer($l,$infoIndex);
 							$l++;
@@ -1175,7 +1177,7 @@ echo "LCM6: ". $lcma[6]."\n";
 			}
 		}
 	}
-	
+
 	class DynamicCalendarEventMatrixInfo {
 		private $_event = null;
 		private $_length = 0;
@@ -1193,7 +1195,7 @@ echo "LCM6: ". $lcma[6]."\n";
 		public function getBlank() { return $this->_blank; }
 		public function setBlank($v=true)  { $this->_blank = $v; }
 	}
-	
+
 	class DynamicCalendarEvent {
 		private $_id = 0;
 		private $_index = 0;
@@ -1225,9 +1227,9 @@ echo "LCM6: ". $lcma[6]."\n";
 		public function setOpacity($v)  { $this->_opacity = $v; }
 		public function getSortId() { return $this->_sortId; }
 		public function setSortId($v)  { $this->_sortId = $v; }
-		
+
 	}
-	
+
 	class DynamicCalendarDay {
 		private $_dte;
 		public function getDate() { return $this->_dte; }

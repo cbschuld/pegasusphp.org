@@ -1,14 +1,14 @@
 <?php
 
 	/**
-	 * View
+	 * ViewDwoo
 	 *
 	 * @package PegasusPHP
 	 */
 
 	require_once(dirname(__FILE__).'/../includes/dwoo-1.0.0beta/dwooAutoload.php');
 	
-	class View {
+	class ViewDwoo {
 
 		private static $_dwoo = null;
 		private static $_dwoo_data = null;

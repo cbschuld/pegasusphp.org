@@ -1,6 +1,7 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../includes/phpmailer-5.2.7/class.phpmailer.php');
+require_once(dirname(__FILE__) . '/../includes/phpmailer-5.2.9/class.phpmailer.php');
+require_once(dirname(__FILE__) . '/../includes/phpmailer-5.2.9/class.smtp.php');
 /**
  * HtmlEmail - a clean wrapper on the phpmailer product (http://phpmailer.sourceforge.net)
  *
@@ -18,7 +19,7 @@ class HtmlEmail
         $this->_phpmailer = new PHPMailer();
 
         // English Language setup to fix bad HTML format
-        $this->_phpmailer->SetLanguage("en", dirname(__FILE__) . '/../includes/phpmailer/language/');
+        $this->_phpmailer->SetLanguage("en", dirname(__FILE__) . '/../includes/phpmailer-5.2.9/language/');
 
         // If you use 8bit encoding you have to pay attention to the line length or you will
         // get random ! chars every 1000 characters in any HTML emails sent.  Switching to base64

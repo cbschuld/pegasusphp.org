@@ -1,5 +1,4 @@
 <?php
-	require_once( 'propel/util/PropelPager.php' );
 
 	/**
 	 * @package PegasusPHP
