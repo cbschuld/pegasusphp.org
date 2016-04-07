@@ -82,7 +82,7 @@
 		private $_disabled_icon = "";
 		private $_disabled_onclick = "";
 
-		public function GridIcon($title,$url,$icon,$width=0,$height=0) {
+		public function __construct($title,$url,$icon,$width=0,$height=0) {
 			$this->setTitle($title);
 			$this->setUrl($url);
 			$this->setIcon($icon);
