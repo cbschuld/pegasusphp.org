@@ -105,8 +105,8 @@ class View
         self::$_smarty->assignByRef('session', self::$_sessionPHP4WrapperForSmarty);
 
 
-        // Pegasus is a global variable instance and referenced directly here
-        self::$_smarty->assignByRef('pegasus', new Pegasus());
+        $p = new Pegasus();
+        self::$_smarty->assignByRef('pegasus', $p);
 
         // If the user has been encapsulated setup the existence in the view
         if (Session::created() && Session::userLoggedIn()) {
