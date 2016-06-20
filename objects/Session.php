@@ -136,13 +136,14 @@ class Session {
 	 * The destroy() method closes the session.
 	 */
 	public static function destroy() {
-		session_destroy();
-		session_write_close();
-		foreach ($_SESSION as $strName => $value)  {
-			unset($_SESSION[$strName]);
-		} 					
+		if(isset($_SESSION) && is_array($_SESSION)) {
+			session_destroy();
+			session_write_close();
+			foreach ($_SESSION as $strName => $value)  {
+				unset($_SESSION[$strName]);
+			}
+		}
 	}
-
 
 	public static function userLoggedIn() {
 		return self::get( constant('USER_STATUS_VAR') ) === true;
