@@ -136,7 +136,7 @@ class HtmlEmail
 
     /**
      * Set the message/html of the email
-     * @param $message the html email body
+     * @param $message string the html email body
      */
     public function message($message)
     {
