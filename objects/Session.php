@@ -15,6 +15,7 @@ class Session {
 	
 	/**
 	 * Sets up this Session object
+	 * @param string $optionalSessionName name of session
 	 */
 	public static function create($optionalSessionName="") {
 		if( $optionalSessionName != "" ) {
@@ -25,7 +26,7 @@ class Session {
 	
 	public static function getDebug() {
 		global $_SESSION;
-		return var_dump($_SESSION);
+		var_dump($_SESSION);
 	}
 	
 	/**
@@ -41,7 +42,7 @@ class Session {
 	 * after the object definitions have been loaded.
 	 *
 	 * The setObject() stores an object in the session under the given name.
-	 * @param string $strName The name of the object - or how the object
+	 * @param string $k The name of the object - or how the object
 	 * @param object $object The object to persist in the session
 	 * will be stored within the session.  Use getObject(name) to retrieve
 	 * the object.
@@ -63,7 +64,7 @@ class Session {
 	 * after the object definitions have been loaded.
 	 *
 	 * The setObject() stores an object in the session under the given name.
-	 * @param string $strName The name of the object to get.  Use
+	 * @param string $k The name of the object to get.  Use
 	 * setObject(name) to store or set the object.
 	 * @param object $defaultObject The default object to return if the
 	 * key name does not exist in this session.  This is helpful when
@@ -85,32 +86,27 @@ class Session {
 		self::reset($k);
 	}
 
-
 	public static function exists($k) {
-		//global $_SESSION;
 		return( isset($_SESSION) && array_key_exists($k,$_SESSION) );
 	}
 
 	public static function isEmpty($k) {
-		//global $_SESSION;
-		return( ! $this->exists($strKey) ||
-		( $this->exists($strKey) && $_SESSION[$strKey] == '' )
-		);
+		return( ! self::exists($k) || ( self::exists($k) && $_SESSION[$k] == '' ));
 	}
 
 	public static function get($k) {
-		$retval = null;
+		$ret = null;
 		if( isset($_SESSION) && is_array($_SESSION) && array_key_exists($k,$_SESSION) ) {
-			$retval = $_SESSION[$k];
+			$ret = $_SESSION[$k];
 		}
-		return( $retval );
+		return( $ret );
 	}
 
 	/**
 	 * Sets the specific value in the session
 	 *
-	 * @param string $strKey The name of the key you want to set
-	 * @param mixed $value The value you want to set the session value at
+	 * @param string $k The name of the key you want to set
+	 * @param mixed $v The value you want to set the session value at
 	 *                     strKey too
 	 */
 	public static function set($k,$v) {
@@ -119,7 +115,7 @@ class Session {
 
 	/**
 	 * The value at $strKey is reset or unset
-	 * @param string $strKey The key value of the item to reset
+	 * @param string $k The key value of the item to reset
 	 */
 	public static function reset($k) {
 		unset($_SESSION[$k]);
@@ -136,13 +132,14 @@ class Session {
 	 * The destroy() method closes the session.
 	 */
 	public static function destroy() {
-		session_destroy();
-		session_write_close();
-		foreach ($_SESSION as $strName => $value)  {
-			unset($_SESSION[$strName]);
-		} 					
+		if(isset($_SESSION) && is_array($_SESSION)) {
+			session_destroy();
+			session_write_close();
+			foreach ($_SESSION as $strName => $value)  {
+				unset($_SESSION[$strName]);
+			}
+		}
 	}
-
 
 	public static function userLoggedIn() {
 		return self::get( constant('USER_STATUS_VAR') ) === true;
@@ -169,5 +166,3 @@ class Session {
 	
 			
 }
-
-?>

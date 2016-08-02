@@ -33,6 +33,7 @@ class Grid3 implements iGrid3 {
     private $__defaultSortColumnOrder = '';
 
     private $_filterParameters = '';
+    private $_filteringDelay = '';
     private $_drawCallback = '';
 
     private $__bStateSave = 'true';
@@ -60,6 +61,9 @@ class Grid3 implements iGrid3 {
 
     public function setFilterParameters($value) { $this->_filterParameters = $value; }
     public function getFilterParameters() { return $this->_filterParameters; }
+
+    public function setFilteringDelay($value) { $this->_filteringDelay = $value; }
+    public function getFilteringDelay() { return $this->_filteringDelay; }
 
     public function setDrawCallback($value) {
         $this->_drawCallback = $value;
@@ -347,7 +351,7 @@ class Grid3 implements iGrid3 {
         $xhtml .= "\t\t				\"success\": function(json) { fnCallback(json); }\n";
         $xhtml .= "\t\t			} );\n";
         $xhtml .= "\t\t		}\n";
-        $xhtml .= "\t\t	} ).fnSetFilteringDelay();\n";
+        $xhtml .= "\t\t	} ).fnSetFilteringDelay(".$this->getFilteringDelay().");\n";
         $xhtml .= "\t\t} );\n";
         $xhtml .= "\t/*]]>*/\n";
         $xhtml .= "\t</script>\n";

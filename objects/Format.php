@@ -89,7 +89,7 @@
 		/**
 		 * Formats an "english" formed comma-separated list with the inclusion of "and"
 		 * @example array("one","two","three","four") yeilds one, two, three and four
-		 * @param $array An array of of strings to be formatted 
+		 * @param string[] $array An array of of strings to be formatted
 		 * @return string A comma-separated list with the inclusion of the word "and"
 		 */
 		public static function commaList($array) {
