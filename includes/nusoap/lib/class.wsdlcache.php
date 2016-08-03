@@ -12,7 +12,7 @@ nusoap-general@lists.sourceforge.net
 * 
 * @author   Scott Nichol <snichol@users.sourceforge.net>
 * @author	Ingo Fischer <ingo@apollon.de>
-* @version  $Id: class.wsdlcache.php,v 1.1 2008/05/12 20:04:20 cbschuld Exp $
+* @version  $Id: class.wsdlcache.php,v 1.7 2007/04/17 16:34:03 snichol Exp $
 * @access public 
 */
 class nusoap_wsdlcache {
@@ -44,7 +44,7 @@ class nusoap_wsdlcache {
 	* @param integer $cache_lifetime lifetime for caching-files in seconds or 0 for unlimited
 	* @access public
 	*/
-	function nusoap_wsdlcache($cache_dir='.', $cache_lifetime=0) {
+	function __construct($cache_dir='.', $cache_lifetime=0) {
 		$this->fplock = array();
 		$this->cache_dir = $cache_dir != '' ? $cache_dir : '.';
 		$this->cache_lifetime = $cache_lifetime;

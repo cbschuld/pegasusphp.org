@@ -11,7 +11,7 @@
 * xsd:anyType and user-defined types.
 *
 * @author   Dietrich Ayala <dietrich@ganx4.com>
-* @version  $Id: class.soap_val.php,v 1.1 2008/05/12 20:04:20 cbschuld Exp $
+* @version  $Id: class.soap_val.php,v 1.11 2007/04/06 13:56:32 snichol Exp $
 * @access   public
 */
 class soapval extends nusoap_base {
@@ -69,8 +69,8 @@ class soapval extends nusoap_base {
 	* @param	mixed $attributes associative array of attributes to add to element serialization
 	* @access   public
 	*/
-  	function soapval($name='soapval',$type=false,$value=-1,$element_ns=false,$type_ns=false,$attributes=false) {
-		parent::nusoap_base();
+  	function __construct($name='soapval',$type=false,$value=-1,$element_ns=false,$type_ns=false,$attributes=false) {
+		parent::__construct();
 		$this->name = $name;
 		$this->type = $type;
 		$this->value = $value;
