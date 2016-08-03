@@ -1,5 +1,4 @@
 <?php
-
 	/**
 	 * @package PegasusPHP
 	 */
@@ -661,5 +660,3 @@
 			return array();
 		}
 	}
-
-?>
