@@ -10,9 +10,6 @@
 		
 		private $_id = "Grid3Static";
 
-		public function Grid3Static() {
-		}
-		
 		public function getId() { return $this->_id; }
 		public function setId($str) {
 			$this->_id = preg_replace('[^a-zA-Z0-9]', '', $str);
