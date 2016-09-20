@@ -14,7 +14,7 @@
 		private $_linkCssClass = '';
 		private $_iconCssClass = '';
 
-		public function Grid3Icon($title,$icon,$url='',$onclick='') {
+		public function __construct($title,$icon,$url='',$onclick='') {
 			$this->setTitle($title);
 			$this->setIcon($icon);
 			$this->setUrl($url);
@@ -92,4 +92,3 @@
 			return $xhtml;
 		}
 	}
-?>
