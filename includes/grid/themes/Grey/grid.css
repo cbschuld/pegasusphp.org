@@ -229,5 +229,4 @@ a:hover#gridGreyCurrentPage, a:hover#gridGreyCurrentRowPerPage {
 #gridGreyFilterNav A.here:link,
 #gridGreyFilterNav A.here:visited {
 	position:relative;
-	z-index:102;
 }
