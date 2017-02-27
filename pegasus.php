@@ -1,105 +1,145 @@
 <?php
-	
-	define( 'PEGASUS_VERSION', '0.9.0 BETA' );
 
-	/**
-	 * Pegasus PHP Application Framework
-	 * 
-	 * The Pegasus PHP Application Framework...
-	 *
-	 * @copyright  TBA
-	 * @license    TBA
-	 * @version    CVS: $Id: pegasus.php,v 1.37 2012/10/05 21:34:15 cbschuld Exp $
-	 * @link       
-	 * @since      
-	 */
+define('PEGASUS_VERSION', '0.9.0 BETA');
 
-	// Smarty requires magic_quotes_runtime to be turned off to operate properly
-	if( get_magic_quotes_runtime() != 0 ) {
-		exit( 'ERROR: PegasusPHP requires magic_quotes_runtime to be turned off to operate properly' );
-	}
-	
-	if( ! defined('PROJECT_NAME') )				{ define( 'PROJECT_NAME', 'pegasus_app' ); }
-	if( ! defined('BASE_PATH') )				{ define( 'BASE_PATH', dirname(__FILE__) ); }
-	if( ! defined('FRAMEWORK_PATH') )			{ define( 'FRAMEWORK_PATH', dirname(__FILE__) . '/' ); }
-	if( ! defined('CACHE_PATH') )				{ define( 'CACHE_PATH', constant('BASE_PATH') . '/cache/' ); }
-	if( ! defined('URL_PATH') )					{ define( 'URL_PATH', '/pegasus' ); }
-	if( ! defined('URL_VAR') )					{ define( 'URL_VAR', 'pq' ); }
-	if( ! defined('USER_VAR') )					{ define( 'USER_VAR', 'user' ); }
-	if( ! defined('USER_STATUS_VAR') ) 	        { define( 'USER_STATUS_VAR', 'pegasusUserLoggedIn' ); }
-	if( ! defined('OFFICE_VAR') )				{ define( 'OFFICE_VAR', 'office' ); }
-	if( ! defined('COMPANY_VAR') )				{ define( 'COMPANY_VAR', 'company' ); }
-	if( ! defined('ASSERT_ENABLED') )			{ define( 'ASSERT_ENABLED', true ); }
-	if( ! defined('SMARTY_CONTAINER_PAGE') )	{ define( 'SMARTY_CONTAINER_PAGE', 'container.tpl' ); }
-	if( ! defined('SMARTY_CONTAINER_VALUE') ) 	{ define( 'SMARTY_CONTAINER_VALUE', 'content' ); }
-	if( ! defined('DISABLE_PROPEL') ) 			{ define( 'DISABLE_PROPEL', false );	}
-	if( ! defined('PROPEL_NAME') )				{ define( 'PROPEL_NAME', strtolower( constant('PROJECT_NAME') ) );	}
-	if( ! defined('PROPEL_BUILD_PATH') )		{ define( 'PROPEL_BUILD_PATH',  constant('BASE_PATH') . '/propel/build' ); }
-	if( ! defined('PROPEL_CONF_NAME') )			{ define( 'PROPEL_CONF_NAME', strtolower(constant('PROPEL_NAME')) . '-conf.php' ); }
-	if( ! defined('FPDF_FONTPATH') )            { define( 'FPDF_FONTPATH', constant('FRAMEWORK_PATH') . '/includes/fpdf153/font/'); }
-	if( ! defined('TTF_DIR' ) )                 { define( 'TTF_DIR', constant('FRAMEWORK_PATH') . '/includes/fonts/'); }
+/**
+ * Pegasus PHP Application Framework
+ *
+ * The Pegasus PHP Application Framework...
+ *
+ * @copyright  TBA
+ * @license    TBA
+ * @version    CVS: $Id: pegasus.php,v 1.37 2012/10/05 21:34:15 cbschuld Exp $
+ * @link
+ * @since
+ */
 
-	if( ! defined('DATELONG' ) )				{ define( 'DATELONG', 'l, F jS, Y'); }
-	if( ! defined('TIMELONG' ) )				{ define( 'TIMELONG', 'g:i A'); }
-	
-	date_default_timezone_set("America/Phoenix");
-	spl_autoload_register("include_object");
+// Smarty requires magic_quotes_runtime to be turned off to operate properly
+if (get_magic_quotes_runtime() != 0) {
+    exit('ERROR: PegasusPHP requires magic_quotes_runtime to be turned off to operate properly');
+}
 
-	require_once( constant('FRAMEWORK_PATH') . 'objects/Object.php' );
-	require_once( constant('FRAMEWORK_PATH') . 'objects/Pegasus.php' );
+if (!defined('PROJECT_NAME')) {
+    define('PROJECT_NAME', 'pegasus_app');
+}
+if (!defined('BASE_PATH')) {
+    define('BASE_PATH', __DIR__);
+}
+if (!defined('FRAMEWORK_PATH')) {
+    define('FRAMEWORK_PATH', __DIR__ . '/');
+}
+if (!defined('CACHE_PATH')) {
+    define('CACHE_PATH', constant('BASE_PATH') . '/cache/');
+}
+if (!defined('URL_PATH')) {
+    define('URL_PATH', '/pegasus');
+}
+if (!defined('URL_VAR')) {
+    define('URL_VAR', 'pq');
+}
+if (!defined('USER_VAR')) {
+    define('USER_VAR', 'user');
+}
+if (!defined('USER_STATUS_VAR')) {
+    define('USER_STATUS_VAR', 'pegasusUserLoggedIn');
+}
+if (!defined('OFFICE_VAR')) {
+    define('OFFICE_VAR', 'office');
+}
+if (!defined('COMPANY_VAR')) {
+    define('COMPANY_VAR', 'company');
+}
+if (!defined('ASSERT_ENABLED')) {
+    define('ASSERT_ENABLED', true);
+}
+if (!defined('SMARTY_CONTAINER_PAGE')) {
+    define('SMARTY_CONTAINER_PAGE', 'container.tpl');
+}
+if (!defined('SMARTY_CONTAINER_VALUE')) {
+    define('SMARTY_CONTAINER_VALUE', 'content');
+}
+if (!defined('DISABLE_PROPEL')) {
+    define('DISABLE_PROPEL', false);
+}
+if (!defined('PROPEL_NAME')) {
+    define('PROPEL_NAME', strtolower(constant('PROJECT_NAME')));
+}
+if (!defined('PROPEL_BUILD_PATH')) {
+    define('PROPEL_BUILD_PATH', constant('BASE_PATH') . '/propel/build');
+}
+if (!defined('PROPEL_CONF_NAME')) {
+    define('PROPEL_CONF_NAME', strtolower(constant('PROPEL_NAME')) . '-conf.php');
+}
+if (!defined('FPDF_FONTPATH')) {
+    define('FPDF_FONTPATH', constant('FRAMEWORK_PATH') . '/includes/fpdf153/font/');
+}
+if (!defined('TTF_DIR')) {
+    define('TTF_DIR', constant('FRAMEWORK_PATH') . '/includes/fonts/');
+}
 
-	Pegasus::timeStart();
-	
-	if( Pegasus::isDebug() ) {
-		$__DEBUG = new Debug();
-	}
+if (!defined('DATELONG')) {
+    define('DATELONG', 'l, F jS, Y');
+}
+if (!defined('TIMELONG')) {
+    define('TIMELONG', 'g:i A');
+}
 
-	// -------------------------------------------------------------------------
-	// Validate our Propel Configuration file is in the defined location
-	//	
-	if( ! constant('DISABLE_PROPEL') ) {
+date_default_timezone_set('America/Phoenix');
+spl_autoload_register('include_object');
 
-		if( ! file_exists(	constant('PROPEL_BUILD_PATH') . '/conf/' . constant('PROPEL_CONF_NAME'))) {
-			Pegasus::error(
-				'Propel Include Error',
-				'Unable to locate Propel Configuration File (' . constant('PROPEL_BUILD_PATH') . '/conf/' . constant('PROPEL_CONF_NAME') . ')',
-				"(You may desire to disable propel for this project.  If so add the following to your project: define('DISABLE_PROPEL',true);  Or you can alter the value of constant 'PROPEL_BUILD_PATH' to point to the propel 'build' directory in your project.)"
-			);
-		}
-		else {
-	
-			// -------------------------------------------------------------------------
-			// NOTE: Internally propel assumes all of their runtime objects will be including using relative paths based on the include_path.
-			set_include_path(	get_include_path() .
-								constant('PATH_SEPARATOR') .
-								constant('PROPEL_BUILD_PATH') . '/classes/'
-							);
-				
-			if( !defined('PROPEL_RUNTIME_PATH') || constant( 'PROPEL_RUNTIME_PATH' ) == '' ) {
-				define( 'PROPEL_RUNTIME_PATH','propel' );
-			}
-			require_once( constant('PROPEL_RUNTIME_PATH').'/Propel.php' );
-			Propel::init( constant('PROPEL_BUILD_PATH') . '/conf/' . constant('PROPEL_CONF_NAME') );
-		}
-	}
+require_once constant('FRAMEWORK_PATH') . 'objects/Object.php';
+require_once constant('FRAMEWORK_PATH') . 'objects/Pegasus.php';
 
-	// Request, Session and View require access to the global _PEGASUS object
-	require_once( constant('FRAMEWORK_PATH') . 'objects/Request.php' );
-	require_once( constant('FRAMEWORK_PATH') . 'objects/Session.php' );
-	
-	if( defined('USE_DWOO') && constant('USE_DWOO') ) {
-		require_once( constant('FRAMEWORK_PATH') . 'objects/ViewDwoo.php' );
-	}
-	else {
-		require_once(dirname(__FILE__).'/includes/Smarty-3.1.27/libs/Smarty.class.php');
-		require_once(constant('FRAMEWORK_PATH') . 'objects/View.php');
-	}
+Pegasus::timeStart();
 
-    function class_basename($class)
-    {
-        $class = is_object($class) ? get_class($class) : $class;
-        return basename(str_replace('\\', '/', $class));
+if (Pegasus::isDebug()) {
+    $__DEBUG = new Debug();
+}
+
+// -------------------------------------------------------------------------
+// Validate our Propel Configuration file is in the defined location
+//
+if (!constant('DISABLE_PROPEL')) {
+
+    if (!file_exists(constant('PROPEL_BUILD_PATH') . '/conf/' . constant('PROPEL_CONF_NAME'))) {
+        Pegasus::error(
+            'Propel Include Error',
+            'Unable to locate Propel Configuration File (' . constant('PROPEL_BUILD_PATH') . '/conf/' . constant('PROPEL_CONF_NAME') . ')',
+            "(You may desire to disable propel for this project.  If so add the following to your project: define('DISABLE_PROPEL',true);  Or you can alter the value of constant 'PROPEL_BUILD_PATH' to point to the propel 'build' directory in your project.)"
+        );
+    } else {
+
+        // -------------------------------------------------------------------------
+        // NOTE: Internally propel assumes all of their runtime objects will be including using relative paths based on the include_path.
+        set_include_path(get_include_path() .
+            constant('PATH_SEPARATOR') .
+            constant('PROPEL_BUILD_PATH') . '/classes/'
+        );
+
+        if (!defined('PROPEL_RUNTIME_PATH') || constant('PROPEL_RUNTIME_PATH') == '') {
+            define('PROPEL_RUNTIME_PATH', 'propel');
+        }
+        require_once constant('PROPEL_RUNTIME_PATH') . '/Propel.php';
+        Propel::init(constant('PROPEL_BUILD_PATH') . '/conf/' . constant('PROPEL_CONF_NAME'));
     }
+}
+
+// Request, Session and View require access to the global _PEGASUS object
+require_once constant('FRAMEWORK_PATH') . 'objects/Request.php';
+require_once constant('FRAMEWORK_PATH') . 'objects/Session.php';
+
+if (defined('USE_DWOO') && constant('USE_DWOO')) {
+    require_once constant('FRAMEWORK_PATH') . 'objects/ViewDwoo.php';
+} else {
+    require_once __DIR__ . '/includes/Smarty-3.1.27/libs/Smarty.class.php';
+    require_once constant('FRAMEWORK_PATH') . 'objects/View.php';
+}
+
+function class_basename($class)
+{
+    $class = is_object($class) ? get_class($class) : $class;
+    return basename(str_replace('\\', '/', $class));
+}
 
 /*
  * Convenience include function which allows users to easily include their
@@ -117,74 +157,77 @@
  * was not included.  (If False check return value).
  * @return boolean True if the object was included, otherwise false.
  */
-	function include_object($strObjectName) {
-		
-		global $__INCLUDES;
-		if( ! is_array($__INCLUDES) ) {
-			$__INCLUDES = array();
-		}
+function include_object($strObjectName)
+{
+    global $__INCLUDES;
+    if (!is_array($__INCLUDES)) {
+        $__INCLUDES = [];
+    }
 
-		$classObjectName = str_replace('\\', '/', $strObjectName);
+    $classObjectName = str_replace('\\', '/', $strObjectName);
 
-		if( ! array_key_exists($classObjectName, $__INCLUDES) ) {
-			$aIncludePath = array();
-            $aIncludePath[] = constant('BASE_PATH') . '/src/' . $classObjectName . '.php';
-			$aIncludePath[] = constant('BASE_PATH') . '/objects/' . $classObjectName . '.php';
-            $aIncludePath[] = constant('BASE_PATH') . '/src/' . str_replace(class_basename($strObjectName), $strObjectName, strtolower($strObjectName)) . '.php';
-			$aIncludePath[] = constant('FRAMEWORK_PATH') . '/objects/' . $classObjectName . '.php';
-			// Check each path/filename for a valid include
-			for( $i = 0, $l = count($aIncludePath); $i < $l; $i++ ) {
-				if( file_exists( $aIncludePath[$i] ) ) {
-					require_once $aIncludePath[$i];
-					$__INCLUDES[$classObjectName] = true;
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+    if (!array_key_exists($classObjectName, $__INCLUDES)) {
+        $aIncludePath = [];
 
-	
-	/**
-	 * Convenience function to dump debug information into the browser based on
-	 * the results of var_dump().
-	 */
-	function dump($mixed) {
-		echo '<pre>';
-		var_dump( $mixed );
-		echo '</pre>';
-	}
+        $aIncludePath[] = constant('BASE_PATH') . '/src/' . $classObjectName . '.php';
+        $aIncludePath[] = constant('BASE_PATH') . '/objects/' . $classObjectName . '.php';
+        $aIncludePath[] = constant('BASE_PATH') . '/src/' .
+            str_replace(class_basename($strObjectName), $strObjectName, strtolower($strObjectName)) . '.php';
 
-	/**
-	 * assertWorker is an assert callback to manage the errors within the
-	 * framework.
-	 * @param string $file The filename that caused the popped assert
-	 * @param integer $line The line number where the popped assert is at
-	 * @param string $code The code that caused the assert to pop
-	 *
-	 */
-	function assertWorker($file, $line, $strTrigger) {
-		if( $strTrigger == '' ) {
-			$strTrigger = "WARNING: do not forget to wrap your assert " .
-						  " conditions with single quotes.  " .
-						  "ex assert('\$bValue')";
-		}
-		
-		$strMessage = 	"ASSERT Failed at line {$line} in '{$file}' ( {$strTrigger} )";
-		if( Pegasus::isDebug() ) {
-			Pegasus::error( 'ASSERT Failed', $strMessage );
-		}
-		else {
-			die( $strMessage );
-		}
-	}
+        $aIncludePath[] = constant('FRAMEWORK_PATH') . '/objects/' . $classObjectName . '.php';
+        // Check each path/filename for a valid include
+        foreach ($aIncludePath as $path) {
+            if (file_exists($path)) {
+                require_once $path;
+                $__INCLUDES[$path] = true;
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
-	// Activate assert and make it quiet
-	assert_options(ASSERT_ACTIVE, 		constant('ASSERT_ENABLED') );
-	assert_options(ASSERT_WARNING, 		constant('ASSERT_ENABLED') );
-	assert_options(ASSERT_QUIET_EVAL, 	constant('ASSERT_ENABLED') );
 
-	// Set up the assert callback
-	assert_options(ASSERT_CALLBACK, 'assertWorker');
-	
-?>
+/**
+ * Convenience function to dump debug information into the browser based on
+ * the results of var_dump().
+ * @var $mixed mixed variable to dump via var_dump()
+ */
+function dump($mixed)
+{
+    echo '<pre>';
+    var_dump($mixed);
+    echo '</pre>';
+}
+
+/**
+ * assertWorker is an assert callback to manage the errors within the
+ * framework.
+ * @param string $file The filename that caused the popped assert
+ * @param integer $line The line number where the popped assert is at
+ * @param string $strTrigger The code that caused the assert to pop
+ *
+ */
+function assertWorker($file, $line, $strTrigger)
+{
+    if ($strTrigger === '') {
+        $strTrigger = 'WARNING: do not forget to wrap your assert ' .
+            ' conditions with single quotes.  ' .
+            'ex assert(\'$bValue\')';
+    }
+
+    $strMessage = "ASSERT Failed at line {$line} in '{$file}' ( {$strTrigger} )";
+    if (Pegasus::isDebug()) {
+        Pegasus::error('ASSERT Failed', $strMessage);
+    } else {
+        die($strMessage);
+    }
+}
+
+// Activate assert and make it quiet
+assert_options(ASSERT_ACTIVE, constant('ASSERT_ENABLED'));
+assert_options(ASSERT_WARNING, constant('ASSERT_ENABLED'));
+assert_options(ASSERT_QUIET_EVAL, constant('ASSERT_ENABLED'));
+
+// Set up the assert callback
+assert_options(ASSERT_CALLBACK, 'assertWorker');
