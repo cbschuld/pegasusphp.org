@@ -103,9 +103,7 @@
 	 * objects in the following order:
 	 *
 	 * 1) Within the framework under the FRAMEWORK_PATH/objects/<br/>
-	 * 
-	 * NOTE: All objects within the framework must have the following naming
-	 * convention: [class_or_object_name].class.php
+	 *
 	 *
 	 * @param string $strObjectName The name of the object to include
 	 * @param boolean $bDisplayError If True the execution will stop and
@@ -124,13 +122,14 @@
 
 		if( ! array_key_exists($classObjectName, $__INCLUDES) ) {
 			$aIncludePath = array();
-			$aIncludePath[] = constant('BASE_PATH') . '/objects/' . $classObjectName . '.php';
             $aIncludePath[] = constant('BASE_PATH') . '/src/' . $classObjectName . '.php';
+			$aIncludePath[] = constant('BASE_PATH') . '/objects/' . $classObjectName . '.php';
+            $aIncludePath[] = constant('BASE_PATH') . '/src/' . str_replace(class_basename($strObjectName), $strObjectName, strlower($strObjectName)) . '.php';
 			$aIncludePath[] = constant('FRAMEWORK_PATH') . '/objects/' . $classObjectName . '.php';
 			// Check each path/filename for a valid include
-			for( $i = 0; $i < count($aIncludePath); $i++ ) {
+			for( $i = 0, $l = count($aIncludePath); $i < $l; $i++ ) {
 				if( file_exists( $aIncludePath[$i] ) ) {
-					require_once($aIncludePath[$i]);
+					require_once $aIncludePath[$i];
 					$__INCLUDES[$classObjectName] = true;
 					return true;
 				}
