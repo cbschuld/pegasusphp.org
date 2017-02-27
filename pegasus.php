@@ -167,12 +167,13 @@ function include_object($strObjectName)
     $classObjectName = str_replace('\\', '/', $strObjectName);
 
     if (!array_key_exists($classObjectName, $__INCLUDES)) {
+        $baseName = class_basename($strObjectName);
         $aIncludePath = [];
 
         $aIncludePath[] = constant('BASE_PATH') . '/src/' . $classObjectName . '.php';
         $aIncludePath[] = constant('BASE_PATH') . '/objects/' . $classObjectName . '.php';
         $aIncludePath[] = constant('BASE_PATH') . '/src/' .
-            str_replace(class_basename($strObjectName), $strObjectName, strtolower($strObjectName)) . '.php';
+            strtolower(str_replace($baseName, '', $classObjectName)) . $baseName . '.php';
 
         $aIncludePath[] = constant('FRAMEWORK_PATH') . '/objects/' . $classObjectName . '.php';
         // Check each path/filename for a valid include
