@@ -13,6 +13,9 @@
 
 class SimpleRouter {
 
+    // 404 / not found route
+    private static $_not_found = [];
+
     // prepend string to module uri
     private static $_prepend_module_uri = '';
 
@@ -136,6 +139,12 @@ class SimpleRouter {
         return self::registerRoute(self::createRoute('delete', $moduleUri, $className));
     }
 
+
+    public static function notFound($className = '')
+    {
+        self::$_not_found = $className;
+    }
+
     /**
      *
      */
@@ -191,20 +200,27 @@ class SimpleRouter {
             }
 
         } else {
-            // TODO
-            // no match done prior to dispatch
+            if ('' !== self::$_not_found) {
+                $notFoundController = new self::$_not_found;
+                if ($notFoundController instanceof Controller) {
+                    $notFoundController->process();
+                } else {
+                    // TODO
+                    // supplied "not found" class invalid
+                }
+            } else {
+                // TODO
+                // no "not found" class specified
+            }
         }
     }
 
     /**
-     * @return bool
+     *
      */
     public static function process()
     {
-        if (self::match()) {
-            self::dispatch();
-            return true;
-        }
-        return false;
+        self::match();
+        self::dispatch();
     }
 }
