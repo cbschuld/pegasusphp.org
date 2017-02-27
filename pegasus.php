@@ -95,22 +95,28 @@
 		require_once(constant('FRAMEWORK_PATH') . 'objects/View.php');
 	}
 
-	/*
-	 * Convenience include function which allows users to easily include their
-	 * objects within the framework.  The include_object() function
-	 * looks a specific include locations in order to determine where the object
-	 * exists.  When the object is found it is included.  The function looks for
-	 * objects in the following order:
-	 *
-	 * 1) Within the framework under the FRAMEWORK_PATH/objects/<br/>
-	 *
-	 *
-	 * @param string $strObjectName The name of the object to include
-	 * @param boolean $bDisplayError If True the execution will stop and
-	 * display an error.  If False no message is displayed and the object
-	 * was not included.  (If False check return value).
-	 * @return boolean True if the object was included, otherwise false.
-	 */
+    function class_basename($class)
+    {
+        $class = is_object($class) ? get_class($class) : $class;
+        return basename(str_replace('\\', '/', $class));
+    }
+
+/*
+ * Convenience include function which allows users to easily include their
+ * objects within the framework.  The include_object() function
+ * looks a specific include locations in order to determine where the object
+ * exists.  When the object is found it is included.  The function looks for
+ * objects in the following order:
+ *
+ * 1) Within the framework under the FRAMEWORK_PATH/objects/<br/>
+ *
+ *
+ * @param string $strObjectName The name of the object to include
+ * @param boolean $bDisplayError If True the execution will stop and
+ * display an error.  If False no message is displayed and the object
+ * was not included.  (If False check return value).
+ * @return boolean True if the object was included, otherwise false.
+ */
 	function include_object($strObjectName) {
 		
 		global $__INCLUDES;
