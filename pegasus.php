@@ -130,7 +130,7 @@
 			$aIncludePath = array();
             $aIncludePath[] = constant('BASE_PATH') . '/src/' . $classObjectName . '.php';
 			$aIncludePath[] = constant('BASE_PATH') . '/objects/' . $classObjectName . '.php';
-            $aIncludePath[] = constant('BASE_PATH') . '/src/' . str_replace(class_basename($strObjectName), $strObjectName, strlower($strObjectName)) . '.php';
+            $aIncludePath[] = constant('BASE_PATH') . '/src/' . str_replace(class_basename($strObjectName), $strObjectName, strtolower($strObjectName)) . '.php';
 			$aIncludePath[] = constant('FRAMEWORK_PATH') . '/objects/' . $classObjectName . '.php';
 			// Check each path/filename for a valid include
 			for( $i = 0, $l = count($aIncludePath); $i < $l; $i++ ) {
