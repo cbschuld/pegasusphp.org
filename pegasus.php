@@ -119,12 +119,13 @@
 		if( ! is_array($__INCLUDES) ) {
 			$__INCLUDES = array();
 		}
-		
+
 		$classObjectName = str_replace('\\', '/', $strObjectName);
 
 		if( ! array_key_exists($classObjectName, $__INCLUDES) ) {
 			$aIncludePath = array();
 			$aIncludePath[] = constant('BASE_PATH') . '/objects/' . $classObjectName . '.php';
+            $aIncludePath[] = constant('BASE_PATH') . '/src/' . $classObjectName . '.php';
 			$aIncludePath[] = constant('FRAMEWORK_PATH') . '/objects/' . $classObjectName . '.php';
 			// Check each path/filename for a valid include
 			for( $i = 0; $i < count($aIncludePath); $i++ ) {
