@@ -64,7 +64,7 @@ class SimpleRouter {
      */
     private static function routeKey($method = '', $module = '')
     {
-        return $method.'_'.self::getPrependBaseUri() . $module . self::getAppendModuleUri();
+        return $method.'_'.self::getPrependModuleUri() . $module . self::getAppendModuleUri();
     }
 
     /**
@@ -77,7 +77,7 @@ class SimpleRouter {
     {
         return [
             'method' => $method,
-            'moduleUri' => self::getPrependBaseUri() . $moduleUri . self::getAppendModuleUri(),
+            'module' => self::getPrependModuleUri() . $moduleUri . self::getAppendModuleUri(),
             'className' => $className
         ];
     }
@@ -143,11 +143,11 @@ class SimpleRouter {
     {
         $args = func_get_args();
         if (count($args) && is_array($args[0])) {
-            foreach ($args[0] as $route) {
-                self::get($route[0], $route[1]);
-                self::post($route[0], $route[1]);
-                self::put($route[0], $route[1]);
-                self::delete($route[0], $route[1]);
+            foreach ($args[0] as $moduleUri => $className) {
+                self::get($moduleUri, $className);
+                self::post($moduleUri, $className);
+                self::put($moduleUri, $className);
+                self::delete($moduleUri, $className);
             }
         } else {
             list($moduleUri, $className) = $args;
@@ -178,7 +178,7 @@ class SimpleRouter {
     {
         if ('' !== self::$_matched_route_key) {
             // attempt to include and instantiate
-            $class = self::$_routes[self::$_matched_route_key];
+            $class = self::$_routes[self::$_matched_route_key]['className'];
             $controller = new $class;
 
             if ($controller instanceof Controller) {
