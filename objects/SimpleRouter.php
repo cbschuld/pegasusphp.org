@@ -181,7 +181,7 @@ class SimpleRouter {
     }
 
     /**
-     *
+     * @throws \RuntimeException
      */
     public static function dispatch()
     {
@@ -195,8 +195,7 @@ class SimpleRouter {
                 // controller->process() takes care of the request method
                 $controller->process();
             } else {
-                // TODO
-                // improperly inherited controller
+                throw new \RuntimeException('Class of supplied className is not of instance Controller');
             }
 
         } else {
@@ -205,18 +204,16 @@ class SimpleRouter {
                 if ($notFoundController instanceof Controller) {
                     $notFoundController->process();
                 } else {
-                    // TODO
-                    // supplied "not found" class invalid
+                    throw new \RuntimeException('Class of supplied notFound method is not of instance Controller');
                 }
             } else {
-                // TODO
-                // no "not found" class specified
+                throw new \RuntimeException('Current module and path did not match to any known routes');
             }
         }
     }
 
     /**
-     *
+     * @throws \RuntimeException
      */
     public static function process()
     {
