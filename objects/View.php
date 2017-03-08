@@ -109,12 +109,14 @@ class View
         self::$_smarty->assignByRef('pegasus', $p);
 
         // If the user has been encapsulated setup the existence in the view
-        if (Session::created() && Session::userLoggedIn()) {
-            self::assign(constant('USER_VAR'), Session::get(constant('USER_VAR')));
-        } else {
-            self::assign(constant('USER_VAR'), null);
+        if ('' !== constant('USER_VAR')) {
+            if (Session::created() && Session::userLoggedIn()) {
+                self::assign(constant('USER_VAR'), Session::get(constant('USER_VAR')));
+            } else {
+                self::assign(constant('USER_VAR'), null);
+            }
         }
-
+        
         // Assign and set the standard module and action values
         self::assign('module', Request::get('module'));
         self::assign('action', Request::get('action'));
