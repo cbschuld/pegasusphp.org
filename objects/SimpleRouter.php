@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SimpleRouter.php
  *
@@ -10,8 +11,8 @@
  * @todo
  *
  */
-
-class SimpleRouter {
+class SimpleRouter
+{
 
     // 404 / not found route
     private static $_not_found = [];
@@ -67,7 +68,7 @@ class SimpleRouter {
      */
     private static function routeKey($method = '', $module = '')
     {
-        return $method.'_'.self::getPrependModuleUri() . $module . self::getAppendModuleUri();
+        return $method . '_' . self::$_prepend_module_uri . $module . self::$_append_module_uri;
     }
 
     /**
@@ -80,7 +81,7 @@ class SimpleRouter {
     {
         return [
             'method' => $method,
-            'module' => self::getPrependModuleUri() . $moduleUri . self::getAppendModuleUri(),
+            'module' => self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri,
             'className' => $className
         ];
     }
@@ -150,20 +151,72 @@ class SimpleRouter {
      */
     public static function request()
     {
-        $args = func_get_args();
-        if (count($args) && is_array($args[0])) {
-            foreach ($args[0] as $moduleUri => $className) {
-                self::get($moduleUri, $className);
-                self::post($moduleUri, $className);
-                self::put($moduleUri, $className);
-                self::delete($moduleUri, $className);
+        /** @var string[] $arg */
+        $arg = func_get_arg(0);
+
+        if (is_array($arg)) {
+            foreach ($arg as $moduleUri => $className) {
+
+                // mimic runtime of: self::get($moduleUri, $className);
+                self::$_routes['get_' . self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri] = [
+                    'method' => 'get',
+                    'module' => self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri,
+                    'className' => $className
+                ];
+
+                // mimic runtime of: self::post($moduleUri, $className);
+                self::$_routes['post_' . self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri] = [
+                    'method' => 'post',
+                    'module' => self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri,
+                    'className' => $className
+                ];
+
+                // mimic runtime of: self::put($moduleUri, $className);
+                self::$_routes['put_' . self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri] = [
+                    'method' => 'put',
+                    'module' => self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri,
+                    'className' => $className
+                ];
+
+                // mimic runtime of: self::delete($moduleUri, $className);
+                self::$_routes['delete_' . self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri] = [
+                    'method' => 'delete',
+                    'module' => self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri,
+                    'className' => $className
+                ];
             }
         } else {
-            list($moduleUri, $className) = $args;
-            self::get($moduleUri, $className);
-            self::post($moduleUri, $className);
-            self::put($moduleUri, $className);
-            self::delete($moduleUri, $className);
+
+            list($moduleUri, $className) = $arg;
+
+            // mimic runtime of: self::get($moduleUri, $className);
+            self::$_routes['get_' . self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri] = [
+                'method' => 'get',
+                'module' => self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri,
+                'className' => $className
+            ];
+
+            // mimic runtime of: self::post($moduleUri, $className);
+            self::$_routes['post_' . self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri] = [
+                'method' => 'post',
+                'module' => self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri,
+                'className' => $className
+            ];
+
+            // mimic runtime of: self::put($moduleUri, $className);
+            self::$_routes['put_' . self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri] = [
+                'method' => 'put',
+                'module' => self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri,
+                'className' => $className
+            ];
+
+            // mimic runtime of: self::delete($moduleUri, $className);
+            self::$_routes['delete_' . self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri] = [
+                'method' => 'delete',
+                'module' => self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri,
+                'className' => $className
+            ];
+
         }
     }
 
