@@ -236,32 +236,47 @@ class SimpleRouter
     /**
      * @throws \RuntimeException
      */
+    public static function runNotFound()
+    {
+        if ('' !== self::$_not_found) {
+            $notFoundController = new self::$_not_found;
+            if ($notFoundController instanceof Controller) {
+                $notFoundController->process();
+            } else {
+                throw new \RuntimeException('Class of supplied notFound method is not of instance Controller');
+            }
+        } else {
+            throw new \RuntimeException('Current module and path did not match to any known routes');
+        }
+    }
+
+    /**
+     * @throws \RuntimeException
+     */
     public static function dispatch()
     {
         if ('' !== self::$_matched_route_key) {
             // attempt to include and instantiate
             $class = self::$_routes[self::$_matched_route_key]['className'];
-            $controller = new $class;
 
-            if ($controller instanceof Controller) {
-                // invoke the request method of the class
-                // controller->process() takes care of the request method
-                $controller->process();
+            if (class_exists($class)) {
+
+                $controller = new $class;
+
+                if ($controller instanceof Controller) {
+                    // invoke the request method of the class
+                    // controller->process() takes care of the request method
+                    $controller->process();
+                } else {
+                    throw new \RuntimeException('Class of supplied className is not of instance Controller');
+                }
             } else {
-                throw new \RuntimeException('Class of supplied className is not of instance Controller');
+                Pegasus::log('WARNING', 'PHP Class ' . $class . ' was not found at the time of instantiation during dispatch', '', true);
+                self::runNotFound();
             }
 
         } else {
-            if ('' !== self::$_not_found) {
-                $notFoundController = new self::$_not_found;
-                if ($notFoundController instanceof Controller) {
-                    $notFoundController->process();
-                } else {
-                    throw new \RuntimeException('Class of supplied notFound method is not of instance Controller');
-                }
-            } else {
-                throw new \RuntimeException('Current module and path did not match to any known routes');
-            }
+            self::runNotFound();
         }
     }
 
