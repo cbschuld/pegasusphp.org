@@ -164,7 +164,7 @@ class View
      * Assign a value to a key in the smarty template
      *
      * @param string $key
-     * @param string $value
+     * @param string $value|array
      */
     public static function assign($key, $value)
     {
