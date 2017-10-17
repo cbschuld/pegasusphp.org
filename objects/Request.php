@@ -68,21 +68,22 @@ class Request {
 
 				// When the PATH_INFO explodes the the first value at
 				// location zero will contain an empty string.
-				assert( '$segmentList[0] == ""');
+				assert( '' === (string)$segmentList[0]);
 				//
 				// Segment 0 is the 'module' value
 				// Segment 1 is the 'action' value
 				// Segment 2+ are the values after module/action
 				//
-				if( count($segmentList) > 1 ) {
+                $count = count($segmentList);
+				if( $count > 1 ) {
 					self::set('segment0', $segmentList[1] );
 					self::set('module', $segmentList[1] );
 				}
-				if( count($segmentList) > 2 ) {
+				if( $count > 2 ) {
 					self::set('segment1', $segmentList[2] );
 					self::set('action', $segmentList[2] );
 				}
-				for( $iSegment = 3; count($segmentList) > $iSegment; $iSegment++ ) {
+				for( $iSegment = 3, $count = count($segmentList); $count > $iSegment; $iSegment++ ) {
 					self::set('segment' . ($iSegment - 1 /* -1 due to loading slash */ ), $segmentList[$iSegment] );
 				}
 			}
