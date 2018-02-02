@@ -3,5 +3,6 @@
     "description": "Pegasus",
     "type": "library",
     "version": "1.0.0",
-    "require": {}
+    "require": {},
+    "files": ["pegasus.php"]
 }
