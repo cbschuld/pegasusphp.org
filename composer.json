@@ -1,6 +1,7 @@
 {
-    "name": "cbschuld/pegasusphp.org",
+    "name": "inspectionsupport/pegasusphp.org",
     "description": "Pegasus",
     "type": "library",
+    "version": "1.0.0",
     "require": {}
 }
