@@ -4,5 +4,8 @@
     "type": "library",
     "version": "1.0.0",
     "require": {},
-    "files": ["pegasus.php"]
+    "files": ["pegasus.php"],
+    "autoload": {
+        "psr-0": { "": ["objects","lib"] }
+    }
 }
