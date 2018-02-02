@@ -6,6 +6,6 @@
     "require": {},
     "files": ["pegasus.php"],
     "autoload": {
-        "classmap":["objects/","lib/"]
+        "classmap":["objects/","lib/","includes/"]
     }
 }
