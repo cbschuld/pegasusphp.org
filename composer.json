@@ -4,8 +4,8 @@
     "type": "library",
     "version": "1.0.0",
     "require": {},
-    "files": ["pegasus.php"],
     "autoload": {
+        "files": ["pegasus.php"],
         "classmap":["objects/","lib/","includes/"]
     }
 }
