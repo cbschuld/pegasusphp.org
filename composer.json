@@ -1,0 +1,11 @@
+{
+    "name": "inspectionsupport/pegasusphp.org",
+    "description": "Pegasus",
+    "type": "library",
+    "version": "1.0.0",
+    "require": {},
+    "autoload": {
+        "files": ["pegasus.php"],
+        "classmap":["objects/","lib/","includes/"]
+    }
+}
