@@ -194,12 +194,12 @@ function include_object($strObjectName)
  * the results of var_dump().
  * @var $mixed mixed variable to dump via var_dump()
  */
-function dump($mixed)
-{
-    echo '<pre>';
-    var_dump($mixed);
-    echo '</pre>';
-}
+//function dump($mixed)
+//{
+//    echo '<pre>';
+//    var_dump($mixed);
+//    echo '</pre>';
+//}
 
 /**
  * assertWorker is an assert callback to manage the errors within the
