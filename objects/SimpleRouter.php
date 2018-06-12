@@ -140,6 +140,15 @@ class SimpleRouter
         return self::registerRoute(self::createRoute('delete', $moduleUri, $className));
     }
 
+    /**
+     * @param string $moduleUri
+     * @param $className
+     * @return bool
+     */
+    public static function options($moduleUri = '', $className)
+    {
+        return self::registerRoute(self::createRoute('options', $moduleUri, $className));
+    }
 
     public static function notFound($className = '')
     {
@@ -184,6 +193,14 @@ class SimpleRouter
                     'module' => self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri,
                     'className' => $className
                 ];
+
+                // mimic runtime of: self::options($moduleUri, $className);
+                self::$_routes['options_' . self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri] = [
+                    'method' => 'options',
+                    'module' => self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri,
+                    'className' => $className
+                ];
+
             }
         } else {
 
@@ -213,6 +230,13 @@ class SimpleRouter
             // mimic runtime of: self::delete($moduleUri, $className);
             self::$_routes['delete_' . self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri] = [
                 'method' => 'delete',
+                'module' => self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri,
+                'className' => $className
+            ];
+
+            // mimic runtime of: self::options($moduleUri, $className);
+            self::$_routes['options_' . self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri] = [
+                'method' => 'options',
                 'module' => self::$_prepend_module_uri . $moduleUri . self::$_append_module_uri,
                 'className' => $className
             ];
