@@ -32,9 +32,12 @@ class Controller {
 		else if( Request::isPut() ) {
 			$this->processPut();
 		}
-		else if( Request::isDelete() ) {
-			$this->processDelete();
-		}
+        else if( Request::isDelete() ) {
+            $this->processDelete();
+        }
+        else if( Request::isOptions() ) {
+            $this->processOptions();
+        }
 		else { // some unique HTTP verb we were not expecting...
 			$this->processGet();
 		}
@@ -133,7 +136,7 @@ class Controller {
 	 * extended controller.
 	 *
 	 * This function is called by process() when the request is in a
-	 * POST mode of processing.
+	 * PUT mode of processing.
 	 *
 	 * This "parent" function does nothing but display an error.
 	 *
@@ -151,7 +154,7 @@ class Controller {
 	 * extended controller.
 	 *
 	 * This function is called by process() when the request is in a
-	 * POST mode of processing.
+	 * DELETE mode of processing.
 	 *
 	 * This "parent" function does nothing but display an error.
 	 *
@@ -159,7 +162,25 @@ class Controller {
 	public function processDelete() {
 		return false;
 	}
-	
+
+    /**
+     * Called to process an HTTP request with the OPTIONS verb.
+     *
+     * Each controller should override this method so they can each control
+     * user requests.  The proper way to override this function is to only
+     * call the parent when the request is not handled / processed by
+     * extended controller.
+     *
+     * This function is called by process() when the request is in a
+     * OPTIONS mode of processing.
+     *
+     * This "parent" function does nothing but display an error.
+     *
+     */
+    public function processOptions() {
+        return false;
+    }
+
 	/**
 	 * bounce() allows you to redirect the specific user to a new location
 	 * based on the location passed in as a parameter.
