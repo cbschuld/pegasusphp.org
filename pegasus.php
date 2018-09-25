@@ -193,11 +193,13 @@ function include_object($strObjectName)
  * the results of var_dump().
  * @var $mixed mixed variable to dump via var_dump()
  */
-function dump($mixed)
-{
-    echo '<pre>';
-    var_dump($mixed);
-    echo '</pre>';
+if (!function_exists('dump')) {
+    function dump($mixed)
+    {
+        echo '<pre>';
+        var_dump($mixed);
+        echo '</pre>';
+    }
 }
 
 /**

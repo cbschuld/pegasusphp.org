@@ -209,10 +209,13 @@ class Request {
 	public static function isPut() {
 		return ( $_SERVER['REQUEST_METHOD'] == 'PUT');
 	}
-	public static function isDelete() {
-		return ( $_SERVER['REQUEST_METHOD'] == 'DELETE');
-	}
-	
+    public static function isDelete() {
+        return ( $_SERVER['REQUEST_METHOD'] == 'DELETE');
+    }
+    public static function isOptions() {
+        return ( $_SERVER['REQUEST_METHOD'] == 'OPTIONS');
+    }
+
 	public static function getObject() { return self::$_pRequest; }
 	
 	public static function module($v=null) {
