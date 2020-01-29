@@ -20,11 +20,7 @@ class Request {
 	 * this instance.
 	 */
 	public static function create() {
-		if( get_magic_quotes_gpc() ) {
-			array_walk( $_POST, array('Request','array_stripslashes' ) );
-			array_walk( $_GET, array('Request','array_stripslashes' ) );
-			array_walk( $_COOKIE, array('Request','array_stripslashes' ) );
-		}
+
 		self::set('module','');
 		self::set('action','');
 

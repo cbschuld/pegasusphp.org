@@ -87,10 +87,11 @@ if (!defined('TIMELONG')) {
 date_default_timezone_set('America/Phoenix');
 spl_autoload_register('include_object');
 
-require_once constant('FRAMEWORK_PATH') . 'objects/BaseObject.php';
+require_once constant('FRAMEWORK_PATH') . 'objects/BasicObject.php';
 require_once constant('FRAMEWORK_PATH') . 'objects/Pegasus.php';
 
 Pegasus::timeStart();
+
 
 if (Pegasus::isDebug()) {
     $__DEBUG = new Debug();
