@@ -132,7 +132,7 @@ require_once constant('FRAMEWORK_PATH') . 'objects/Session.php';
 if (defined('USE_DWOO') && constant('USE_DWOO')) {
     require_once constant('FRAMEWORK_PATH') . 'objects/ViewDwoo.php';
 } else {
-    require_once __DIR__ . '/includes/Smarty-3.1.27/libs/Smarty.class.php';
+    require_once __DIR__ . '/includes/Smarty-3.1.30/libs/Smarty.class.php';
     require_once constant('FRAMEWORK_PATH') . 'objects/View.php';
 }
 
