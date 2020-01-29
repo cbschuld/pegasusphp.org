@@ -6,9 +6,9 @@
 			
 			$returnHex = '';
 			
-			$base['R'] = hexdec($hexValue{0}.$hexValue{1}); 
-			$base['G'] = hexdec($hexValue{2}.$hexValue{3}); 
-			$base['B'] = hexdec($hexValue{4}.$hexValue{5}); 
+			$base['R'] = hexdec($hexValue[0].$hexValue[1]);
+			$base['G'] = hexdec($hexValue[2].$hexValue[3]);
+			$base['B'] = hexdec($hexValue[4].$hexValue[5]);
 		    
 			foreach ($base as $k => $v) { 
 		    	$amount = 255 - $v; 
@@ -27,9 +27,9 @@
 		public static function darken($hex,$factor = 30) {
 	        $new_hex = '';
 	        
-	        $base['R'] = hexdec($hex{0}.$hex{1});
-	        $base['G'] = hexdec($hex{2}.$hex{3});
-	        $base['B'] = hexdec($hex{4}.$hex{5});
+	        $base['R'] = hexdec($hex[0].$hex[1]);
+	        $base['G'] = hexdec($hex[2].$hex[3]);
+	        $base['B'] = hexdec($hex[4].$hex[5]);
 	        
 	        foreach ($base as $k => $v) {
 	                $amount = $v / 100;
