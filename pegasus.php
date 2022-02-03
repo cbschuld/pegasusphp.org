@@ -16,9 +16,9 @@ define('PEGASUS_VERSION', '0.9.0 BETA');
 
 // Smarty requires magic_quotes_runtime to be turned off to operate properly --- removed since PHP 5.3 we are likely not relying on this at all.
 //commented out on 1/27/2022
-if (get_magic_quotes_runtime() != 0) {
-    exit('ERROR: PegasusPHP requires magic_quotes_runtime to be turned off to operate properly');
-}
+//if (get_magic_quotes_runtime() != 0) {
+//    exit('ERROR: PegasusPHP requires magic_quotes_runtime to be turned off to operate properly');//
+//}
 
 if (!defined('PROJECT_NAME')) {
     define('PROJECT_NAME', 'pegasus_app');
