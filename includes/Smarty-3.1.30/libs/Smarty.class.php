@@ -743,10 +743,15 @@ class Smarty extends Smarty_Internal_TemplateBase
      */
     public function __construct()
     {
-        parent::__construct();
+        // Temporarily removing this since there is no parent constructor.
+        if(false){
+            parent::__construct();
+        }
+
         if (is_callable('mb_internal_encoding')) {
             mb_internal_encoding(Smarty::$_CHARSET);
         }
+
         $this->start_time = microtime(true);
 
         if (isset($_SERVER[ 'SCRIPT_NAME' ])) {
