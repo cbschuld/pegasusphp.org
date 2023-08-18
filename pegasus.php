@@ -137,10 +137,12 @@ if (defined('USE_DWOO') && constant('USE_DWOO')) {
     require_once constant('FRAMEWORK_PATH') . 'objects/View.php';
 }
 
-function class_basename($class)
-{
-    $class = is_object($class) ? get_class($class) : $class;
-    return basename(str_replace('\\', '/', $class));
+if(!function_exists('class_basename')){
+    function class_basename($class)
+    {
+        $class = is_object($class) ? get_class($class) : $class;
+        return basename(str_replace('\\', '/', $class));
+    }
 }
 
 /*
