@@ -743,8 +743,8 @@ class Smarty extends Smarty_Internal_TemplateBase
      */
     public function __construct()
     {
-        // Temporarily removing this since there is no parent constructor.
-        if(false){
+        // Validate that we have a constructor here.
+        if (is_callable('parent::__construct')) {
             parent::__construct();
         }
 

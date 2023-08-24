@@ -13,13 +13,6 @@ define('PEGASUS_VERSION', '0.9.0 BETA');
  * @link
  * @since
  */
-
-// Smarty requires magic_quotes_runtime to be turned off to operate properly --- removed since PHP 5.3 we are likely not relying on this at all.
-//commented out on 1/27/2022
-//if (get_magic_quotes_runtime() != 0) {
-//    exit('ERROR: PegasusPHP requires magic_quotes_runtime to be turned off to operate properly');//
-//}
-
 if (!defined('PROJECT_NAME')) {
     define('PROJECT_NAME', 'pegasus_app');
 }
@@ -77,12 +70,19 @@ if (!defined('FPDF_FONTPATH')) {
 if (!defined('TTF_DIR')) {
     define('TTF_DIR', constant('FRAMEWORK_PATH') . '/includes/fonts/');
 }
-
 if (!defined('DATELONG')) {
     define('DATELONG', 'l, F jS, Y');
 }
 if (!defined('TIMELONG')) {
     define('TIMELONG', 'g:i A');
+}
+
+if(!function_exists('class_basename')){
+    function class_basename($class)
+    {
+        $class = is_object($class) ? get_class($class) : $class;
+        return basename(str_replace('\\', '/', $class));
+    }
 }
 
 date_default_timezone_set('America/Phoenix');
@@ -135,14 +135,6 @@ if (defined('USE_DWOO') && constant('USE_DWOO')) {
 } else {
     require_once __DIR__ . '/includes/Smarty-3.1.30/libs/Smarty.class.php';
     require_once constant('FRAMEWORK_PATH') . 'objects/View.php';
-}
-
-if(!function_exists('class_basename')){
-    function class_basename($class)
-    {
-        $class = is_object($class) ? get_class($class) : $class;
-        return basename(str_replace('\\', '/', $class));
-    }
 }
 
 /*
