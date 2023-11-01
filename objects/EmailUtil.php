@@ -13,7 +13,7 @@
 		public static function explodeAddresses($addressList) {
 			$retlist = array();
 			$cmplist = array();
-			$addresses = preg_split("/[\s,;: ]+/", $addressList);
+			$addresses = preg_split("/[\s,;: ]+/", (string) $addressList);
 			foreach($addresses as $address) {
 				$address = trim($address);
 				if(filter_var($address, FILTER_VALIDATE_EMAIL) !== false && array_search(strtolower($address), $cmplist) === false ) {

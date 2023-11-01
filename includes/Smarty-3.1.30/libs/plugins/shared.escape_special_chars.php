@@ -21,6 +21,8 @@
 function smarty_function_escape_special_chars($string)
 {
     if (!is_array($string)) {
+        $string = (string) $string;
+
         if (version_compare(PHP_VERSION, '5.2.3', '>=')) {
             $string = htmlspecialchars($string, ENT_COMPAT, Smarty::$_CHARSET, false);
         } else {

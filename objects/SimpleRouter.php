@@ -105,7 +105,7 @@ class SimpleRouter
      * @param $className
      * @return bool
      */
-    public static function get($moduleUri = '', $className)
+    public static function get($moduleUri = '', $className = '')
     {
         return self::registerRoute(self::createRoute('get', $moduleUri, $className));
     }
@@ -115,7 +115,7 @@ class SimpleRouter
      * @param $className
      * @return bool
      */
-    public static function post($moduleUri = '', $className)
+    public static function post($moduleUri = '', $className = '')
     {
         return self::registerRoute(self::createRoute('post', $moduleUri, $className));
     }
@@ -125,7 +125,7 @@ class SimpleRouter
      * @param $className
      * @return bool
      */
-    public static function put($moduleUri = '', $className)
+    public static function put($moduleUri = '', $className = '')
     {
         return self::registerRoute(self::createRoute('put', $moduleUri, $className));
     }
@@ -135,7 +135,7 @@ class SimpleRouter
      * @param $className
      * @return bool
      */
-    public static function delete($moduleUri = '', $className)
+    public static function delete($moduleUri = '', $className = '')
     {
         return self::registerRoute(self::createRoute('delete', $moduleUri, $className));
     }
@@ -145,7 +145,7 @@ class SimpleRouter
      * @param $className
      * @return bool
      */
-    public static function options($moduleUri = '', $className)
+    public static function options($moduleUri = '', $className = '')
     {
         return self::registerRoute(self::createRoute('options', $moduleUri, $className));
     }

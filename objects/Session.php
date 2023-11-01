@@ -19,7 +19,7 @@ class Session {
 	 */
 	public static function create($optionalSessionName="") {
 		if( $optionalSessionName != "" ) {
-			session_name($optionalSessionName);
+			session_name("s_{$optionalSessionName}");
 		}
 		session_start();
 	}
