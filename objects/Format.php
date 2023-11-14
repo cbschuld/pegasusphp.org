@@ -193,9 +193,9 @@
 		public static function currency($amt) {
 			// get locale-specific currency formatting information 
 			$a = localeconv();
-			
+
 			// if 'frac_digits' is 127 then setlocale has not been called
-			if( $a['frac_digits'] == 127 ) {
+			if( $a['frac_digits'] == 127 || $a['frac_digits'] == 255 ) {
 				$amt = sprintf('$%.2f',$amt);
 			}
 			else {
