@@ -30,8 +30,12 @@
  * @property Smarty_Internal_Method_RegisterObject  $registerObject
  * @property Smarty_Internal_Method_RegisterPlugin  $registerPlugin
  */
+#[AllowDynamicProperties]
 class Smarty_Internal_Extension_Handler
 {
+    /**
+     * Include any dynamic properties.
+     */
 
     public $objType = null;
 

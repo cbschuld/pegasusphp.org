@@ -2,5 +2,7 @@
     "name": "inspectionsupport/pegasusphp.org",
     "description": "Pegasus",
     "type": "library",
-    "require": {}
+    "require-dev": {
+        "rector/rector": "^0.18.6"
+    }
 }

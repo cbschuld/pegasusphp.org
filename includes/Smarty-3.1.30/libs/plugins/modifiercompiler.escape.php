@@ -41,6 +41,8 @@ function smarty_modifiercompiler_escape($params, $compiler)
             $char_set = Smarty::$_CHARSET;
         }
 
+        $params[0] = (string) $params[0];
+
         switch ($esc_type) {
             case 'html':
                 if ($_double_encode) {

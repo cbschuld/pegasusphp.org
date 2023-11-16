@@ -215,6 +215,6 @@ class Smarty_Internal_Compile_Private_Php extends Smarty_Internal_CompileBase
      */
     private function quote($match)
     {
-        return htmlspecialchars($match[ 0 ], ENT_QUOTES);
+        return htmlspecialchars((string) $match[ 0 ], ENT_QUOTES);
     }
 }

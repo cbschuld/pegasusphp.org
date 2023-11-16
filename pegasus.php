@@ -226,7 +226,9 @@ function assertWorker($file, $line, $strTrigger)
 // Activate assert and make it quiet
 assert_options(ASSERT_ACTIVE, constant('ASSERT_ENABLED'));
 assert_options(ASSERT_WARNING, constant('ASSERT_ENABLED'));
-assert_options(ASSERT_QUIET_EVAL, constant('ASSERT_ENABLED'));
+
+// Removed in PHP8+
+// assert_options(ASSERT_QUIET_EVAL, constant('ASSERT_ENABLED'));
 
 // Set up the assert callback
 assert_options(ASSERT_CALLBACK, 'assertWorker');

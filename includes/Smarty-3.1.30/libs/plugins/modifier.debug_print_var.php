@@ -105,7 +105,7 @@ function smarty_modifier_debug_print_var($var, $max = 10, $length = 40, $depth =
                 }
             }
 
-            $results = htmlspecialchars($results, ENT_QUOTES, Smarty::$_CHARSET);
+            $results = htmlspecialchars((string) $results, ENT_QUOTES, Smarty::$_CHARSET);
     }
 
     return $results;
