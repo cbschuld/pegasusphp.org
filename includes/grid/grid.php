@@ -472,7 +472,7 @@
 				}
 			}
 
-			if( $column == null ) {
+			if( $column == null && $this->getColumn(0) != null) {
 				$this->getColumn(0)->setSorted(true);
 			}
 
