@@ -685,7 +685,7 @@ class PHPExcel_Calculation_Engineering {
 		//	Split the input into its Real and Imaginary components
 		$leadingSign = 0;
 		if (strlen($workString) > 0) {
-			$leadingSign = (($workString{0} == '+') || ($workString{0} == '-')) ? 1 : 0;
+			$leadingSign = (($workString[0] == '+') || ($workString[0] == '-')) ? 1 : 0;
 		}
 		$power = '';
 		$realNumber = strtok($workString, '+-');
@@ -718,10 +718,10 @@ class PHPExcel_Calculation_Engineering {
 
 
 	private static function _cleanComplex($complexNumber) {
-		if ($complexNumber{0} == '+') $complexNumber = substr($complexNumber,1);
-		if ($complexNumber{0} == '0') $complexNumber = substr($complexNumber,1);
-		if ($complexNumber{0} == '.') $complexNumber = '0'.$complexNumber;
-		if ($complexNumber{0} == '+') $complexNumber = substr($complexNumber,1);
+		if ($complexNumber[0] == '+') $complexNumber = substr($complexNumber,1);
+		if ($complexNumber[0] == '0') $complexNumber = substr($complexNumber,1);
+		if ($complexNumber[0] == '.') $complexNumber = '0'.$complexNumber;
+		if ($complexNumber[0] == '+') $complexNumber = substr($complexNumber,1);
 		return $complexNumber;
 	}
 
