@@ -7,24 +7,24 @@
 // License     : GNU LGPL (http://www.gnu.org/copyleft/lesser.html)
 // 	----------------------------------------------------------------------------
 //  Copyright (C) 2008-2009 Nicola Asuni - Tecnick.com S.r.l.
-// 	
+//
 // 	This program is free software: you can redistribute it and/or modify
 // 	it under the terms of the GNU Lesser General Public License as published by
 // 	the Free Software Foundation, either version 2.1 of the License, or
 // 	(at your option) any later version.
-// 	
+//
 // 	This program is distributed in the hope that it will be useful,
 // 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 // 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // 	GNU Lesser General Public License for more details.
-// 	
+//
 // 	You should have received a copy of the GNU Lesser General Public License
 // 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
-// 	
+//
 // 	See LICENSE.TXT file for more information.
 //  ----------------------------------------------------------------------------
 //
-// Description : PHP class to creates array representations for 
+// Description : PHP class to creates array representations for
 //               common 1D barcodes to be used with TCPDF.
 //
 // Author: Nicola Asuni
@@ -60,15 +60,15 @@
 	* @license http://www.gnu.org/copyleft/lesser.html LGPL
 	*/
 class TCPDFBarcode {
-	
+
 	/**
 	 * @var array representation of barcode.
 	 * @access protected
 	 */
 	protected $barcode_array;
-		
+
 	/**
-	 * This is the class constructor. 
+	 * This is the class constructor.
 	 * Return an array representations for common 1D barcodes:<ul>
 	 * <li>$arrcode['code'] code to be printed on text label</li>
 	 * <li>$arrcode['maxh'] max bar height</li>
@@ -84,16 +84,16 @@ class TCPDFBarcode {
 	public function __construct($code, $type) {
 		$this->setBarcode($code, $type);
 	}
-	
-	/** 
+
+	/**
 	 * Return an array representations of barcode.
  	 * @return array
 	 */
 	public function getBarcodeArray() {
 		return $this->barcode_array;
 	}
-	
-	/** 
+
+	/**
 	 * Set the barcode.
 	 * @param string $code code to print
  	 * @param string $type type of barcode: <ul><li>C39 : CODE 39 - ANSI MH10.8M-1983 - USD-3 - 3 of 9.</li><li>C39+ : CODE 39 with checksum</li><li>C39E : CODE 39 EXTENDED</li><li>C39E+ : CODE 39 EXTENDED + CHECKSUM</li><li>C93 : CODE 93 - USS-93</li><li>S25 : Standard 2 of 5</li><li>S25+ : Standard 2 of 5 + CHECKSUM</li><li>I25 : Interleaved 2 of 5</li><li>I25+ : Interleaved 2 of 5 + CHECKSUM</li><li>C128A : CODE 128 A</li><li>C128B : CODE 128 B</li><li>C128C : CODE 128 C</li><li>EAN2 : 2-Digits UPC-Based Extention</li><li>EAN5 : 5-Digits UPC-Based Extention</li><li>EAN8 : EAN 8</li><li>EAN13 : EAN 13</li><li>UPCA : UPC-A</li><li>UPCE : UPC-E</li><li>MSI : MSI (Variation of Plessey code)</li><li>MSI+ : MSI + CHECKSUM (modulo 11)</li><li>POSTNET : POSTNET</li><li>PLANET : PLANET</li><li>RMS4CC : RMS4CC (Royal Mail 4-state Customer Code) - CBC (Customer Bar Code)</li><li>KIX : KIX (Klant index - Customer index)</li><li>IMB: Intelligent Mail Barcode - Onecode - USPS-B-3200</li><li>CODABAR : CODABAR</li><li>CODE11 : CODE 11</li><li>PHARMA : PHARMACODE</li><li>PHARMA2T : PHARMACODE TWO-TRACKS</li></ul>
@@ -225,7 +225,7 @@ class TCPDFBarcode {
 		}
 		$this->barcode_array = $arrcode;
 	}
-	
+
 	/**
 	 * CODE 39 - ANSI MH10.8M-1983 - USD-3 - 3 of 9.
 	 * General-purpose code in very wide use world-wide
@@ -279,7 +279,7 @@ class TCPDFBarcode {
 		$chr['+'] = '121112121';
 		$chr['%'] = '111212121';
 		$chr['*'] = '121121211';
-		
+
 		$code = strtoupper($code);
 		if ($extended) {
 			// extended mode
@@ -294,12 +294,12 @@ class TCPDFBarcode {
 		}
 		// add start and stop codes
 		$code = '*'.$code.'*';
-		
+
 		$bararray = array('code' => $code, 'maxw' => 0, 'maxh' => 1, 'bcode' => array());
 		$k = 0;
 		$clen = strlen($code);
 		for ($i = 0; $i < $clen; ++$i) {
-			$char = $code{$i};
+			$char = $code[$i];
 			if(!isset($chr[$char])) {
 				// invalid character
 				return false;
@@ -310,7 +310,7 @@ class TCPDFBarcode {
 				} else {
 					$t = false; // space
 				}
-				$w = $chr[$char]{$j};
+				$w = $chr[$char][$j];
 				$bararray['bcode'][$k] = array('t' => $t, 'w' => $w, 'h' => 1, 'p' => 0);
 				$bararray['maxw'] += $w;
 				++$k;
@@ -321,7 +321,7 @@ class TCPDFBarcode {
 		}
 		return $bararray;
 	}
-	
+
 	/**
 	 * Encode a string to be used for CODE 39 Extended mode.
 	 * @param string $code code to represent.
@@ -365,14 +365,14 @@ class TCPDFBarcode {
 		$code_ext = '';
 		$clen = strlen($code);
 		for ($i = 0 ; $i < $clen; ++$i) {
-			if (ord($code{$i}) > 127) {
+			if (ord($code[$i]) > 127) {
 				return false;
 			}
-			$code_ext .= $encode[$code{$i}];
+			$code_ext .= $encode[$code[$i]];
 		}
 		return $code_ext;
 	}
-	
+
 	/**
 	 * Calculate CODE 39 checksum (modulo 43).
 	 * @param string $code code to represent.
@@ -388,13 +388,13 @@ class TCPDFBarcode {
 		$sum = 0;
 		$clen = strlen($code);
 		for ($i = 0 ; $i < $clen; ++$i) {
-			$k = array_keys($chars, $code{$i});
+			$k = array_keys($chars, $code[$i]);
 			$sum += $k[0];
 		}
 		$j = ($sum % 43);
 		return $chars[$j];
 	}
-	
+
 	/**
 	 * CODE 93 - USS-93
 	 * Compact code similar to Code 39
@@ -489,10 +489,10 @@ class TCPDFBarcode {
 		$code_ext = '';
 		$clen = strlen($code);
 		for ($i = 0 ; $i < $clen; ++$i) {
-			if (ord($code{$i}) > 127) {
+			if (ord($code[$i]) > 127) {
 				return false;
 			}
-			$code_ext .= $encode[$code{$i}];
+			$code_ext .= $encode[$code[$i]];
 		}
 		// checksum
 		$code .= $this->checksum_code93($code);
@@ -502,7 +502,7 @@ class TCPDFBarcode {
 		$k = 0;
 		$clen = strlen($code);
 		for ($i = 0; $i < $clen; ++$i) {
-			$char = $code{$i};
+			$char = $code[$i];
 			if(!isset($chr[$char])) {
 				// invalid character
 				return false;
@@ -513,7 +513,7 @@ class TCPDFBarcode {
 				} else {
 					$t = false; // space
 				}
-				$w = $chr[$char]{$j};
+				$w = $chr[$char][$j];
 				$bararray['bcode'][$k] = array('t' => $t, 'w' => $w, 'h' => 1, 'p' => 0);
 				$bararray['maxw'] += $w;
 				++$k;
@@ -521,10 +521,10 @@ class TCPDFBarcode {
 		}
 		$bararray['bcode'][$k] = array('t' => true, 'w' => 1, 'h' => 1, 'p' => 0);
 		$bararray['maxw'] += 1;
-		++$k;		
+		++$k;
 		return $bararray;
 	}
-	
+
 	/**
 	 * Calculate CODE 93 checksum (modulo 47).
 	 * @param string $code code to represent.
@@ -538,13 +538,13 @@ class TCPDFBarcode {
 			'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
 			'W', 'X', 'Y', 'Z', '-', '.', ' ', '$', '/', '+', '%');
 		// translate special characters
-		$code = strtr($code, chr(128).chr(129).chr(130).chr(131), '$/+%');	
+		$code = strtr($code, chr(128).chr(129).chr(130).chr(131), '$/+%');
 		$len = strlen($code);
 		// calculate check digit C
 		$p = 1;
 		$check = 0;
 		for ($i = ($len - 1); $i >= 0; --$i) {
-			$k = array_keys($chars, $code{$i});
+			$k = array_keys($chars, $code[$i]);
 			$check += ($k[0] * $p);
 			++$p;
 			if ($p > 20) {
@@ -558,7 +558,7 @@ class TCPDFBarcode {
 		$p = 1;
 		$check = 0;
 		for ($i = $len; $i >= 0; --$i) {
-			$k = array_keys($chars, $code{$i});
+			$k = array_keys($chars, $code[$i]);
 			$check += ($k[0] * $p);
 			++$p;
 			if ($p > 15) {
@@ -569,7 +569,7 @@ class TCPDFBarcode {
 		$k = $chars[$check];
 		return $c.$k;
 	}
-	
+
 	/**
 	 * Checksum for standard 2 of 5 barcodes.
 	 * @param string $code code to process.
@@ -580,11 +580,11 @@ class TCPDFBarcode {
 		$len = strlen($code);
 		$sum = 0;
 		for ($i = 0; $i < $len; $i+=2) {
-			$sum += $code{$i};
+			$sum += $code[$i];
 		}
 		$sum *= 3;
 		for ($i = 1; $i < $len; $i+=2) {
-			$sum += ($code{$i});
+			$sum += ($code[$i]);
 		}
 		$r = $sum % 10;
 		if($r > 0) {
@@ -592,10 +592,10 @@ class TCPDFBarcode {
 		}
 		return $r;
 	}
-	
+
 	/**
 	 * MSI.
-	 * Variation of Plessey code, with similar applications 
+	 * Variation of Plessey code, with similar applications
 	 * Contains digits (0 to 9) and encodes the data only in the width of bars.
 	 * @param string $code code to represent.
 	 * @param boolean $checksum if true add a checksum to the code (modulo 11)
@@ -625,7 +625,7 @@ class TCPDFBarcode {
 			$p = 2;
 			$check = 0;
 			for ($i = ($clen - 1); $i >= 0; --$i) {
-				$check += (hexdec($code{$i}) * $p);
+				$check += (hexdec($code[$i]) * $p);
 				++$p;
 				if ($p > 7) {
 					$p = 2;
@@ -640,18 +640,18 @@ class TCPDFBarcode {
 		$seq = '110'; // left guard
 		$clen = strlen($code);
 		for ($i = 0; $i < $clen; ++$i) {
-			$digit = $code{$i};
+			$digit = $code[$i];
 			if (!isset($chr[$digit])) {
 				// invalid character
 				return false;
 			}
 			$seq .= $chr[$digit];
-		}		
+		}
 		$seq .= '1001'; // right guard
 		$bararray = array('code' => $code, 'maxw' => 0, 'maxh' => 1, 'bcode' => array());
 		return $this->binseq_to_array($seq, $bararray);
 	}
-	
+
 	/**
 	 * Standard 2 of 5 barcodes.
 	 * Used in airline ticket marking, photofinishing
@@ -683,18 +683,18 @@ class TCPDFBarcode {
 		$seq = '11011010';
 		$clen = strlen($code);
 		for ($i = 0; $i < $clen; ++$i) {
-			$digit = $code{$i};
+			$digit = $code[$i];
 			if (!isset($chr[$digit])) {
 				// invalid character
 				return false;
 			}
 			$seq .= $chr[$digit];
-		}		
+		}
 		$seq .= '1101011';
 		$bararray = array('code' => $code, 'maxw' => 0, 'maxh' => 1, 'bcode' => array());
 		return $this->binseq_to_array($seq, $bararray);
 	}
-	
+
 	/**
 	 * Convert binary barcode sequence to TCPDF barcode array
 	 * @param string $seq barcode as binary sequence
@@ -708,8 +708,8 @@ class TCPDFBarcode {
 		$k = 0;
 		for ($i = 0; $i < $len; ++$i) {
 			$w += 1;
-			if (($i == ($len - 1)) OR (($i < ($len - 1)) AND ($seq{$i} != $seq{($i+1)}))) {
-				if ($seq{$i} == '1') {
+			if (($i == ($len - 1)) OR (($i < ($len - 1)) AND ($seq[$i] != $seq[($i+1)]))) {
+				if ($seq[$i] == '1') {
 					$t = true; // bar
 				} else {
 					$t = false; // space
@@ -722,7 +722,7 @@ class TCPDFBarcode {
 		}
 		return $bararray;
 	}
-	
+
 	/**
 	 * Interleaved 2 of 5 barcodes.
 	 * Compact numeric code, widely used in industry, air cargo
@@ -755,13 +755,13 @@ class TCPDFBarcode {
 		}
 		// add start and stop codes
 		$code = 'AA'.strtolower($code).'ZA';
-			
+
 		$bararray = array('code' => $code, 'maxw' => 0, 'maxh' => 1, 'bcode' => array());
 		$k = 0;
 		$clen = strlen($code);
 		for ($i = 0; $i < $clen; $i = ($i + 2)) {
-			$char_bar = $code{$i};
-			$char_space = $code{$i+1};
+			$char_bar = $code[$i];
+			$char_space = $code[$i+1];
 			if((!isset($chr[$char_bar])) OR (!isset($chr[$char_space]))) {
 				// invalid character
 				return false;
@@ -770,7 +770,7 @@ class TCPDFBarcode {
 			$seq = '';
 			$chrlen = strlen($chr[$char_bar]);
 			for ($s = 0; $s < $chrlen; $s++){
-				$seq .= $chr[$char_bar]{$s} . $chr[$char_space]{$s};
+				$seq .= $chr[$char_bar][$s] . $chr[$char_space][$s];
 			}
 			$seqlen = strlen($seq);
 			for ($j = 0; $j < $seqlen; ++$j) {
@@ -779,7 +779,7 @@ class TCPDFBarcode {
 				} else {
 					$t = false; // space
 				}
-				$w = $seq{$j};
+				$w = $seq[$j];
 				$bararray['bcode'][$k] = array('t' => $t, 'w' => $w, 'h' => 1, 'p' => 0);
 				$bararray['maxw'] += $w;
 				++$k;
@@ -787,9 +787,9 @@ class TCPDFBarcode {
 		}
 		return $bararray;
 	}
-	
+
 	/**
-	 * C128 barcodes. 
+	 * C128 barcodes.
 	 * Very capable code, excellent density, high reliability; in very wide use world-wide
 	 * @param string $code code to represent.
 	 * @param string $type barcode type: A, B or C
@@ -935,7 +935,7 @@ class TCPDFBarcode {
 				$new_code = '';
 				$hclen = (strlen($code) / 2);
 				for ($i = 0; $i < $hclen; ++$i) {
-					$new_code .= chr(intval($code{(2 * $i)}.$code{(2 * $i + 1)}));
+					$new_code .= chr(intval($code[(2 * $i)].$code[(2 * $i + 1)]));
 				}
 				$code = $new_code;
 				break;
@@ -948,7 +948,7 @@ class TCPDFBarcode {
 		$sum = $startid;
 		$clen = strlen($code);
 		for ($i = 0; $i < $clen; ++$i) {
-			$sum +=  (strpos($keys, $code{$i}) * ($i+1));
+			$sum +=  (strpos($keys, $code[$i]) * ($i+1));
 		}
 		$check = ($sum % 103);
 		// add start, check and stop codes
@@ -957,9 +957,9 @@ class TCPDFBarcode {
 		$k = 0;
 		$len = strlen($code);
 		for ($i = 0; $i < $len; ++$i) {
-			$ck = strpos($keys, $code{$i});
+			$ck = strpos($keys, $code[$i]);
 			if (($i == 0) OR ($i > ($len-4))) {
-				$char_num = ord($code{$i});
+				$char_num = ord($code[$i]);
 				$seq = $chr[$char_num];
 			} elseif(($ck >= 0) AND isset($chr[$ck])) {
 					$seq = $chr[$ck];
@@ -973,15 +973,15 @@ class TCPDFBarcode {
 				} else {
 					$t = false; // space
 				}
-				$w = $seq{$j};
+				$w = $seq[$j];
 				$bararray['bcode'][$k] = array('t' => $t, 'w' => $w, 'h' => 1, 'p' => 0);
 				$bararray['maxw'] += $w;
 				++$k;
 			}
 		}
-		return $bararray;		
+		return $bararray;
 	}
-	
+
 	/**
 	 * EAN13 and UPC-A barcodes.
 	 * EAN13: European Article Numbering international retail product code
@@ -1005,14 +1005,14 @@ class TCPDFBarcode {
 		// calculate check digit
 		$sum_a = 0;
 		for ($i = 1; $i < $data_len; $i+=2) {
-			$sum_a += $code{$i};
+			$sum_a += $code[$i];
 		}
 		if ($len > 12) {
 			$sum_a *= 3;
 		}
 		$sum_b = 0;
 		for ($i = 0; $i < $data_len; $i+=2) {
-			$sum_b += ($code{$i});
+			$sum_b += ($code[$i]);
 		}
 		if ($len < 13) {
 			$sum_b *= 3;
@@ -1024,7 +1024,7 @@ class TCPDFBarcode {
 		if ($code_len == $data_len) {
 			// add check digit
 			$code .= $r;
-		} elseif ($r !== intval($code{$data_len})) {
+		} elseif ($r !== intval($code[$data_len])) {
 			// wrong checkdigit
 			return false;
 		}
@@ -1133,9 +1133,9 @@ class TCPDFBarcode {
 		$seq = '101'; // left guard bar
 		if ($upce) {
 			$bararray = array('code' => $upce_code, 'maxw' => 0, 'maxh' => 1, 'bcode' => array());
-			$p = $upce_parities[$code{1}][$r];
+			$p = $upce_parities[$code[1]][$r];
 			for ($i = 0; $i < 6; ++$i) {
-				$seq .= $codes[$p[$i]][$upce_code{$i}];
+				$seq .= $codes[$p[$i]][$upce_code[$i]];
 			}
 			$seq .= '010101'; // right guard bar
 		} else {
@@ -1143,17 +1143,17 @@ class TCPDFBarcode {
 			$half_len = ceil($len / 2);
 			if ($len == 8) {
 				for ($i = 0; $i < $half_len; ++$i) {
-					$seq .= $codes['A'][$code{$i}];
+					$seq .= $codes['A'][$code[$i]];
 				}
 			} else {
-				$p = $parities[$code{0}];
+				$p = $parities[$code[0]];
 				for ($i = 1; $i < $half_len; ++$i) {
-					$seq .= $codes[$p[$i-1]][$code{$i}];
+					$seq .= $codes[$p[$i-1]][$code[$i]];
 				}
 			}
 			$seq .= '01010'; // center guard bar
 			for ($i = $half_len; $i < $len; ++$i) {
-				$seq .= $codes['C'][$code{$i}];
+				$seq .= $codes['C'][$code[$i]];
 			}
 			$seq .= '101'; // right guard bar
 		}
@@ -1161,8 +1161,8 @@ class TCPDFBarcode {
 		$w = 0;
 		for ($i = 0; $i < $clen; ++$i) {
 			$w += 1;
-			if (($i == ($clen - 1)) OR (($i < ($clen - 1)) AND ($seq{$i} != $seq{($i+1)}))) {
-				if ($seq{$i} == '1') {
+			if (($i == ($clen - 1)) OR (($i < ($clen - 1)) AND ($seq[$i] != $seq[($i+1)]))) {
+				if ($seq[$i] == '1') {
 					$t = true; // bar
 				} else {
 					$t = false; // space
@@ -1175,7 +1175,7 @@ class TCPDFBarcode {
 		}
 		return $bararray;
 	}
-	
+
 	/**
 	 * UPC-Based Extentions
 	 * 2-Digit Ext.: Used to indicate magazines and newspaper issue numbers
@@ -1192,7 +1192,7 @@ class TCPDFBarcode {
 		if ($len == 2) {
 			$r = $code % 4;
 		} elseif ($len == 5) {
-			$r = (3 * ($code{0} + $code{2} + $code{4})) + (9 * ($code{1} + $code{3}));
+			$r = (3 * ($code[0] + $code[2] + $code[4])) + (9 * ($code[1] + $code[3]));
 			$r %= 10;
 		} else {
 			return false;
@@ -1240,18 +1240,18 @@ class TCPDFBarcode {
 			'7'=>array('A','B','A','B','A'),
 			'8'=>array('A','B','A','A','B'),
 			'9'=>array('A','A','B','A','B')
-		);	
+		);
 		$p = $parities[$len][$r];
 		$seq = '1011'; // left guard bar
-		$seq .= $codes[$p[0]][$code{0}];
+		$seq .= $codes[$p[0]][$code[0]];
 		for ($i = 1; $i < $len; ++$i) {
 			$seq .= '01'; // separator
-			$seq .= $codes[$p[$i]][$code{$i}];
+			$seq .= $codes[$p[$i]][$code[$i]];
 		}
 		$bararray = array('code' => $code, 'maxw' => 0, 'maxh' => 1, 'bcode' => array());
 		return $this->binseq_to_array($seq, $bararray);
 	}
-	
+
 	/**
 	 * POSTNET and PLANET barcodes.
 	 * Used by U.S. Postal Service for automated mail sorting
@@ -1297,7 +1297,7 @@ class TCPDFBarcode {
 		// calculate checksum
 		$sum = 0;
 		for ($i = 0; $i < $len; ++$i) {
-			$sum += intval($code{$i});
+			$sum += intval($code[$i]);
 		}
 		$chkd = ($sum % 10);
 		if($chkd > 0) {
@@ -1311,7 +1311,7 @@ class TCPDFBarcode {
 		$bararray['maxw'] += 2;
 		for ($i = 0; $i < $len; ++$i) {
 			for ($j = 0; $j < 5; ++$j) {
-				$h = $barlen[$code{$i}][$j];
+				$h = $barlen[$code[$i]][$j];
 				$p = floor(1 / $h);
 				$bararray['bcode'][$k++] = array('t' => 1, 'w' => 1, 'h' => $h, 'p' => $p);
 				$bararray['bcode'][$k++] = array('t' => 0, 'w' => 1, 'h' => 2, 'p' => 0);
@@ -1323,7 +1323,7 @@ class TCPDFBarcode {
 		$bararray['maxw'] += 1;
 		return $bararray;
 	}
-	
+
 	/**
 	 * RMS4CC - CBC - KIX
 	 * RMS4CC (Royal Mail 4-state Customer Code) - CBC (Customer Bar Code) - KIX (Klant index - Customer index)
@@ -1376,7 +1376,7 @@ class TCPDFBarcode {
 			'W' => array(1,2,4,3),
 			'X' => array(2,1,3,4),
 			'Y' => array(2,1,4,3),
-			'Z' => array(2,2,3,3)		
+			'Z' => array(2,2,3,3)
 		);
 		$code = strtoupper($code);
 		$len = strlen($code);
@@ -1424,8 +1424,8 @@ class TCPDFBarcode {
 			$row = 0;
 			$col = 0;
 			for ($i = 0; $i < $len; ++$i) {
-				$row += $checktable[$code{$i}][0];
-				$col += $checktable[$code{$i}][1];
+				$row += $checktable[$code[$i]][0];
+				$col += $checktable[$code[$i]][1];
 			}
 			$row %= 6;
 			$col %= 6;
@@ -1442,7 +1442,7 @@ class TCPDFBarcode {
 		}
 		for ($i = 0; $i < $len; ++$i) {
 			for ($j = 0; $j < 4; ++$j) {
-				switch ($barmode[$code{$i}][$j]) {
+				switch ($barmode[$code[$i]][$j]) {
 					case 1: {
 						$p = 0;
 						$h = 2;
@@ -1476,7 +1476,7 @@ class TCPDFBarcode {
 		}
 		return $bararray;
 	}
-	
+
 	/**
 	 * CODABAR barcodes.
 	 * Older code often used in library systems, sometimes in blood banks
@@ -1514,17 +1514,17 @@ class TCPDFBarcode {
 		$code = 'A'.strtoupper($code).'A';
 		$len = strlen($code);
 		for ($i = 0; $i < $len; ++$i) {
-			if (!isset($chr[$code{$i}])) {
+			if (!isset($chr[$code[$i]])) {
 				return false;
 			}
-			$seq = $chr[$code{$i}];
+			$seq = $chr[$code[$i]];
 			for ($j = 0; $j < 8; ++$j) {
 				if (($j % 2) == 0) {
 					$t = true; // bar
 				} else {
 					$t = false; // space
 				}
-				$w = $seq{$j};
+				$w = $seq[$j];
 				$bararray['bcode'][$k] = array('t' => $t, 'w' => $w, 'h' => 1, 'p' => 0);
 				$bararray['maxw'] += $w;
 				++$k;
@@ -1532,7 +1532,7 @@ class TCPDFBarcode {
 		}
 		return $bararray;
 	}
-	
+
 	/**
 	 * CODE11 barcodes.
 	 * Used primarily for labeling telecommunications equipment
@@ -1555,7 +1555,7 @@ class TCPDFBarcode {
 			'-' => '112111',
 			'S' => '112211'
 		);
-		
+
 		$bararray = array('code' => $code, 'maxw' => 0, 'maxh' => 1, 'bcode' => array());
 		$k = 0;
 		$w = 0;
@@ -1565,7 +1565,7 @@ class TCPDFBarcode {
 		$p = 1;
 		$check = 0;
 		for ($i = ($len - 1); $i >= 0; --$i) {
-			$digit = $code{$i};
+			$digit = $code[$i];
 			if ($digit == '-') {
 				$dval = 10;
 			} else {
@@ -1580,14 +1580,14 @@ class TCPDFBarcode {
 		$check %= 11;
 		if ($check == 10) {
 			$check = '-';
-		} 
+		}
 		$code .= $check;
 		if ($len > 10) {
 			// calculate check digit K
 			$p = 1;
 			$check = 0;
 			for ($i = $len; $i >= 0; --$i) {
-				$digit = $code{$i};
+				$digit = $code[$i];
 				if ($digit == '-') {
 					$dval = 10;
 				} else {
@@ -1606,17 +1606,17 @@ class TCPDFBarcode {
 		$code = 'S'.$code.'S';
 		$len += 3;
 		for ($i = 0; $i < $len; ++$i) {
-			if (!isset($chr[$code{$i}])) {
+			if (!isset($chr[$code[$i]])) {
 				return false;
 			}
-			$seq = $chr[$code{$i}];
+			$seq = $chr[$code[$i]];
 			for ($j = 0; $j < 6; ++$j) {
 				if (($j % 2) == 0) {
 					$t = true; // bar
 				} else {
 					$t = false; // space
 				}
-				$w = $seq{$j};
+				$w = $seq[$j];
 				$bararray['bcode'][$k] = array('t' => $t, 'w' => $w, 'h' => 1, 'p' => 0);
 				$bararray['maxw'] += $w;
 				++$k;
@@ -1624,7 +1624,7 @@ class TCPDFBarcode {
 		}
 		return $bararray;
 	}
-	
+
 	/**
 	 * Pharmacode
 	 * Contains digits (0 to 9)
@@ -1650,7 +1650,7 @@ class TCPDFBarcode {
 		$bararray = array('code' => $code, 'maxw' => 0, 'maxh' => 1, 'bcode' => array());
 		return $this->binseq_to_array($seq, $bararray);
 	}
-	
+
 	/**
 	 * Pharmacode two-track
 	 * Contains digits (0 to 9)
@@ -1685,7 +1685,7 @@ class TCPDFBarcode {
 		$bararray = array('code' => $code, 'maxw' => 0, 'maxh' => 2, 'bcode' => array());
 		$len = strlen($seq);
 		for ($i = 0; $i < $len; ++$i) {
-			switch ($seq{$i}) {
+			switch ($seq[$i]) {
 				case '1': {
 					$p = 1;
 					$h = 1;
@@ -1710,11 +1710,11 @@ class TCPDFBarcode {
 		--$bararray['maxw'];
 		return $bararray;
 	}
-	
-	
+
+
 	/**
 	 * IMB - Intelligent Mail Barcode - Onecode - USPS-B-3200
-	 * (requires PHP bcmath extension) 
+	 * (requires PHP bcmath extension)
 	 * Intelligent Mail barcode is a 65-bar code for use on mail in the United States.
 	 * The fields are described as follows:<ul><li>The Barcode Identifier shall be assigned by USPS to encode the presort identification that is currently printed in human readable form on the optional endorsement line (OEL) as well as for future USPS use. This shall be two digits, with the second digit in the range of 0–4. The allowable encoding ranges shall be 00–04, 10–14, 20–24, 30–34, 40–44, 50–54, 60–64, 70–74, 80–84, and 90–94.</li><li>The Service Type Identifier shall be assigned by USPS for any combination of services requested on the mailpiece. The allowable encoding range shall be 000http://it2.php.net/manual/en/function.dechex.php–999. Each 3-digit value shall correspond to a particular mail class with a particular combination of service(s). Each service program, such as OneCode Confirm and OneCode ACS, shall provide the list of Service Type Identifier values.</li><li>The Mailer or Customer Identifier shall be assigned by USPS as a unique, 6 or 9 digit number that identifies a business entity. The allowable encoding range for the 6 digit Mailer ID shall be 000000- 899999, while the allowable encoding range for the 9 digit Mailer ID shall be 900000000-999999999.</li><li>The Serial or Sequence Number shall be assigned by the mailer for uniquely identifying and tracking mailpieces. The allowable encoding range shall be 000000000–999999999 when used with a 6 digit Mailer ID and 000000-999999 when used with a 9 digit Mailer ID. e. The Delivery Point ZIP Code shall be assigned by the mailer for routing the mailpiece. This shall replace POSTNET for routing the mailpiece to its final delivery point. The length may be 0, 5, 9, or 11 digits. The allowable encoding ranges shall be no ZIP Code, 00000–99999,  000000000–999999999, and 00000000000–99999999999.</li></ul>
 	 * @param string $code code to print, separate the ZIP (routing code) from the rest using a minus char '-' (BarcodeID_ServiceTypeID_MailerID_SerialNumber-RoutingCode)
@@ -1757,9 +1757,9 @@ class TCPDFBarcode {
 			}
 		}
 		$binary_code = bcmul($binary_code, 10);
-		$binary_code = bcadd($binary_code, $tracking_number{0});
+		$binary_code = bcadd($binary_code, $tracking_number[0]);
 		$binary_code = bcmul($binary_code, 5);
-		$binary_code = bcadd($binary_code, $tracking_number{1});
+		$binary_code = bcadd($binary_code, $tracking_number[1]);
 		$binary_code .= substr($tracking_number, 2, 18);
 		// convert to hexadecimal
 		$binary_code = $this->dec_to_hex($binary_code);
@@ -1838,10 +1838,10 @@ class TCPDFBarcode {
 		--$bararray['maxw'];
 		return $bararray;
 	}
-	
+
 	/**
 	 * Convert large integer number to hexadecimal representation.
-	 * (requires PHP bcmath extension) 
+	 * (requires PHP bcmath extension)
 	 * @param string $number number to convert specified as a string
 	 * @return string hexadecimal representation
 	 */
@@ -1862,10 +1862,10 @@ class TCPDFBarcode {
 		$hex = array_reverse($hex);
 		return implode($hex);
 	}
-	
+
 	/**
 	 * Convert large hexadecimal number to decimal representation (string).
-	 * (requires PHP bcmath extension) 
+	 * (requires PHP bcmath extension)
 	 * @param string $hex hexadecimal number to convert specified as a string
 	 * @return string hexadecimal representation
 	 */
@@ -1874,12 +1874,12 @@ class TCPDFBarcode {
 		$bitval = 1;
 		$len = strlen($hex);
 		for($pos = ($len - 1); $pos >= 0; --$pos) {
-			$dec = bcadd($dec, bcmul(hexdec($hex{$pos}), $bitval));
+			$dec = bcadd($dec, bcmul(hexdec($hex[$pos]), $bitval));
 			$bitval = bcmul($bitval, 16);
 		}
 		return $dec;
-	}	
-	
+	}
+
 	/**
 	 * Intelligent Mail Barcode calculation of Frame Check Sequence
 	 * @param string $code_arr array of hexadecimal values (13 bytes holding 102 bits right justified).
@@ -1913,9 +1913,9 @@ class TCPDFBarcode {
 				$data <<= 1;
 			}
 		}
-		return $fcs;		
+		return $fcs;
 	}
-	
+
 	/**
 	 * Reverse unsigned short value
 	 * @param int $num value to reversr
@@ -1931,7 +1931,7 @@ class TCPDFBarcode {
 		}
 		return $rev;
 	}
-	
+
 	/**
 	 * generate Nof13 tables used for Intelligent Mail Barcode
 	 * @param int $n is the type of table: 2 for 2of13 table, 5 for 5of13table
@@ -1969,10 +1969,10 @@ class TCPDFBarcode {
 		}
 		return $table;
 	}
-	
+
 } // end of class
 
 //============================================================+
-// END OF FILE                                                 
+// END OF FILE
 //============================================================+
 ?>

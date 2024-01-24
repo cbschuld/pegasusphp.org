@@ -20,7 +20,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301  USA
  *
  * @Author	Konstantin Riabitsev <icon@linux.duke.edu>
@@ -33,7 +33,7 @@
 
 /**
  * This function returns the final tag out of the tag name, an array
- * of attributes, and the type of the tag. This function is called by 
+ * of attributes, and the type of the tag. This function is called by
  * tln_sanitize internally.
  *
  * @param  $tagname	 the name of the tag.
@@ -76,7 +76,7 @@ function tln_casenormalize(&$val){
 /**
  * This function skips any whitespace from the current position within
  * a string and to the next non-whitespace value.
- * 
+ *
  * @param  $body   the string
  * @param  $offset the offset within the string where we should start
  *				   looking for the next non-whitespace character.
@@ -214,7 +214,7 @@ function tln_getnxtag($body, $offset){
 		$tagtype = 1;
 		break;
 	}
-	
+
 	$tag_start = $pos;
 	$tagname = '';
 	/**
@@ -226,13 +226,13 @@ function tln_getnxtag($body, $offset){
 	}
 	list($pos, $tagname, $match) = $regary;
 	$tagname = strtolower($tagname);
-	
+
 	/**
 	 * $match can be either of these:
 	 * '>'	indicating the end of the tag entirely.
 	 * '\s' indicating the end of the tag name.
 	 * '/'	indicating that this is type-3 xhtml tag.
-	 * 
+	 *
 	 * Whatever else we find there indicates an invalid tag.
 	 */
 	switch ($match){
@@ -266,7 +266,7 @@ function tln_getnxtag($body, $offset){
 			return Array(false, false, false, $lt, $gt);
 		}
 	}
-	
+
 	/**
 	 * At this point we're here:
 	 * <tagname	 attribute='blah'>
@@ -277,7 +277,7 @@ function tln_getnxtag($body, $offset){
 	$attname = '';
 	$atttype = false;
 	$attary = Array();
-	
+
 	while ($pos <= strlen($body)){
 		$pos = tln_skipspace($body, $pos);
 		if ($pos == strlen($body)){
@@ -303,7 +303,7 @@ function tln_getnxtag($body, $offset){
 			}
 			return Array($tagname, $attary, $tagtype, $lt, $pos);
 		}
-		
+
 		/**
 		 * There are several types of attributes, with optional
 		 * [:space:] between members.
@@ -354,7 +354,7 @@ function tln_getnxtag($body, $offset){
 				return $retary;
 			}
 		case '>':
-			$attary{$attname} = '"yes"';
+			$attary[$attname] = '"yes"';
 			return Array($tagname, $attary, $tagtype, $lt, $pos);
 			break;
 		default:
@@ -388,7 +388,7 @@ function tln_getnxtag($body, $offset){
 					}
 					list($pos, $attval, $match) = $regary;
 					$pos++;
-					$attary{$attname} = '\'' . $attval . '\'';
+					$attary[$attname] = '\'' . $attval . '\'';
 				} else if ($quot == '"'){
 					$regary = tln_findnxreg($body, $pos+1, '\"');
 					if ($regary == false){
@@ -396,7 +396,7 @@ function tln_getnxtag($body, $offset){
 					}
 					list($pos, $attval, $match) = $regary;
 					$pos++;
-					$attary{$attname} = '"' . $attval . '"';
+					$attary[$attname] = '"' . $attval . '"';
 				} else {
 					/**
 					 * These are hateful. Look for \s, or >.
@@ -410,13 +410,13 @@ function tln_getnxtag($body, $offset){
 					 * If it's ">" it will be caught at the top.
 					 */
 					$attval = preg_replace('/\"/s', '&quot;', $attval);
-					$attary{$attname} = '"' . $attval . '"';
+					$attary[$attname] = '"' . $attval . '"';
 				}
 			} else if (preg_match('|[\w/>]|', $char)) {
 				/**
 				 * That was attribute type 4.
 				 */
-				$attary{$attname} = '"yes"';
+				$attary[$attname] = '"yes"';
 			} else {
 				/**
 				 * An illegal character. Find next '>' and return.
@@ -452,7 +452,7 @@ function tln_deent(&$attvalue, $regex, $hex=false){
 			if ($hex){
 				$numval = hexdec($numval);
 			}
-			$repl{$matches[0][$i]} = chr($numval);
+			$repl[$matches[0][$i]] = chr($numval);
 		}
 		$attvalue = strtr($attvalue, $repl);
 		return true;
@@ -492,14 +492,14 @@ function tln_defang(&$attvalue){
  * Kill any tabs, newlines, or carriage returns. Our friends the
  * makers of the browser with 95% market value decided that it'd
  * be funny to make "java[tab]script" be just as good as "javascript".
- * 
+ *
  * @param  attvalue	 The attribute value before extraneous spaces removed.
  * @return attvalue	 Nothing, modifies a reference value.
  */
 function tln_unspace(&$attvalue){
 	$me = 'tln_unspace';
 	if (strcspn($attvalue, "\t\r\n\0 ") != strlen($attvalue)){
-		$attvalue = str_replace(Array("\t", "\r", "\n", "\0", " "), 
+		$attvalue = str_replace(Array("\t", "\r", "\n", "\0", " "),
 								Array('',	'',	  '',	'',	  ''), $attvalue);
 	}
 }
@@ -514,8 +514,8 @@ function tln_unspace(&$attvalue){
  * @param  $add_attr_to_tag See description for tln_sanitize
  * @return					Array with modified attributes.
  */
-function tln_fixatts($tagname, 
-				 $attary, 
+function tln_fixatts($tagname,
+				 $attary,
 				 $rm_attnames,
 				 $bad_attvals,
 				 $add_attr_to_tag
@@ -529,7 +529,7 @@ function tln_fixatts($tagname,
 			if (preg_match($matchtag, $tagname)){
 				foreach ($matchattrs as $matchattr){
 					if (preg_match($matchattr, $attname)){
-						unset($attary{$attname});
+						unset($attary[$attname]);
 						continue;
 					}
 				}
@@ -540,7 +540,7 @@ function tln_fixatts($tagname,
 		 */
 		tln_defang($attvalue);
 		tln_unspace($attvalue);
-		
+
 		/**
 		 * Now let's run checks on the attvalues.
 		 * I don't expect anyone to comprehend this. If you do,
@@ -559,7 +559,7 @@ function tln_fixatts($tagname,
 						list($valmatch, $valrepl) = $valary;
 						$newvalue = preg_replace($valmatch,$valrepl,$attvalue);
 						if ($newvalue != $attvalue){
-							$attary{$attname} = $newvalue;
+							$attary[$attname] = $newvalue;
 						}
 					}
 				}
@@ -589,8 +589,8 @@ function tln_fixatts($tagname,
  * @param $add_attr_to_tag		see description above
  * @return						tln_sanitized html safe to show on your pages.
  */
-function tln_sanitize($body, 
-				  $tag_list, 
+function tln_sanitize($body,
+				  $tag_list,
 				  $rm_tags_with_content,
 				  $self_closing_tags,
 				  $force_tag_closing,
@@ -638,9 +638,9 @@ function tln_sanitize($body,
 					$skip_content = false;
 				} else {
 					if ($skip_content == false){
-						if (isset($open_tags{$tagname}) && 
-							$open_tags{$tagname} > 0){
-							$open_tags{$tagname}--;
+						if (isset($open_tags[$tagname]) &&
+							$open_tags[$tagname] > 0){
+							$open_tags[$tagname]--;
 						} else {
 							$tagname = false;
 						}
@@ -664,21 +664,21 @@ function tln_sanitize($body,
 					 * See if we should skip this tag and any content
 					 * inside it.
 					 */
-					if ($tagtype == 1 
+					if ($tagtype == 1
 						&& in_array($tagname, $rm_tags_with_content)){
 						$skip_content = $tagname;
 					} else {
-						if (($rm_tags == false 
+						if (($rm_tags == false
 							 && in_array($tagname, $tag_list)) ||
-							($rm_tags == true 
+							($rm_tags == true
 							 && !in_array($tagname, $tag_list))){
 							$tagname = false;
 						} else {
 							if ($tagtype == 1){
-								if (isset($open_tags{$tagname})){
-									$open_tags{$tagname}++;
+								if (isset($open_tags[$tagname])){
+									$open_tags[$tagname]++;
 								} else {
-									$open_tags{$tagname} = 1;
+									$open_tags[$tagname] = 1;
 								}
 							}
 							/**
@@ -717,7 +717,7 @@ function tln_sanitize($body,
 	return $trusted;
 }
 
-// 
+//
 // Use the nifty htmlfilter library
 //
 
@@ -846,8 +846,8 @@ function HTMLFilter($body, $trans_image_path, $block_external_images = false) {
 			Array('target'=>'"_blank"')
 	);
 
-	$trusted = tln_sanitize($body, 
-			$tag_list, 
+	$trusted = tln_sanitize($body,
+			$tag_list,
 			$rm_tags_with_content,
 			$self_closing_tags,
 			$force_tag_closing,

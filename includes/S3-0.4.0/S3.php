@@ -794,7 +794,7 @@ class S3 {
 		}
 		array_push($policy->conditions, array('content-length-range', 0, $maxFileSize));
 		$policy = base64_encode(str_replace('\/', '/', json_encode($policy)));
-	
+
 		// Create parameters
 		$params = new stdClass;
 		$params->AWSAccessKeyId = self::$__accessKey;
@@ -1355,7 +1355,7 @@ final class S3Request {
 			elseif ($header == 'Content-Type')
 				$this->response->headers['type'] = $value;
 			elseif ($header == 'ETag')
-				$this->response->headers['hash'] = $value{0} == '"' ? substr($value, 1, -1) : $value;
+				$this->response->headers['hash'] = $value[0] == '"' ? substr($value, 1, -1) : $value;
 			elseif (preg_match('/^x-amz-meta-.*$/', $header))
 				$this->response->headers[$header] = is_numeric($value) ? (int)$value : $value;
 		}

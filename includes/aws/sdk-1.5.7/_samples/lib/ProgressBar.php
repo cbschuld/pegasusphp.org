@@ -33,7 +33,7 @@
  * @author Stefan Walk <et@php.net>
  * @license MIT License
  */
- 
+
 class Console_ProgressBar {
 
     // properties {{{
@@ -75,9 +75,9 @@ class Console_ProgressBar {
      */
     var $_last_update_time = 0.0;
     // }}}
-    
+
     // constructor() {{{
-    /** 
+    /**
      * Constructor, sets format and size
      *
      * See the reset() method for documentation.
@@ -89,11 +89,11 @@ class Console_ProgressBar {
      * @param float  The target number for the bar
      * @param array  Options for the progress bar
      * @see reset
-     */ 
-    function Console_ProgressBar($formatstring, $bar, $prefill, $width, 
-                                  $target_num, $options = array()) 
+     */
+    function Console_ProgressBar($formatstring, $bar, $prefill, $width,
+                                  $target_num, $options = array())
     {
-        $this->reset($formatstring, $bar, $prefill, $width, $target_num, 
+        $this->reset($formatstring, $bar, $prefill, $width, $target_num,
                      $options);
     }
     // }}}
@@ -154,7 +154,7 @@ class Console_ProgressBar {
      *                        |       |  possible.
      *     fraction_pad       | ' '   |  Character to use when padding max and
      *                        |       |  current number to a fixed size.
-     *                        |       |  Senseful values are ' ' and '0', but 
+     *                        |       |  Senseful values are ' ' and '0', but
      *                        |       |  any are possible.
      *     width_absolute     | true  |  If the width passed as an argument
      *                        |       |  should mean the total size (true) or
@@ -165,10 +165,10 @@ class Console_ProgressBar {
      *                        |       |  problems with some terminal emulators,
      *                        |       |  for example Eterm.
      *     ansi_clear         | false |  If the bar should be cleared everytime
-     *     num_datapoints     | 5     |  How many datapoints to use to create 
-     *                        |       |  the estimated remaining time 
+     *     num_datapoints     | 5     |  How many datapoints to use to create
+     *                        |       |  the estimated remaining time
      *     min_draw_interval  | 0.0   |  If the last call to update() was less
-     *                        |       |  than this amount of seconds ago, 
+     *                        |       |  than this amount of seconds ago,
      *                        |       |  don't update.
      * </pre>
      *
@@ -180,8 +180,8 @@ class Console_ProgressBar {
      * @param array  Options for the progress bar
      * @return bool
      */
-    function reset($formatstring, $bar, $prefill, $width, $target_num, 
-                   $options = array()) 
+    function reset($formatstring, $bar, $prefill, $width, $target_num,
+                   $options = array())
     {
         if ($target_num == 0) {
             trigger_error("PEAR::Console_ProgressBar: Using a target number equal to 0 is invalid, setting to 1 instead");
@@ -211,9 +211,9 @@ class Console_ProgressBar {
         }
         $this->_options = $options = $intopts;
         // placeholder
-        $cur = '%2$\''.$options['fraction_pad']{0}.strlen((int)$target_num).'.'
+        $cur = '%2$\''.$options['fraction_pad'][0].strlen((int)$target_num).'.'
                .$options['fraction_precision'].'f';
-        $max = $cur; $max{1} = 3;
+        $max = $cur; $max[1] = 3;
         // pre php-4.3.7 %3.2f meant 3 characters before . and two after
         // php-4.3.7 and later it means 3 characters for the whole number
         if (version_compare(PHP_VERSION, '4.3.7', 'ge')) {
@@ -221,9 +221,9 @@ class Console_ProgressBar {
         } else {
             $padding = 3;
         }
-        $perc = '%4$\''.$options['percent_pad']{0}.$padding.'.'
+        $perc = '%4$\''.$options['percent_pad'][0].$padding.'.'
                 .$options['percent_precision'].'f';
-        
+
         $transitions = array(
             '%%' => '%%',
             '%fraction%' => $cur.'/'.$max,
@@ -234,7 +234,7 @@ class Console_ProgressBar {
             '%elapsed%' => '%5$s',
             '%estimate%' => '%6$s',
         );
-        
+
         $this->_skeleton = strtr($formatstring, $transitions);
 
         $slen = strlen(sprintf($this->_skeleton, '', 0, 0, 0, '00:00:00','00:00:00'));
@@ -247,7 +247,7 @@ class Console_ProgressBar {
             $blen = $width;
         }
 
-        $lbar = str_pad($bar, $blen, $bar{0}, STR_PAD_LEFT);
+        $lbar = str_pad($bar, $blen, $bar[0], STR_PAD_LEFT);
         $rbar = str_pad($prefill, $blen, substr($prefill, -1, 1));
 
         $this->_bar   = substr($lbar,-$blen).substr($rbar,0,$blen);
@@ -259,7 +259,7 @@ class Console_ProgressBar {
         return true;
     }
     // }}}
-    
+
     // {{{ update($current)
     /**
      * Updates the bar with new progress information
@@ -280,7 +280,7 @@ class Console_ProgressBar {
             $this->display($current);
             return;
         }
-        if ($time - $this->_last_update_time < 
+        if ($time - $this->_last_update_time <
             $this->_options['min_draw_interval'] and $current != $this->_target_num) {
             return;
         }
@@ -289,7 +289,7 @@ class Console_ProgressBar {
         $this->_last_update_time = $time;
     }
     // }}}
-    
+
     // {{{ display($current)
     /**
      * Prints the bar. Usually, you don't need this method, just use update()
@@ -299,7 +299,7 @@ class Console_ProgressBar {
      * @param int current position of the progress counter
      * @return bool
      */
-    function display($current) 
+    function display($current)
     {
         $percent = $current / $this->_target_num;
         $filled = round($percent * $this->_blen);
@@ -308,7 +308,7 @@ class Console_ProgressBar {
             $this->_fetchTime() - $this->_start_time
         );
         $estimate = $this->_formatSeconds($this->_generateEstimate());
-        $this->_rlen = printf($this->_skeleton, 
+        $this->_rlen = printf($this->_skeleton,
             $visbar, $current, $this->_target_num, $percent * 100, $elapsed,
             $estimate
         );
@@ -319,7 +319,7 @@ class Console_ProgressBar {
         } elseif ($this->_rlen < $this->_tlen) {
             echo str_repeat(' ', $this->_tlen - $this->_rlen);
             $this->_rlen = $this->_tlen;
-        } 
+        }
         return true;
     }
     // }}}
@@ -332,7 +332,7 @@ class Console_ProgressBar {
      *             cursor position
      * @return bool
      */
-    function erase($clear = false) 
+    function erase($clear = false)
     {
         if ($this->_options['ansi_terminal'] and !$clear) {
             if ($this->_options['ansi_clear']) {
@@ -357,7 +357,7 @@ class Console_ProgressBar {
      * @param float The number of seconds
      * @return string
      */
-    function _formatSeconds($seconds) 
+    function _formatSeconds($seconds)
     {
         $hou = floor($seconds/3600);
         $min = floor(($seconds - $hou * 3600) / 60);
@@ -388,7 +388,7 @@ class Console_ProgressBar {
     }
 
     function _addDatapoint($val, $time) {
-        if (count($this->_rate_datapoints) 
+        if (count($this->_rate_datapoints)
             == $this->_options['num_datapoints']) {
             array_shift($this->_rate_datapoints);
         }
