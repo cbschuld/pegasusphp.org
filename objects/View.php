@@ -95,9 +95,14 @@ class View
 
         self::$_smarty = new Smarty();
 
-        self::$_smarty->addPluginsDir(constant('FRAMEWORK_PATH') . '/includes/smarty3-plugins/');
-
-        self::$_smartyContainerFilename = constant('SMARTY_CONTAINER_PAGE');
+        $_NETWORK = $_SERVER['ISNNETWORK'] ?? getenv('ISNNETWORK');
+        if($_NETWORK === "DOCKER"){
+            self::$_smarty->addPluginsDir(__DIR__.'/../includes/smarty3-plugins/');
+        }
+        else{
+            self::$_smarty->addPluginsDir(constant('FRAMEWORK_PATH') . '/includes/smarty3-plugins/');
+            self::$_smartyContainerFilename = constant('SMARTY_CONTAINER_PAGE');
+        }
 
         self::$_requestPHP4WrapperForSmarty = new RequestPHP4WrapperForSmarty();
         self::$_sessionPHP4WrapperForSmarty = new SessionPHP4WrapperForSmarty();

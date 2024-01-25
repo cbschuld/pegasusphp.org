@@ -13,12 +13,6 @@ define('PEGASUS_VERSION', '0.9.0 BETA');
  * @link
  * @since
  */
-
-// Smarty requires magic_quotes_runtime to be turned off to operate properly
-if (get_magic_quotes_runtime() != 0) {
-    exit('ERROR: PegasusPHP requires magic_quotes_runtime to be turned off to operate properly');
-}
-
 if (!defined('PROJECT_NAME')) {
     define('PROJECT_NAME', 'pegasus_app');
 }
@@ -76,12 +70,19 @@ if (!defined('FPDF_FONTPATH')) {
 if (!defined('TTF_DIR')) {
     define('TTF_DIR', constant('FRAMEWORK_PATH') . '/includes/fonts/');
 }
-
 if (!defined('DATELONG')) {
     define('DATELONG', 'l, F jS, Y');
 }
 if (!defined('TIMELONG')) {
     define('TIMELONG', 'g:i A');
+}
+
+if(!function_exists('class_basename')){
+    function class_basename($class)
+    {
+        $class = is_object($class) ? get_class($class) : $class;
+        return basename(str_replace('\\', '/', $class));
+    }
 }
 
 date_default_timezone_set('America/Phoenix');
@@ -134,12 +135,6 @@ if (defined('USE_DWOO') && constant('USE_DWOO')) {
 } else {
     require_once __DIR__ . '/includes/Smarty-3.1.30/libs/Smarty.class.php';
     require_once constant('FRAMEWORK_PATH') . 'objects/View.php';
-}
-
-function class_basename($class)
-{
-    $class = is_object($class) ? get_class($class) : $class;
-    return basename(str_replace('\\', '/', $class));
 }
 
 /*
@@ -231,7 +226,9 @@ function assertWorker($file, $line, $strTrigger)
 // Activate assert and make it quiet
 assert_options(ASSERT_ACTIVE, constant('ASSERT_ENABLED'));
 assert_options(ASSERT_WARNING, constant('ASSERT_ENABLED'));
-assert_options(ASSERT_QUIET_EVAL, constant('ASSERT_ENABLED'));
+
+// Removed in PHP8+
+// assert_options(ASSERT_QUIET_EVAL, constant('ASSERT_ENABLED'));
 
 // Set up the assert callback
 assert_options(ASSERT_CALLBACK, 'assertWorker');

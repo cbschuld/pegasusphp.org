@@ -120,7 +120,7 @@
 		}
 
 		public function setId($id) { $this->_id = $id; }
-		public function setConfirmMessage($msg) { $this->_confirmMessage = str_replace("'",'', str_replace('"','', $msg)); }
+		public function setConfirmMessage($msg) { $this->_confirmMessage = str_replace("'",'', str_replace('"','', (string) $msg)); }
 		public function setTarget($target) { $this->_target = $target; }
 		public function setLinkCssClass($class) { $this->_linkCssClass = $class; }
 		public function setIconCssClass($class) { $this->_iconCssClass = $class; }
@@ -141,11 +141,11 @@
 				}
 				return preg_replace($patt, $repl, ( $this->isEnabled() ? $this->_url : $this->_disabled_url ) );
 			} else {
-				return str_replace( '{ID}', $this->_id, ( $this->isEnabled() ? $this->_url : $this->_disabled_url ) );
+				return str_replace( '{ID}', $this->_id, (string) ( $this->isEnabled() ? $this->_url : $this->_disabled_url ) );
 			}
 		}
 		public function getOnclick() {
-			return str_replace( '{ID}', $this->_id, ( $this->isEnabled() ? $this->_onclick : $this->_disabled_onclick ) );
+			return str_replace( '{ID}', $this->_id, (string) ( $this->isEnabled() ? $this->_onclick : $this->_disabled_onclick ) );
 		}
 		public function getIcon() { return ( $this->isEnabled() ? $this->_icon : $this->_disabled_icon ); }
 
@@ -296,7 +296,7 @@
 		public function getRowsPerPage()           { return (int)$this->_iRowsPerPage; }
 		public function getPageNumber()            { return (int)$this->_iPageNumber; }
 		public function getProcessingUrl()         { return $this->_strProcessingUrl; }
-		public function getSearchString()          { return $this->_strSearchString; }
+		public function getSearchString()          { return (string) $this->_strSearchString; }
 		public function getTotalDescription()      { return $this->_strTotalDescription; }
 		public function getThemePath()             { return $this->_strThemePath; }
 		public function getThemeName()             { return $this->_strThemeName; }
@@ -472,7 +472,7 @@
 				}
 			}
 
-			if( $column == null ) {
+			if( $column == null && $this->getColumn(0) != null) {
 				$this->getColumn(0)->setSorted(true);
 			}
 
@@ -593,7 +593,7 @@
 			else {
 				Pegasus::error('No Template Found','Error, unable to locate grid template for theme: ' . $this->getThemeName() );
 			}
-			return str_replace("\t",'',str_replace("\r\n",'',$strRetVal));
+			return str_replace("\t",'',str_replace("\r\n",'', (string) $strRetVal));
 		}
 
 		public function applyPropelCriteria(&$criteria) {

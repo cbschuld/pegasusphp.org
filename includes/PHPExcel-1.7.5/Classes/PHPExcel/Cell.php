@@ -653,12 +653,12 @@ class PHPExcel_Cell
 			if (!isset($pString{1})) {
 				return $_columnLookup[$pString];
 			} elseif(!isset($pString{2})) {
-				return $_columnLookup[$pString{0}] * 26 + $_columnLookup[$pString{1}];
+				return $_columnLookup[$pString[0]] * 26 + $_columnLookup[$pString[1]];
 			} elseif(!isset($pString{3})) {
-				return $_columnLookup[$pString{0}] * 676 + $_columnLookup[$pString{1}] * 26 + $_columnLookup[$pString{2}];
+				return $_columnLookup[$pString[0]] * 676 + $_columnLookup[$pString[1]] * 26 + $_columnLookup[$pString[2]];
 			}
 		}
-		throw new Exception("Column string index can not be " . ((isset($pString{0})) ? "longer than 3 characters" : "empty") . ".");
+		throw new Exception("Column string index can not be " . ((isset($pString[0])) ? "longer than 3 characters" : "empty") . ".");
 	}
 
 	/**
